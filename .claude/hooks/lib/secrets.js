@@ -33,7 +33,8 @@ function secretScanExempt(filePath, projectDir) {
   if (!projectDir) return false;
   const n = path.resolve(filePath).replace(/\\/g, '/');
   const claude = path.resolve(projectDir).replace(/\\/g, '/') + '/.claude/';
-  if (!n.startsWith(claude)) return false;
+  const fold = (s) => (process.platform === 'win32' ? s.toLowerCase() : s);
+  if (!fold(n).startsWith(fold(claude))) return false;
   const rel = n.slice(claude.length);
   return rel.startsWith('hooks/') || rel.startsWith('evals/') || rel.startsWith('templates/');
 }
