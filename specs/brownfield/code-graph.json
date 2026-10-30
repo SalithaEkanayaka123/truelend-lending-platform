@@ -1,0 +1,115 @@
+{
+  "nodes": [
+    {
+      "id": "py:backend/src/__init__.py",
+      "kind": "file",
+      "language": "python",
+      "path": "backend/src/__init__.py",
+      "symbols": []
+    },
+    {
+      "id": "py:backend/tests/__init__.py",
+      "kind": "file",
+      "language": "python",
+      "path": "backend/tests/__init__.py",
+      "symbols": []
+    },
+    {
+      "id": "js:frontend/eslint.config.mjs",
+      "kind": "file",
+      "language": "node",
+      "path": "frontend/eslint.config.mjs",
+      "symbols": []
+    },
+    {
+      "id": "ts:frontend/src/env.d.ts",
+      "kind": "file",
+      "language": "typescript",
+      "path": "frontend/src/env.d.ts",
+      "symbols": []
+    },
+    {
+      "id": "ts:frontend/vitest.config.ts",
+      "kind": "file",
+      "language": "typescript",
+      "path": "frontend/vitest.config.ts",
+      "symbols": []
+    }
+  ],
+  "edges": [
+    {
+      "source": "js:frontend/eslint.config.mjs",
+      "target": "ext:@eslint/js",
+      "kind": "imports",
+      "evidence": "frontend/eslint.config.mjs:1 import @eslint/js"
+    },
+    {
+      "source": "js:frontend/eslint.config.mjs",
+      "target": "ext:typescript-eslint",
+      "kind": "imports",
+      "evidence": "frontend/eslint.config.mjs:2 import typescript-eslint"
+    },
+    {
+      "source": "ts:frontend/vitest.config.ts",
+      "target": "ext:vitest/config",
+      "kind": "imports",
+      "evidence": "frontend/vitest.config.ts:1 import vitest/config"
+    }
+  ],
+  "files": [
+    {
+      "path": "backend/src/__init__.py",
+      "hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "loc": 0,
+      "language": "python",
+      "symbols": []
+    },
+    {
+      "path": "backend/tests/__init__.py",
+      "hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "loc": 0,
+      "language": "python",
+      "symbols": []
+    },
+    {
+      "path": "frontend/eslint.config.mjs",
+      "hash": "sha256:a3a4f710cebd9a4925c408a8f6f0c5bb8534837946aa8f3622cd90d4eca76902",
+      "loc": 8,
+      "language": "node",
+      "symbols": []
+    },
+    {
+      "path": "frontend/src/env.d.ts",
+      "hash": "sha256:65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+      "loc": 1,
+      "language": "typescript",
+      "symbols": []
+    },
+    {
+      "path": "frontend/vitest.config.ts",
+      "hash": "sha256:8de3f93f19eec57264cbda9d9b6104c68eb1b9d56b01fe4295a68817038297b3",
+      "loc": 9,
+      "language": "typescript",
+      "symbols": []
+    }
+  ],
+  "metrics": {
+    "files": 5,
+    "edges": 0,
+    "external_imports": 3,
+    "cycles": [],
+    "hubs": [],
+    "unstable_hubs": []
+  },
+  "meta": {
+    "producer": "vendored-ast",
+    "languages": {
+      "python": 2,
+      "node": 1,
+      "typescript": 2
+    },
+    "warnings": [],
+    "generated_at": "2026-10-30T05:19:48.573055+00:00",
+    "root": "c:\\Development\\Capston Project - Personal\\truelend-lending-platform"
+  }
+}

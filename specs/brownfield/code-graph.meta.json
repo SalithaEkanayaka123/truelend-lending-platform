@@ -1,0 +1,11 @@
+{
+  "producer": "vendored-ast",
+  "languages": {
+    "python": 2,
+    "node": 1,
+    "typescript": 2
+  },
+  "warnings": [],
+  "generated_at": "2026-10-30T05:19:48.573055+00:00",
+  "root": "c:\\Development\\Capston Project - Personal\\truelend-lending-platform"
+}

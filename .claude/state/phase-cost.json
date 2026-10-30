@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-10-30T05:26:21.832Z",
+  "event": "Stop",
+  "step": null,
+  "session_id": "4130134c-3b85-43d3-a07d-bef0ad88eba7",
+  "coverage": {
+    "subagentFiles": 0,
+    "sessions": 1
+  },
+  "grand_usd": 1.5997,
+  "rows": [
+    {
+      "command": "(freeform)",
+      "start": "2026-10-30T04:53:19.595Z",
+      "minutes": 0,
+      "model": null,
+      "by_model": {},
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_creation_tokens": 0,
+      "messages": 0,
+      "subagent_output_tokens": 0,
+      "subagent_messages": 0,
+      "cost_usd": 0,
+      "unpriced_models": []
+    },
+    {
+      "command": "scaffold",
+      "start": "2026-10-30T04:53:19.711Z",
+      "minutes": 33,
+      "model": "claude-sonnet-5-5",
+      "by_model": {
+        "claude-sonnet-5-5": {
+          "input_tokens": 56,
+          "output_tokens": 13849,
+          "cache_read_tokens": 1706704,
+          "cache_creation_tokens": 63980,
+          "messages": 26
+        }
+      },
+      "input_tokens": 56,
+      "output_tokens": 13849,
+      "cache_read_tokens": 1706704,
+      "cache_creation_tokens": 63980,
+      "messages": 26,
+      "subagent_output_tokens": 0,
+      "subagent_messages": 0,
+      "cost_usd": 1.5997320000000002,
+      "unpriced_models": [
+        "claude-sonnet-5-5"
+      ]
+    }
+  ],
+  "totals": [
+    {
+      "command": "scaffold",
+      "runs": 1,
+      "minutes": 33,
+      "output_tokens": 13849,
+      "cache_read_tokens": 1706704,
+      "subagent_output_tokens": 0,
+      "cost_usd": 1.5997320000000002,
+      "models": [
+        "claude-sonnet-5-5"
+      ]
+    },
+    {
+      "command": "(freeform)",
+      "runs": 1,
+      "minutes": 0,
+      "output_tokens": 0,
+      "cache_read_tokens": 0,
+      "subagent_output_tokens": 0,
+      "cost_usd": 0,
+      "models": []
+    }
+  ]
+}
