@@ -67,9 +67,13 @@
     }
   },
   "topology": "web-app",
+  "architecture": {
+    "layers": ["types", "config", "repository", "service", "api", "ui"],
+    "layer_roots": ["backend/src/truelend", "frontend/src"]
+  },
   "quality": {
     "sensor_tier": "standard",
-    "test_discipline": "outcomes",
+    "test_discipline": "tdd",
     "agent_readiness": {
       "mode": "report",
       "min_active_pillars": 3,
