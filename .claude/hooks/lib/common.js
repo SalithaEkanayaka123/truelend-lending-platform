@@ -174,12 +174,18 @@ function projectMemoryDir(project) {
 // memory dir. Shared by the Write/Edit gate and the Bash gate so both honor the
 // exact same scope rule.
 function isWriteInScope(projectDir, resolvedPath) {
-  const tmp = realResolve('/tmp');
-  if (resolvedPath === tmp || resolvedPath.startsWith(tmp + path.sep)) return true;
+  // Windows paths are case-insensitive ("C:\x" and "c:\x" are the same place),
+  // so fold both sides of each prefix test there; other platforms are unchanged.
+  const fold = (p) => (process.platform === 'win32' ? p.toLowerCase() : p);
+  const target = fold(resolvedPath);
+  const inside = (root) => {
+    const r = fold(root);
+    return target === r || target.startsWith(r + path.sep);
+  };
+  if (inside(realResolve('/tmp'))) return true;
   const project = realResolve(projectDir);
-  const memory = projectMemoryDir(project);
-  if (resolvedPath === memory || resolvedPath.startsWith(memory + path.sep)) return true;
-  return resolvedPath === project || resolvedPath.startsWith(project + path.sep);
+  if (inside(projectMemoryDir(project))) return true;
+  return inside(project);
 }
 
 // A hook crash must never block work, but it must not be invisible either.
