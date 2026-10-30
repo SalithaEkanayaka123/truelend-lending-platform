@@ -4,6 +4,15 @@
 
 We are building TrueLend (BC-003), a full-stack Loan Origination and Underwriting web application using Python 3.12, FastAPI, SQLite, React, TypeScript, and Vite, supporting loan applications, document verification, credit scoring, policy-driven underwriting, disbursement, repayment schedules, and administration. The application will feature a modern, professional, dynamic, responsive, and visually polished fintech UI with interactive dashboards, real-time form validation, role-based interfaces, charts, smooth transitions, and data-driven components, designed for desktop and mobile and demo-ready with synthetic data only. Development will use Claude Code, Claude Harness Engine, Playwright MCP, a personal GitHub repository, and GitHub Actions for CI/CD, with an optional backend-only Anthropic API integration supporting multiple Claude models, secure API-key management, authentication, authorization, and sound security practices, without Linear or Jira integration.
 
+## TrueLend rules
+
+- Sources of truth: `docs/brief/*.pdf`, `specs/app_spec.md`, `docs/business-case.md`. If spec and code disagree, the spec wins.
+- Three runtimes: UI (React + TypeScript), Domain (FastAPI: rules, workflow, state, audit; every decision is made here), AI (optional, backend-only Anthropic gateway). AI proposes, the domain decides. The system must work fully with the AI runtime off.
+- Design bar: consumer-facing, professional, responsive, dynamic UI (role-based views, live validation, charts). Follow `specs/ui_spec.md` once it exists.
+- Money is fixed-point (`Decimal`), never float. Approved policy versions, repayment schedules and migrations are append-only.
+- Never log synthetic identifiers (PAN, Aadhaar) or salary documents. Synthetic data only.
+- No hand-written production code; Claude Code writes it.
+
 ## This Project
 
 Project-specific rules an agent or new contributor must follow here — encoded from the scaffold interview, not generic advice:
@@ -107,3 +116,4 @@ Verify: `pyright --version && typescript-language-server --version`
 
 Branch: `<type>/<description>` (e.g., `feat/user-auth`)
 Commits: conventional format (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`)
+Feature branches go into `develop` by PR with a merge commit. `develop` goes into `main` by release PR. No direct commits to `main`.
