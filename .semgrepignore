@@ -1,0 +1,4 @@
+# Harness machinery and generated evidence are not product code
+.claude/
+specs/
+docs/

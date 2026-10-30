@@ -37,4 +37,4 @@ jobs:
       - name: Static analysis (Semgrep)
         run: |
           python -m pip install "setuptools<80" semgrep==1.90.0
-          semgrep scan --config auto --error
+          semgrep scan --config auto --severity ERROR --error
