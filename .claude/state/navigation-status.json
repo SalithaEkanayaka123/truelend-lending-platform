@@ -1,0 +1,14 @@
+{
+  "status": "fresh",
+  "mode": "bootstrap",
+  "graph": "fresh",
+  "wiki": "fresh",
+  "source_files": 5,
+  "indexed_files": 5,
+  "dirty_files": 0,
+  "estimated_source_tokens": 121,
+  "estimated_navigation_tokens": 637,
+  "estimated_context_query_tokens": 637,
+  "estimated_tokens_saved_per_orientation": 0,
+  "last_refresh": "2026-10-30T05:19:49.765Z"
+}
