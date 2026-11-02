@@ -1,0 +1,3 @@
+specs/**/*.md text eol=lf
+docs/**/*.md text eol=lf
+*.json text eol=lf

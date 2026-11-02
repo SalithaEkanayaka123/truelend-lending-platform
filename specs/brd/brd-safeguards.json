@@ -1,0 +1,98 @@
+[
+  {
+    "id": "SG-1",
+    "kind": "forbidden_action",
+    "text": "Real bureau or credit-score integration.",
+    "traces": [
+      "FRD-51"
+    ]
+  },
+  {
+    "id": "SG-2",
+    "kind": "forbidden_action",
+    "text": "Real document OCR or extraction; document upload records metadata only and stores no file content.",
+    "traces": [
+      "FRD-52"
+    ]
+  },
+  {
+    "id": "SG-3",
+    "kind": "forbidden_action",
+    "text": "Real disbursement rails (NEFT, RTGS, IMPS); the response is stubbed.",
+    "traces": [
+      "FRD-53"
+    ]
+  },
+  {
+    "id": "SG-4",
+    "kind": "forbidden_action",
+    "text": "Real collections or recovery workflow.",
+    "traces": [
+      "FRD-54"
+    ]
+  },
+  {
+    "id": "SG-5",
+    "kind": "forbidden_action",
+    "text": "Multi-currency and foreign exchange; all amounts are INR.",
+    "traces": [
+      "FRD-55"
+    ]
+  },
+  {
+    "id": "SG-6",
+    "kind": "forbidden_action",
+    "text": "Production deployment, secret management, multi-region operation and distributed locking.",
+    "traces": [
+      "FRD-56"
+    ]
+  },
+  {
+    "id": "SG-7",
+    "kind": "forbidden_action",
+    "text": "Late fees, penal interest, prepayment rebates, foreclosure quotes, and schedule regeneration or restructuring.",
+    "traces": [
+      "FRD-57"
+    ]
+  },
+  {
+    "id": "SG-8",
+    "kind": "forbidden_action",
+    "text": "Co-applicants, editing an application after submission, and withdrawing an application.",
+    "traces": [
+      "FRD-58"
+    ]
+  },
+  {
+    "id": "SG-9",
+    "kind": "forbidden_action",
+    "text": "Token refresh, password reset, and user administration.",
+    "traces": [
+      "FRD-59"
+    ]
+  },
+  {
+    "id": "SG-10",
+    "kind": "forbidden_action",
+    "text": "A fourth product type, editing score weights through the policy editor, and rolling back an approved policy version.",
+    "traces": [
+      "FRD-60"
+    ]
+  },
+  {
+    "id": "SG-11",
+    "kind": "forbidden_action",
+    "text": "Report export, time-series trends and notifications.",
+    "traces": [
+      "FRD-61"
+    ]
+  },
+  {
+    "id": "SG-12",
+    "kind": "forbidden_action",
+    "text": "Any requirement that depends on the optional AI runtime; every FR must be met with that runtime off.",
+    "traces": [
+      "FRD-62"
+    ]
+  }
+]

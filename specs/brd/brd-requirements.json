@@ -1,0 +1,411 @@
+[
+  {
+    "id": "FRD-1",
+    "text": "(AC-01) The loan product catalog offers at least 3 products — Personal, Vehicle and Education — each with its own rule set read from a versioned policy file.",
+    "label": "FR-1",
+    "traces": [
+      "FRD-1"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-29"
+    ],
+    "section": "Functional Requirements / FR-1"
+  },
+  {
+    "id": "FRD-2",
+    "text": "(AC-02) A customer can apply for a loan for a chosen product, and a required-document checklist specific to that product is generated.",
+    "label": "FR-2",
+    "traces": [
+      "FRD-2"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-30"
+    ],
+    "section": "Functional Requirements / FR-2"
+  },
+  {
+    "id": "FRD-3",
+    "text": "(AC-03) A credit-scoring stub returns a deterministic score from age, income and credit-history flags.",
+    "label": "FR-3",
+    "traces": [
+      "FRD-3"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-31"
+    ],
+    "section": "Functional Requirements / FR-3"
+  },
+  {
+    "id": "FRD-4",
+    "text": "(AC-04) Underwriting returns AUTO_APPROVE, AUTO_REJECT or MANUAL_REVIEW with reason codes referenced from the active policy version, which is the latest approved version at the time of submission.",
+    "label": "FR-4",
+    "traces": [
+      "FRD-4"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-32"
+    ],
+    "section": "Functional Requirements / FR-4"
+  },
+  {
+    "id": "FRD-5",
+    "text": "(AC-05) An application whose income is below the minimum threshold of the selected product fails with PolicyViolationException, raised by the rule engine and persisted as AUTO_REJECT with a reason code.",
+    "label": "FR-5",
+    "traces": [
+      "FRD-5"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-33"
+    ],
+    "section": "Functional Requirements / FR-5"
+  },
+  {
+    "id": "FRD-6",
+    "text": "(AC-06) An underwriter can mark each submitted document VERIFIED or REJECTED, with a reason, from a document-verification queue.",
+    "label": "FR-6",
+    "traces": [
+      "FRD-6"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-34"
+    ],
+    "section": "Functional Requirements / FR-6"
+  },
+  {
+    "id": "FRD-7",
+    "text": "(AC-07) On approval, the repayment schedule is generated using the EMI formula, and the sum of principal and interest equals total payable.",
+    "label": "FR-7",
+    "traces": [
+      "FRD-7"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-35"
+    ],
+    "section": "Functional Requirements / FR-7"
+  },
+  {
+    "id": "FRD-8",
+    "text": "(AC-08) Disbursement records the released amount and the funding source (stubbed).",
+    "label": "FR-8",
+    "traces": [
+      "FRD-8"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-36"
+    ],
+    "section": "Functional Requirements / FR-8"
+  },
+  {
+    "id": "FRD-9",
+    "text": "(AC-09) Posting a repayment reduces outstanding principal and recalculates the bucket (CURRENT, DPD-30, DPD-60, DPD-90, NPA).",
+    "label": "FR-9",
+    "traces": [
+      "FRD-9"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-37"
+    ],
+    "section": "Functional Requirements / FR-9"
+  },
+  {
+    "id": "FRD-10",
+    "text": "(AC-10) An admin can list applications, filter them by status and product, and override an AUTO_REJECT with a comment and reason code; the override is audited.",
+    "label": "FR-10",
+    "traces": [
+      "FRD-10"
+    ],
+    "taxonomy": [
+      "functional",
+      "security_authz"
+    ],
+    "acceptance": [
+      "FRD-38"
+    ],
+    "section": "Functional Requirements / FR-10"
+  },
+  {
+    "id": "FRD-11",
+    "text": "(D-01) A customer can track an application: its status, missing documents, decision and reason codes.",
+    "label": "FR-11",
+    "traces": [
+      "FRD-11"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-39"
+    ],
+    "section": "Functional Requirements / FR-11"
+  },
+  {
+    "id": "FRD-12",
+    "text": "(D-02) A customer can view the repayment schedule of their loan, post a repayment, and see the updated outstanding principal and bucket.",
+    "label": "FR-12",
+    "traces": [
+      "FRD-12"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-40"
+    ],
+    "section": "Functional Requirements / FR-12"
+  },
+  {
+    "id": "FRD-13",
+    "text": "(D-03) An underwriter can open an application queue of applications awaiting work.",
+    "label": "FR-13",
+    "traces": [
+      "FRD-13"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-41"
+    ],
+    "section": "Functional Requirements / FR-13"
+  },
+  {
+    "id": "FRD-14",
+    "text": "(D-04) An underwriter can approve or reject an application in MANUAL_REVIEW with a reason, and the action is audited with user ID and timestamp.",
+    "label": "FR-14",
+    "traces": [
+      "FRD-14"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-42"
+    ],
+    "section": "Functional Requirements / FR-14"
+  },
+  {
+    "id": "FRD-15",
+    "text": "(D-05) An underwriter can override an AUTO_REJECT with a comment and reason code, and the override is audited with user ID and timestamp.",
+    "label": "FR-15",
+    "traces": [
+      "FRD-15"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-43"
+    ],
+    "section": "Functional Requirements / FR-15"
+  },
+  {
+    "id": "FRD-16",
+    "text": "(D-06) A policy editor can edit thresholds (income, age, score, tenure, rate) per product without a code change, producing a new versioned policy file that an admin approves before it becomes active.",
+    "label": "FR-16",
+    "traces": [
+      "FRD-16"
+    ],
+    "taxonomy": [
+      "functional",
+      "security_authz"
+    ],
+    "acceptance": [
+      "FRD-44"
+    ],
+    "section": "Functional Requirements / FR-16"
+  },
+  {
+    "id": "FRD-17",
+    "text": "(D-07) An admin can open a portfolio dashboard showing applications and active loans by product, the NPA bucket and total overdue.",
+    "label": "FR-17",
+    "traces": [
+      "FRD-17"
+    ],
+    "taxonomy": [
+      "functional",
+      "security_authz"
+    ],
+    "acceptance": [
+      "FRD-45"
+    ],
+    "section": "Functional Requirements / FR-17"
+  },
+  {
+    "id": "FRD-18",
+    "text": "(D-08) An end-of-day job recalculates the delinquency bucket of every active loan as of a given date.",
+    "label": "FR-18",
+    "traces": [
+      "FRD-18"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [
+      "FRD-46"
+    ],
+    "section": "Functional Requirements / FR-18"
+  },
+  {
+    "id": "FRD-19",
+    "text": "(D-09) No money value (principal, interest, EMI) is held, stored or computed as a floating-point number anywhere in the system.",
+    "label": "FR-19",
+    "traces": [
+      "FRD-19"
+    ],
+    "taxonomy": [
+      "functional",
+      "data_lifecycle"
+    ],
+    "acceptance": [
+      "FRD-47"
+    ],
+    "section": "Functional Requirements / FR-19"
+  },
+  {
+    "id": "FRD-20",
+    "text": "(D-10) A health endpoint is available without authentication and reports that the system is ready.",
+    "label": "FR-20",
+    "traces": [
+      "FRD-20"
+    ],
+    "taxonomy": [
+      "functional",
+      "security_authz"
+    ],
+    "acceptance": [
+      "FRD-48"
+    ],
+    "section": "Functional Requirements / FR-20"
+  },
+  {
+    "id": "FRD-21",
+    "text": "Money (principal, interest, EMI) is computed in fixed-point (BigDecimal / decimal), rounded half-up to 2 decimal places — never floating-point.",
+    "label": "NFR-01",
+    "traces": [
+      "FRD-21"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [],
+    "section": "Non-Functional Requirements / NFR-01"
+  },
+  {
+    "id": "FRD-22",
+    "text": "Approved policy versions and generated repayment schedules are append-only — no update or delete: 0 permitted modifications, enforced in application code and by database triggers.",
+    "label": "NFR-02",
+    "traces": [
+      "FRD-22"
+    ],
+    "taxonomy": [
+      "data_lifecycle"
+    ],
+    "acceptance": [],
+    "section": "Non-Functional Requirements / NFR-02"
+  },
+  {
+    "id": "FRD-23",
+    "text": "Synthetic identifiers (PAN, Aadhaar) and salary documents are never written to logs: 0 occurrences of an identifier value or document filename in captured logs.",
+    "label": "NFR-03",
+    "traces": [
+      "FRD-23"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [],
+    "section": "Non-Functional Requirements / NFR-03"
+  },
+  {
+    "id": "FRD-24",
+    "text": "Authentication boundary enforced at controller layer on 100% of routes except login and health; underwriter actions are audited with user ID and timestamp.",
+    "label": "NFR-04",
+    "traces": [
+      "FRD-24"
+    ],
+    "taxonomy": [
+      "security_authz"
+    ],
+    "acceptance": [],
+    "section": "Non-Functional Requirements / NFR-04"
+  },
+  {
+    "id": "FRD-25",
+    "text": "Database migrations and policy migrations are append-only: 0 edits to an applied migration or approved policy file, checked by SHA-256 at startup.",
+    "label": "NFR-05",
+    "traces": [
+      "FRD-25"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [],
+    "section": "Non-Functional Requirements / NFR-05"
+  },
+  {
+    "id": "FRD-26",
+    "text": "Structured JSON logs, one line per request, with a request correlation ID on 100% of lines.",
+    "label": "NFR-06",
+    "traces": [
+      "FRD-26"
+    ],
+    "taxonomy": [
+      "observability"
+    ],
+    "acceptance": [],
+    "section": "Non-Functional Requirements / NFR-06"
+  },
+  {
+    "id": "FRD-27",
+    "text": "Health endpoint returns 200 within 1 second of a successful startup.",
+    "label": "NFR-07",
+    "traces": [
+      "FRD-27"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [],
+    "section": "Non-Functional Requirements / NFR-07"
+  },
+  {
+    "id": "FRD-28",
+    "text": "Architecture rules enforced as automated tests (e.g., policy version cannot be mutated; EMI invariant principal × rate × tenure equation holds): at least 3 structural tests, run on every pull request.",
+    "label": "NFR-08",
+    "traces": [
+      "FRD-28"
+    ],
+    "taxonomy": [
+      "functional"
+    ],
+    "acceptance": [],
+    "section": "Non-Functional Requirements / NFR-08"
+  }
+]
