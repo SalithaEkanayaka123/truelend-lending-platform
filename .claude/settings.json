@@ -89,6 +89,11 @@
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/context-ceiling.js\"",
             "timeout": 5000
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/money-float-guard.js\"",
+            "timeout": 5000
           }
         ]
       },
