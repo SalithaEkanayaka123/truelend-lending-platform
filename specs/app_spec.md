@@ -151,4 +151,4 @@ The single assumptions list for the project; `docs/business-case.md` links here.
 21. **Disbursement.** Who triggers it, funding-source values, and whether it may be partial or repeated (AC-08).
 22. **Buckets and repayment.** Days-past-due boundaries, due-date rules, an injectable as-of date for deterministic end-of-day tests, allocation between principal and interest, partial and over-payment, and loan closure (AC-09).
 23. **Audit, auth and logs.** Authentication mechanism, the full list of audited actions (including whether policy edits are audited), the log-scan formats for synthetic PAN/Aadhaar, and the correlation-ID fields (NFR-03, NFR-04, NFR-06).
-24. **Deferred.** Detail for AC-02, AC-03, AC-06..AC-10 and NFR-02..NFR-06 is deferred to the per-feature specs.
+24. **Settled in feature specs.** Items 11–23 are settled, with concrete values, as `FA-F<n>.<m>` assumptions in `specs/features/F0..F5`. Where a feature spec and this list differ, the feature spec wins. Sprint 1 is F0–F3; Sprint 2 is F4–F5.
