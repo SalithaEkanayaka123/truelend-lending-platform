@@ -16,7 +16,8 @@
       "FRD-34"
     ],
     "br_acceptance_ids": [
-      "FRD-34"
+      "FRD-34",
+      "FRD-30"
     ],
     "scope_out": [
       "real file upload UI beyond a stub form"
@@ -73,9 +74,19 @@
     "none": false
   },
   "tests": {
-    "matrix_ids": [],
-    "case_ids": [],
-    "layers": []
+    "matrix_ids": [
+      "VM-035",
+      "VM-036",
+      "VM-037"
+    ],
+    "case_ids": [
+      "VM-035",
+      "VM-036",
+      "VM-037"
+    ],
+    "layers": [
+      "e2e"
+    ]
   },
   "provenance": {
     "story_path": "specs/stories/E2-S4.md",

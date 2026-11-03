@@ -14,7 +14,10 @@
       "FRD-14",
       "FRD-15"
     ],
-    "br_acceptance_ids": [],
+    "br_acceptance_ids": [
+      "FRD-42",
+      "FRD-43"
+    ],
     "scope_out": [
       "the admin-only application list/filter view (FR-10, deferred to M2)"
     ]
@@ -60,9 +63,19 @@
     "none": false
   },
   "tests": {
-    "matrix_ids": [],
-    "case_ids": [],
-    "layers": []
+    "matrix_ids": [
+      "VM-062",
+      "VM-063",
+      "VM-064"
+    ],
+    "case_ids": [
+      "VM-062",
+      "VM-063",
+      "VM-064"
+    ],
+    "layers": [
+      "e2e"
+    ]
   },
   "provenance": {
     "story_path": "specs/stories/E3-S6.md",

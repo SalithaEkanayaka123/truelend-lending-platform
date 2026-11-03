@@ -13,7 +13,9 @@
     "brd_ids": [
       "FRD-16"
     ],
-    "br_acceptance_ids": [],
+    "br_acceptance_ids": [
+      "FRD-44"
+    ],
     "scope_out": [
       "approving a version from this UI (admin action, out of this story's scope_in)"
     ]
@@ -59,9 +61,19 @@
     "none": false
   },
   "tests": {
-    "matrix_ids": [],
-    "case_ids": [],
-    "layers": []
+    "matrix_ids": [
+      "VM-071",
+      "VM-072",
+      "VM-073"
+    ],
+    "case_ids": [
+      "VM-071",
+      "VM-072",
+      "VM-073"
+    ],
+    "layers": [
+      "e2e"
+    ]
   },
   "provenance": {
     "story_path": "specs/stories/E4-S2.md",

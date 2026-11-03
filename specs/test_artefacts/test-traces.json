@@ -1,0 +1,941 @@
+[
+  {
+    "id": "VM-001",
+    "text": "the response is 200 with expires_in 1800 and role CUSTOMER",
+    "traces": [
+      "E1-S1-AC1",
+      "FRD-24",
+      "OBL-CurrentUser.role-required",
+      "OBL-CurrentUser.user_id-required",
+      "OBL-LoginRequest.password-required",
+      "OBL-LoginResponse.expires_in-enum",
+      "OBL-LoginResponse.expires_in-required",
+      "OBL-LoginResponse.role-required",
+      "OBL-Role-enum",
+      "OBL-User.id-minimum",
+      "OBL-User.id-required",
+      "OBL-User.role-required"
+    ],
+    "matrix_id": "VM-001"
+  },
+  {
+    "id": "VM-002",
+    "text": "it is 401 UNAUTHENTICATED with no token and the same body whether or not the email exists",
+    "traces": [
+      "E1-S1-AC2",
+      "FRD-24",
+      "OBL-CurrentUser.email-format",
+      "OBL-CurrentUser.email-required",
+      "OBL-LoginRequest.email-format",
+      "OBL-LoginRequest.email-required",
+      "OBL-LoginResponse.access_token-required",
+      "OBL-LoginResponse.token_type-enum",
+      "OBL-LoginResponse.token_type-required",
+      "OBL-User.email-format",
+      "OBL-User.email-required"
+    ],
+    "matrix_id": "VM-002"
+  },
+  {
+    "id": "VM-003",
+    "text": "it is 401",
+    "traces": [
+      "E1-S1-AC3",
+      "FRD-24"
+    ],
+    "matrix_id": "VM-003"
+  },
+  {
+    "id": "VM-004",
+    "text": "it is 403 FORBIDDEN",
+    "traces": [
+      "E1-S1-AC4",
+      "FRD-24",
+      "OBL-AuditEntry.id-minimum",
+      "OBL-AuditEntry.id-required",
+      "OBL-AuditEntryPage.limit-required",
+      "OBL-AuditEntryPage.offset-required",
+      "OBL-AuditEntryPage.total-required"
+    ],
+    "matrix_id": "VM-004"
+  },
+  {
+    "id": "VM-005",
+    "text": "every route except POST /api/auth/login and GET /health declares the auth dependency",
+    "traces": [
+      "E1-S1-AC5",
+      "FRD-24"
+    ],
+    "matrix_id": "VM-005"
+  },
+  {
+    "id": "VM-006",
+    "text": "one audit_log row has actor_user_id 3, actor_role UNDERWRITER, entity_type application, entity_id 7, a UTC occurred_at, and correlation_id equal to the response header",
+    "traces": [
+      "E1-S2-AC1",
+      "FRD-24",
+      "OBL-Application.id-minimum",
+      "OBL-Application.id-required",
+      "OBL-Application.product_type-required",
+      "OBL-AuditAction-enum",
+      "OBL-AuditEntry.action-required",
+      "OBL-AuditEntry.actor_role-required",
+      "OBL-AuditEntry.actor_user_id-minimum",
+      "OBL-AuditEntry.actor_user_id-required",
+      "OBL-AuditEntry.correlation_id-pattern",
+      "OBL-AuditEntry.correlation_id-required",
+      "OBL-AuditEntry.entity_id-minimum",
+      "OBL-AuditEntry.entity_id-required",
+      "OBL-AuditEntry.entity_type-minLength",
+      "OBL-AuditEntry.entity_type-required",
+      "OBL-AuditEntry.occurred_at-format",
+      "OBL-AuditEntry.occurred_at-required",
+      "OBL-DecisionType-enum",
+      "OBL-ProductType-enum"
+    ],
+    "matrix_id": "VM-006"
+  },
+  {
+    "id": "VM-007",
+    "text": "the database aborts and the row is unchanged",
+    "traces": [
+      "E1-S2-AC2",
+      "FRD-22"
+    ],
+    "matrix_id": "VM-007"
+  },
+  {
+    "id": "VM-008",
+    "text": "exactly 3 rows return in ascending id order",
+    "traces": [
+      "E1-S2-AC3",
+      "FRD-24"
+    ],
+    "matrix_id": "VM-008"
+  },
+  {
+    "id": "VM-009",
+    "text": "no audit row exists for it, because the audit write shares the action's transaction",
+    "traces": [
+      "E1-S2-AC4",
+      "FRD-24",
+      "FRD-22"
+    ],
+    "matrix_id": "VM-009"
+  },
+  {
+    "id": "VM-010",
+    "text": "exactly one JSON log line has the keys ts, level, event, correlation_id, method, path, status, duration_ms",
+    "traces": [
+      "E1-S3-AC1",
+      "FRD-26"
+    ],
+    "matrix_id": "VM-010"
+  },
+  {
+    "id": "VM-011",
+    "text": "a missing header yields a UUID4 echoed in the response header and equal to the log's correlation_id, `req-12345678` is reused as-is, and `a b!` is replaced by a UUID4",
+    "traces": [
+      "E1-S3-AC2",
+      "FRD-26"
+    ],
+    "matrix_id": "VM-011"
+  },
+  {
+    "id": "VM-012",
+    "text": "neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears",
+    "traces": [
+      "E1-S3-AC3",
+      "FRD-23",
+      "OBL-Application.created_at-format",
+      "OBL-Application.created_at-required",
+      "OBL-CreateApplicationRequest.aadhaar-pattern",
+      "OBL-CreateApplicationRequest.aadhaar-required",
+      "OBL-CreateApplicationRequest.pan-pattern",
+      "OBL-CreateApplicationRequest.pan-required"
+    ],
+    "matrix_id": "VM-012"
+  },
+  {
+    "id": "VM-013",
+    "text": "the document ID appears and the filename does not",
+    "traces": [
+      "E1-S3-AC4",
+      "FRD-23",
+      "OBL-Document.id-minimum",
+      "OBL-Document.id-required",
+      "OBL-UploadDocumentRequest.filename-minLength",
+      "OBL-UploadDocumentRequest.filename-required"
+    ],
+    "matrix_id": "VM-013"
+  },
+  {
+    "id": "VM-014",
+    "text": "the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter",
+    "traces": [
+      "E1-S3-AC5",
+      "FRD-26",
+      "FRD-23",
+      "OBL-ErrorEnvelope.error-required",
+      "OBL-ErrorEnvelope.error.code-required",
+      "OBL-ErrorEnvelope.error.correlation_id-required",
+      "OBL-ErrorEnvelope.error.message-required"
+    ],
+    "matrix_id": "VM-014"
+  },
+  {
+    "id": "VM-015",
+    "text": "it is 200 {\"status\":\"ok\"} in at most 1000 ms",
+    "traces": [
+      "E1-S4-AC1",
+      "FRD-20",
+      "FRD-27",
+      "FRD-48"
+    ],
+    "matrix_id": "VM-015"
+  },
+  {
+    "id": "VM-016",
+    "text": "none re-run and schema_migrations still has 3 rows with SHA-256 values",
+    "traces": [
+      "E1-S4-AC2",
+      "FRD-25"
+    ],
+    "matrix_id": "VM-016"
+  },
+  {
+    "id": "VM-017",
+    "text": "startup aborts with MIGRATION_CHECKSUM_MISMATCH and /health never returns 200",
+    "traces": [
+      "E1-S4-AC3",
+      "FRD-25"
+    ],
+    "matrix_id": "VM-017"
+  },
+  {
+    "id": "VM-018",
+    "text": "no module imports from a higher layer in the order types, config, repository, service, api, ui",
+    "traces": [
+      "E1-S4-AC4",
+      "FRD-28"
+    ],
+    "matrix_id": "VM-018"
+  },
+  {
+    "id": "VM-019",
+    "text": "it finds no float type, no float( call, and no REAL money column",
+    "traces": [
+      "E1-S4-AC5",
+      "FRD-19",
+      "FRD-21",
+      "FRD-47",
+      "OBL-Money-pattern"
+    ],
+    "matrix_id": "VM-019"
+  },
+  {
+    "id": "VM-020",
+    "text": "exactly 3 products return (PERSONAL, VEHICLE, EDUCATION), each with policy_version 1",
+    "traces": [
+      "E2-S1-AC1",
+      "FRD-1",
+      "FRD-29",
+      "OBL-PolicyDetail.products-required",
+      "OBL-PolicyDetail.products.EDUCATION-required",
+      "OBL-PolicyDetail.products.PERSONAL-required",
+      "OBL-PolicyDetail.products.VEHICLE-required",
+      "OBL-PolicyDetail.version-required",
+      "OBL-PolicyFile.products-required",
+      "OBL-PolicyFile.products.EDUCATION-required",
+      "OBL-PolicyFile.products.PERSONAL-required",
+      "OBL-PolicyFile.products.VEHICLE-required",
+      "OBL-PolicyVersion.sha256-pattern",
+      "OBL-PolicyVersion.sha256-required",
+      "OBL-PolicyVersion.version-minimum",
+      "OBL-PolicyVersion.version-required",
+      "OBL-PolicyVersionPage.items-required",
+      "OBL-PolicyVersionPage.limit-required",
+      "OBL-PolicyVersionPage.offset-required",
+      "OBL-PolicyVersionPage.total-required",
+      "OBL-User.active-required"
+    ],
+    "matrix_id": "VM-020"
+  },
+  {
+    "id": "VM-021",
+    "text": "each differs in at least one threshold (min_income is 25000.00, 30000.00, 20000.00)",
+    "traces": [
+      "E2-S1-AC2",
+      "FRD-1",
+      "FRD-29",
+      "OBL-ProductRule.annual_rate_pct-pattern",
+      "OBL-ProductRule.annual_rate_pct-required",
+      "OBL-ProductRule.min_age-minimum",
+      "OBL-ProductRule.min_age-required",
+      "OBL-ProductRule.min_amount-required",
+      "OBL-ProductRule.min_income-required",
+      "OBL-ProductRule.min_tenure_months-minimum",
+      "OBL-ProductRule.min_tenure_months-required",
+      "OBL-ProductRule.policy_version-minimum",
+      "OBL-ProductRule.policy_version-required",
+      "OBL-ProductRule.product_type-required"
+    ],
+    "matrix_id": "VM-021"
+  },
+  {
+    "id": "VM-022",
+    "text": "required_documents has 3 entries for PERSONAL and 4 each for VEHICLE and EDUCATION",
+    "traces": [
+      "E2-S1-AC3",
+      "FRD-1",
+      "FRD-29",
+      "OBL-ProductRule.required_documents-required"
+    ],
+    "matrix_id": "VM-022"
+  },
+  {
+    "id": "VM-023",
+    "text": "it is 401",
+    "traces": [
+      "E2-S1-AC4",
+      "FRD-1",
+      "FRD-24",
+      "FRD-29"
+    ],
+    "matrix_id": "VM-023"
+  },
+  {
+    "id": "VM-024",
+    "text": "startup aborts with POLICY_CHECKSUM_MISMATCH",
+    "traces": [
+      "E2-S1-AC5",
+      "FRD-25"
+    ],
+    "matrix_id": "VM-024"
+  },
+  {
+    "id": "VM-025",
+    "text": "it is 201 with id 1, status DRAFT, applicant_user_id 4",
+    "traces": [
+      "E2-S2-AC1",
+      "FRD-2",
+      "FRD-30",
+      "OBL-Application.age_years-minimum",
+      "OBL-Application.age_years-required",
+      "OBL-Application.applicant_user_id-minimum",
+      "OBL-Application.applicant_user_id-required",
+      "OBL-Application.monthly_income-required",
+      "OBL-Application.requested_amount-required",
+      "OBL-Application.status-required",
+      "OBL-ApplicationStatus-enum",
+      "OBL-CreateApplicationRequest.age_years-required",
+      "OBL-CreateApplicationRequest.requested_amount-required",
+      "OBL-PolicyDetail.status-enum",
+      "OBL-PolicyDetail.status-required",
+      "OBL-PolicyStatus-enum"
+    ],
+    "matrix_id": "VM-025"
+  },
+  {
+    "id": "VM-026",
+    "text": "required_documents is ID_PROOF, ADDRESS_PROOF, SALARY_SLIP (each MISSING); a VEHICLE application lists 4 documents including VEHICLE_QUOTATION; an EDUCATION one includes ADMISSION_LETTER and FEE_STRUCTURE",
+    "traces": [
+      "E2-S2-AC2",
+      "FRD-2",
+      "FRD-30",
+      "OBL-Application.required_documents-required",
+      "OBL-Document.application_id-minimum",
+      "OBL-Document.application_id-required"
+    ],
+    "matrix_id": "VM-026"
+  },
+  {
+    "id": "VM-027",
+    "text": "it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively",
+    "traces": [
+      "E2-S2-AC3",
+      "FRD-2",
+      "FRD-30",
+      "OBL-ProductRule.max_amount-required",
+      "OBL-ProductRule.max_tenure_months-minimum",
+      "OBL-ProductRule.max_tenure_months-required"
+    ],
+    "matrix_id": "VM-027"
+  },
+  {
+    "id": "VM-028",
+    "text": "it is 422 VALIDATION_ERROR; a valid application returns pan_masked \"******234F\" and aadhaar_masked \"********9012\" and no raw values",
+    "traces": [
+      "E2-S2-AC4",
+      "FRD-23",
+      "FRD-30",
+      "OBL-Application.aadhaar_masked-pattern",
+      "OBL-Application.aadhaar_masked-required",
+      "OBL-Application.pan_masked-pattern",
+      "OBL-Application.pan_masked-required"
+    ],
+    "matrix_id": "VM-028"
+  },
+  {
+    "id": "VM-029",
+    "text": "it is 404",
+    "traces": [
+      "E2-S2-AC5",
+      "FRD-2",
+      "FRD-30"
+    ],
+    "matrix_id": "VM-029"
+  },
+  {
+    "id": "VM-030",
+    "text": "it is 201 and that document is UPLOADED with no file content stored",
+    "traces": [
+      "E2-S3-AC1",
+      "FRD-2",
+      "FRD-30",
+      "OBL-Document.type-required",
+      "OBL-Document.uploaded_at-format",
+      "OBL-DocumentType-enum"
+    ],
+    "matrix_id": "VM-030"
+  },
+  {
+    "id": "VM-031",
+    "text": "it is 422 DOCUMENT_TYPE_NOT_REQUIRED",
+    "traces": [
+      "E2-S3-AC2",
+      "FRD-2",
+      "FRD-30",
+      "OBL-CreateApplicationRequest.product_type-required",
+      "OBL-UploadDocumentRequest.type-required"
+    ],
+    "matrix_id": "VM-031"
+  },
+  {
+    "id": "VM-032",
+    "text": "it is 409 MISSING_DOCUMENTS with missing [\"SALARY_SLIP\"] and status stays DRAFT",
+    "traces": [
+      "E2-S3-AC3",
+      "FRD-2",
+      "FRD-30",
+      "OBL-Document.status-required",
+      "OBL-DocumentChecklistItem.status-required",
+      "OBL-DocumentStatus-enum"
+    ],
+    "matrix_id": "VM-032"
+  },
+  {
+    "id": "VM-033",
+    "text": "it is 200, status SUBMITTED, policy_version 1, and submitted_at set",
+    "traces": [
+      "E2-S3-AC4",
+      "FRD-2",
+      "FRD-30",
+      "OBL-PolicyVersion.status-enum",
+      "OBL-PolicyVersion.status-required"
+    ],
+    "matrix_id": "VM-033"
+  },
+  {
+    "id": "VM-034",
+    "text": "it is 409 ALREADY_SUBMITTED",
+    "traces": [
+      "E2-S3-AC5",
+      "FRD-2",
+      "FRD-30",
+      "OBL-Application.submitted_at-format"
+    ],
+    "matrix_id": "VM-034"
+  },
+  {
+    "id": "VM-035",
+    "text": "a three-step flow (Product, Details, Documents and submit) shows one step at a time with a progress indicator and no horizontal scroll",
+    "traces": [
+      "E2-S4-AC1",
+      "FRD-2",
+      "FRD-30",
+      "OBL-VerificationQueuePage.limit-required",
+      "OBL-VerificationQueuePage.offset-required",
+      "OBL-VerificationQueuePage.total-required"
+    ],
+    "matrix_id": "VM-035"
+  },
+  {
+    "id": "VM-036",
+    "text": "an inline error shows \"12-60 months\" before they continue",
+    "traces": [
+      "E2-S4-AC2",
+      "FRD-2",
+      "FRD-30",
+      "OBL-Application.tenure_months-minimum",
+      "OBL-Application.tenure_months-required",
+      "OBL-CreateApplicationRequest.tenure_months-required"
+    ],
+    "matrix_id": "VM-036"
+  },
+  {
+    "id": "VM-037",
+    "text": "a table lists documents; at 375x812 the same data shows as stacked cards; verifying one removes it without a page reload",
+    "traces": [
+      "E2-S4-AC3",
+      "FRD-6",
+      "FRD-34"
+    ],
+    "matrix_id": "VM-037"
+  },
+  {
+    "id": "VM-038",
+    "text": "3 items return oldest first, each with document_id, application_id 1, and type",
+    "traces": [
+      "E3-S1-AC1",
+      "FRD-6",
+      "FRD-34",
+      "OBL-AuditEntryPage.items-required",
+      "OBL-DocumentChecklistItem.type-required",
+      "OBL-VerificationQueueItem.application_id-minimum",
+      "OBL-VerificationQueueItem.application_id-required",
+      "OBL-VerificationQueueItem.document_id-minimum",
+      "OBL-VerificationQueueItem.document_id-required",
+      "OBL-VerificationQueueItem.type-required",
+      "OBL-VerificationQueueItem.uploaded_at-format",
+      "OBL-VerificationQueueItem.uploaded_at-required",
+      "OBL-VerificationQueuePage.items-required"
+    ],
+    "matrix_id": "VM-038"
+  },
+  {
+    "id": "VM-039",
+    "text": "it is 200 VERIFIED, verified_by 3, an audit row DOCUMENT_VERIFIED is written, and the item leaves the queue",
+    "traces": [
+      "E3-S1-AC2",
+      "FRD-6",
+      "FRD-34",
+      "FRD-24",
+      "OBL-Document.reason-maxLength",
+      "OBL-Document.reason-minLength",
+      "OBL-Document.verified_at-format",
+      "OBL-DocumentChecklistItem.reason-maxLength",
+      "OBL-User.display_name-minLength",
+      "OBL-User.display_name-required",
+      "OBL-VerifyDocumentRequest.outcome-enum",
+      "OBL-VerifyDocumentRequest.outcome-required",
+      "OBL-VerifyDocumentRequest.reason-maxLength",
+      "OBL-VerifyDocumentRequest.reason-minLength",
+      "OBL-VerifyDocumentRequest.reason-required"
+    ],
+    "matrix_id": "VM-039"
+  },
+  {
+    "id": "VM-040",
+    "text": "it is 200 REJECTED with the reason, an audit row DOCUMENT_REJECTED is written, and the application still reads SUBMITTED",
+    "traces": [
+      "E3-S1-AC3",
+      "FRD-6",
+      "FRD-34",
+      "FRD-24"
+    ],
+    "matrix_id": "VM-040"
+  },
+  {
+    "id": "VM-041",
+    "text": "it is 422 VALIDATION_ERROR and no audit row is written",
+    "traces": [
+      "E3-S1-AC4",
+      "FRD-6",
+      "FRD-34"
+    ],
+    "matrix_id": "VM-041"
+  },
+  {
+    "id": "VM-042",
+    "text": "it is 403 for the CUSTOMER token and 409 ALREADY_VERIFIED for the already-verified document",
+    "traces": [
+      "E3-S1-AC5",
+      "FRD-6",
+      "FRD-24",
+      "FRD-34"
+    ],
+    "matrix_id": "VM-042"
+  },
+  {
+    "id": "VM-043",
+    "text": "the score is 740",
+    "traces": [
+      "E3-S2-AC1",
+      "FRD-3",
+      "FRD-31",
+      "OBL-Application.credit_flags-required",
+      "OBL-CreateApplicationRequest.credit_flags-required"
+    ],
+    "matrix_id": "VM-043"
+  },
+  {
+    "id": "VM-044",
+    "text": "the first scores 680 and the second scores 500",
+    "traces": [
+      "E3-S2-AC2",
+      "FRD-3",
+      "FRD-31",
+      "OBL-CreditFlags.prior_default-required"
+    ],
+    "matrix_id": "VM-044"
+  },
+  {
+    "id": "VM-045",
+    "text": "all 100 scores are identical",
+    "traces": [
+      "E3-S2-AC3",
+      "FRD-3",
+      "FRD-31"
+    ],
+    "matrix_id": "VM-045"
+  },
+  {
+    "id": "VM-046",
+    "text": "age 40 gives 700, income \"70000.00\" gives 690, missed_payment_12m gives 620, thin_file gives 640, and prior_default gives 530",
+    "traces": [
+      "E3-S2-AC4",
+      "FRD-3",
+      "FRD-31",
+      "OBL-CreditFlags.missed_payment_12m-required",
+      "OBL-CreditFlags.thin_file-required"
+    ],
+    "matrix_id": "VM-046"
+  },
+  {
+    "id": "VM-047",
+    "text": "the first scores 350 and both of the second case scores are 790",
+    "traces": [
+      "E3-S2-AC5",
+      "FRD-3",
+      "FRD-31"
+    ],
+    "matrix_id": "VM-047"
+  },
+  {
+    "id": "VM-048",
+    "text": "decision AUTO_APPROVE, score 740, reason_codes [\"SCORE_MEETS_AUTO_APPROVE\"], policy_version 1, status APPROVED, and one ApplicationApproved event is published",
+    "traces": [
+      "E3-S3-AC1",
+      "FRD-4",
+      "FRD-32",
+      "OBL-Decision.decision-required",
+      "OBL-Decision.policy_version-minimum",
+      "OBL-Decision.policy_version-required",
+      "OBL-Decision.reason_codes-required",
+      "OBL-Decision.score-maximum",
+      "OBL-Decision.score-minimum",
+      "OBL-Decision.score-required",
+      "OBL-PolicyDetail.override_reason_codes-required",
+      "OBL-PolicyDetail.reason_codes-required",
+      "OBL-PolicyFile.override_reason_codes-required",
+      "OBL-PolicyFile.reason_codes-required",
+      "OBL-PolicyVersion.approved_at-format",
+      "OBL-ReasonCode-enum"
+    ],
+    "matrix_id": "VM-048"
+  },
+  {
+    "id": "VM-049",
+    "text": "decision MANUAL_REVIEW with [\"SCORE_IN_REVIEW_BAND\"] and status MANUAL_REVIEW",
+    "traces": [
+      "E3-S3-AC2",
+      "FRD-4",
+      "FRD-32"
+    ],
+    "matrix_id": "VM-049"
+  },
+  {
+    "id": "VM-050",
+    "text": "decision AUTO_REJECT with [\"SCORE_BELOW_MIN\"] and status REJECTED",
+    "traces": [
+      "E3-S3-AC3",
+      "FRD-4",
+      "FRD-32",
+      "OBL-ProductRule.auto_reject_below_score-maximum",
+      "OBL-ProductRule.auto_reject_below_score-minimum"
+    ],
+    "matrix_id": "VM-050"
+  },
+  {
+    "id": "VM-051",
+    "text": "decision AUTO_REJECT with [\"AGE_OUT_OF_RANGE\"] only",
+    "traces": [
+      "E3-S3-AC4",
+      "FRD-4",
+      "FRD-32"
+    ],
+    "matrix_id": "VM-051"
+  },
+  {
+    "id": "VM-052",
+    "text": "A uses policy_version 1 and is MANUAL_REVIEW (score 640), while B uses policy_version 2 and is AUTO_REJECT with [\"INCOME_BELOW_MIN\"]",
+    "traces": [
+      "E3-S3-AC5",
+      "FRD-4",
+      "FRD-16",
+      "FRD-32",
+      "OBL-ProductRule.auto_approve_min_score-maximum",
+      "OBL-ProductRule.auto_approve_min_score-minimum"
+    ],
+    "matrix_id": "VM-052"
+  },
+  {
+    "id": "VM-053",
+    "text": "the DRAFT case is 409 NOT_SUBMITTED and the already-decided case is 409 ALREADY_DECIDED with the stored decision unchanged",
+    "traces": [
+      "E3-S3-AC6",
+      "FRD-4",
+      "FRD-32",
+      "OBL-Decision.decided_at-format",
+      "OBL-Decision.decided_at-required",
+      "OBL-UnderwriteResponse.decision-required",
+      "OBL-UnderwriteResponse.reason_codes-required"
+    ],
+    "matrix_id": "VM-053"
+  },
+  {
+    "id": "VM-054",
+    "text": "it raises PolicyViolationException with code INCOME_BELOW_MIN",
+    "traces": [
+      "E3-S4-AC1",
+      "FRD-5",
+      "FRD-33"
+    ],
+    "matrix_id": "VM-054"
+  },
+  {
+    "id": "VM-055",
+    "text": "no exception is raised and the decision is MANUAL_REVIEW",
+    "traces": [
+      "E3-S4-AC2",
+      "FRD-5",
+      "FRD-33"
+    ],
+    "matrix_id": "VM-055"
+  },
+  {
+    "id": "VM-056",
+    "text": "it is 200 with AUTO_REJECT, reason_codes [\"INCOME_BELOW_MIN\"], status REJECTED, and a persisted decisions row",
+    "traces": [
+      "E3-S4-AC3",
+      "FRD-5",
+      "FRD-33",
+      "OBL-UnderwriteResponse.status-required"
+    ],
+    "matrix_id": "VM-056"
+  },
+  {
+    "id": "VM-057",
+    "text": "it is 200, status APPROVED, resolution MANUAL_REVIEW/APPROVED, an audit row REVIEW_APPROVED with actor 3, and an ApplicationApproved event",
+    "traces": [
+      "E3-S5-AC1",
+      "FRD-14",
+      "FRD-42",
+      "OBL-Resolution.kind-enum",
+      "OBL-Resolution.kind-required",
+      "OBL-Resolution.outcome-enum",
+      "OBL-Resolution.outcome-required",
+      "OBL-Resolution.resolved_at-format",
+      "OBL-Resolution.resolved_at-required",
+      "OBL-Resolution.resolved_by-minimum",
+      "OBL-Resolution.resolved_by-required",
+      "OBL-ResolutionKind-enum",
+      "OBL-ResolutionOutcome-enum",
+      "OBL-ReviewRequest.outcome-enum",
+      "OBL-ReviewRequest.outcome-required"
+    ],
+    "matrix_id": "VM-057"
+  },
+  {
+    "id": "VM-058",
+    "text": "status REJECTED, audit row REVIEW_REJECTED, and no event",
+    "traces": [
+      "E3-S5-AC2",
+      "FRD-14",
+      "FRD-42",
+      "OBL-ReviewRequest.reason-maxLength",
+      "OBL-ReviewRequest.reason-minLength",
+      "OBL-ReviewRequest.reason-required"
+    ],
+    "matrix_id": "VM-058"
+  },
+  {
+    "id": "VM-059",
+    "text": "it is 200, status APPROVED, the decision row still reads AUTO_REJECT, an audit row DECISION_OVERRIDDEN with actor 1, the reason code, the comment, before REJECTED/after APPROVED, and an event",
+    "traces": [
+      "E3-S5-AC3",
+      "FRD-15",
+      "FRD-43",
+      "OBL-AuditEntry.comment-maxLength",
+      "OBL-OverrideReasonCode-enum",
+      "OBL-Resolution.comment-maxLength",
+      "OBL-Resolution.comment-minLength",
+      "OBL-Resolution.comment-required"
+    ],
+    "matrix_id": "VM-059"
+  },
+  {
+    "id": "VM-060",
+    "text": "the same outcome as AC3 with actor 3 in the audit row",
+    "traces": [
+      "E3-S5-AC4",
+      "FRD-15",
+      "FRD-43"
+    ],
+    "matrix_id": "VM-060"
+  },
+  {
+    "id": "VM-061",
+    "text": "it is 409 NOT_OVERRIDABLE, 422, 409 NOT_IN_REVIEW, and 403 respectively",
+    "traces": [
+      "E3-S5-AC5",
+      "FRD-14",
+      "FRD-15",
+      "FRD-24",
+      "FRD-42",
+      "FRD-43",
+      "OBL-OverrideRequest.comment-maxLength",
+      "OBL-OverrideRequest.comment-minLength",
+      "OBL-OverrideRequest.comment-required",
+      "OBL-OverrideRequest.reason_code-required"
+    ],
+    "matrix_id": "VM-061"
+  },
+  {
+    "id": "VM-062",
+    "text": "it shows score 680, the reason code with its message, and policy version 1; at 375x812 the panels stack with no horizontal scroll",
+    "traces": [
+      "E3-S6-AC1",
+      "FRD-14",
+      "FRD-42",
+      "OBL-UnderwriteResponse.policy_version-required",
+      "OBL-UnderwriteResponse.score-required"
+    ],
+    "matrix_id": "VM-062"
+  },
+  {
+    "id": "VM-063",
+    "text": "Submit is disabled; with both set it enables and success shows a confirmation",
+    "traces": [
+      "E3-S6-AC2",
+      "FRD-15",
+      "FRD-43"
+    ],
+    "matrix_id": "VM-063"
+  },
+  {
+    "id": "VM-064",
+    "text": "Approve and Reject are disabled",
+    "traces": [
+      "E3-S6-AC3",
+      "FRD-14",
+      "FRD-42"
+    ],
+    "matrix_id": "VM-064"
+  },
+  {
+    "id": "VM-065",
+    "text": "it is 201 with version 2, status DRAFT, file policy_v0002.json written, an audit row POLICY_CREATED, and the SHA-256 of policy_v0001.json unchanged",
+    "traces": [
+      "E4-S1-AC1",
+      "FRD-16",
+      "FRD-44",
+      "FRD-22",
+      "OBL-CreatePolicyRequest.base_version-required",
+      "OBL-PolicyFile.version-minimum",
+      "OBL-PolicyFile.version-required",
+      "OBL-PolicyVersion.base_version-minimum",
+      "OBL-PolicyVersion.created_at-format",
+      "OBL-PolicyVersion.created_at-required",
+      "OBL-PolicyVersion.created_by-minimum",
+      "OBL-PolicyVersion.created_by-required"
+    ],
+    "matrix_id": "VM-065"
+  },
+  {
+    "id": "VM-066",
+    "text": "PERSONAL min_income is still \"25000.00\" and policy_version is 1",
+    "traces": [
+      "E4-S1-AC2",
+      "FRD-16",
+      "FRD-44"
+    ],
+    "matrix_id": "VM-066"
+  },
+  {
+    "id": "VM-067",
+    "text": "it is 200 APPROVED with approved_by 1, an audit row POLICY_APPROVED, and GET /api/products shows PERSONAL min_income \"30000.00\" with policy_version 2",
+    "traces": [
+      "E4-S1-AC3",
+      "FRD-16",
+      "FRD-44"
+    ],
+    "matrix_id": "VM-067"
+  },
+  {
+    "id": "VM-068",
+    "text": "the HTTP verbs return 405 and the SQL UPDATE aborts at the database",
+    "traces": [
+      "E4-S1-AC4",
+      "FRD-22",
+      "FRD-25",
+      "FRD-28",
+      "OBL-CreatePolicyRequest.changes-required"
+    ],
+    "matrix_id": "VM-068"
+  },
+  {
+    "id": "VM-069",
+    "text": "it is 403",
+    "traces": [
+      "E4-S1-AC5",
+      "FRD-16",
+      "FRD-44"
+    ],
+    "matrix_id": "VM-069"
+  },
+  {
+    "id": "VM-070",
+    "text": "it is 422 VALIDATION_ERROR naming the offending field and no file is written",
+    "traces": [
+      "E4-S1-AC6",
+      "FRD-16",
+      "FRD-44",
+      "OBL-CreateApplicationRequest.monthly_income-required"
+    ],
+    "matrix_id": "VM-070"
+  },
+  {
+    "id": "VM-071",
+    "text": "the product forms stack in one column with no horizontal scroll",
+    "traces": [
+      "E4-S2-AC1",
+      "FRD-16",
+      "FRD-44"
+    ],
+    "matrix_id": "VM-071"
+  },
+  {
+    "id": "VM-072",
+    "text": "an inline error appears before submit and the Save button is disabled",
+    "traces": [
+      "E4-S2-AC2",
+      "FRD-16",
+      "FRD-44",
+      "OBL-ProductRule.max_age-minimum",
+      "OBL-ProductRule.max_age-required"
+    ],
+    "matrix_id": "VM-072"
+  },
+  {
+    "id": "VM-073",
+    "text": "the page shows \"Draft v2\" and the new version appears in the list",
+    "traces": [
+      "E4-S2-AC3",
+      "FRD-16",
+      "FRD-44"
+    ],
+    "matrix_id": "VM-073"
+  }
+]

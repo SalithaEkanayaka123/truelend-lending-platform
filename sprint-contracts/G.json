@@ -1,0 +1,64 @@
+{
+  "group": "G",
+  "stories": [
+    "E3-S6"
+  ],
+  "features": [
+    "F062",
+    "F063",
+    "F064"
+  ],
+  "contract": {
+    "playwright_checks": [
+      {
+        "id": "QA-VM-062",
+        "matrix_ids": [
+          "VM-062"
+        ],
+        "description": "Playwright as underwriter open application 2; assert score 680, reason code message, policy v1; at 375x812 panels stack, no horizontal scroll",
+        "url": "/",
+        "steps": [
+          {
+            "action": "interact",
+            "assertion": "Playwright as underwriter open application 2; assert score 680, reason code message, policy v1; at 375x812 panels stack, no horizontal scroll"
+          }
+        ]
+      },
+      {
+        "id": "QA-VM-063",
+        "matrix_ids": [
+          "VM-063"
+        ],
+        "description": "Playwright: open override dialog; Submit disabled with empty comment or no reason code, enabled with both, confirmation on success",
+        "url": "/",
+        "steps": [
+          {
+            "action": "interact",
+            "assertion": "Playwright: open override dialog; Submit disabled with empty comment or no reason code, enabled with both, confirmation on success"
+          }
+        ]
+      },
+      {
+        "id": "QA-VM-064",
+        "matrix_ids": [
+          "VM-064"
+        ],
+        "description": "Playwright: MANUAL_REVIEW page with empty reason; assert Approve and Reject disabled",
+        "url": "/",
+        "steps": [
+          {
+            "action": "interact",
+            "assertion": "Playwright: MANUAL_REVIEW page with empty reason; assert Approve and Reject disabled"
+          }
+        ]
+      }
+    ],
+    "accessibility_checks": {
+      "required": true,
+      "block_impacts": [
+        "serious",
+        "critical"
+      ]
+    }
+  }
+}

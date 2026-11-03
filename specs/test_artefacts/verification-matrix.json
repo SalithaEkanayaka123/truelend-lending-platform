@@ -1,0 +1,1814 @@
+{
+  "version": 1,
+  "requirements": [
+    {
+      "id": "VM-001",
+      "ac_id": "E1-S1-AC1",
+      "story_id": "E1-S1",
+      "brd_id": "FRD-24",
+      "group": "A",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-001-api",
+          "layer": "api",
+          "description": "Verify E1-S1-AC1: the response is 200 with expires_in 1800 and role CUSTOMER"
+        }
+      ],
+      "obligations": [
+        "OBL-CurrentUser.role-required",
+        "OBL-CurrentUser.user_id-required",
+        "OBL-LoginRequest.password-required",
+        "OBL-LoginResponse.expires_in-enum",
+        "OBL-LoginResponse.expires_in-required",
+        "OBL-LoginResponse.role-required",
+        "OBL-Role-enum",
+        "OBL-User.id-minimum",
+        "OBL-User.id-required",
+        "OBL-User.role-required"
+      ]
+    },
+    {
+      "id": "VM-002",
+      "ac_id": "E1-S1-AC2",
+      "story_id": "E1-S1",
+      "brd_id": "FRD-24",
+      "group": "A",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-002-api",
+          "layer": "api",
+          "description": "Verify E1-S1-AC2: it is 401 UNAUTHENTICATED with no token and the same body whether or not the email exists"
+        }
+      ],
+      "obligations": [
+        "OBL-CurrentUser.email-format",
+        "OBL-CurrentUser.email-required",
+        "OBL-LoginRequest.email-format",
+        "OBL-LoginRequest.email-required",
+        "OBL-LoginResponse.access_token-required",
+        "OBL-LoginResponse.token_type-enum",
+        "OBL-LoginResponse.token_type-required",
+        "OBL-User.email-format",
+        "OBL-User.email-required"
+      ]
+    },
+    {
+      "id": "VM-003",
+      "ac_id": "E1-S1-AC3",
+      "story_id": "E1-S1",
+      "brd_id": "FRD-24",
+      "group": "A",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-003-api",
+          "layer": "api",
+          "description": "Verify E1-S1-AC3: it is 401"
+        }
+      ]
+    },
+    {
+      "id": "VM-004",
+      "ac_id": "E1-S1-AC4",
+      "story_id": "E1-S1",
+      "brd_id": "FRD-24",
+      "group": "A",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-004-api",
+          "layer": "api",
+          "description": "Verify E1-S1-AC4: it is 403 FORBIDDEN"
+        }
+      ],
+      "obligations": [
+        "OBL-AuditEntry.id-minimum",
+        "OBL-AuditEntry.id-required",
+        "OBL-AuditEntryPage.limit-required",
+        "OBL-AuditEntryPage.offset-required",
+        "OBL-AuditEntryPage.total-required"
+      ]
+    },
+    {
+      "id": "VM-005",
+      "ac_id": "E1-S1-AC5",
+      "story_id": "E1-S1",
+      "brd_id": "FRD-24",
+      "group": "A",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-005-api",
+          "layer": "api",
+          "description": "Verify E1-S1-AC5: every route except POST /api/auth/login and GET /health declares the auth dependency"
+        }
+      ]
+    },
+    {
+      "id": "VM-006",
+      "ac_id": "E1-S2-AC1",
+      "story_id": "E1-S2",
+      "brd_id": "FRD-24",
+      "group": "B",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-006-api",
+          "layer": "api",
+          "description": "Verify E1-S2-AC1: one audit_log row has actor_user_id 3, actor_role UNDERWRITER, entity_type application, entity_id 7, a UTC occurred_at, and correlation_id equal to the response"
+        }
+      ],
+      "obligations": [
+        "OBL-Application.id-minimum",
+        "OBL-Application.id-required",
+        "OBL-Application.product_type-required",
+        "OBL-AuditAction-enum",
+        "OBL-AuditEntry.action-required",
+        "OBL-AuditEntry.actor_role-required",
+        "OBL-AuditEntry.actor_user_id-minimum",
+        "OBL-AuditEntry.actor_user_id-required",
+        "OBL-AuditEntry.correlation_id-pattern",
+        "OBL-AuditEntry.correlation_id-required",
+        "OBL-AuditEntry.entity_id-minimum",
+        "OBL-AuditEntry.entity_id-required",
+        "OBL-AuditEntry.entity_type-minLength",
+        "OBL-AuditEntry.entity_type-required",
+        "OBL-AuditEntry.occurred_at-format",
+        "OBL-AuditEntry.occurred_at-required",
+        "OBL-DecisionType-enum",
+        "OBL-ProductType-enum"
+      ]
+    },
+    {
+      "id": "VM-007",
+      "ac_id": "E1-S2-AC2",
+      "story_id": "E1-S2",
+      "brd_id": "FRD-22",
+      "group": "B",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-007-api",
+          "layer": "api",
+          "description": "Verify E1-S2-AC2: the database aborts and the row is unchanged"
+        }
+      ]
+    },
+    {
+      "id": "VM-008",
+      "ac_id": "E1-S2-AC3",
+      "story_id": "E1-S2",
+      "brd_id": "FRD-24",
+      "group": "B",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-008-api",
+          "layer": "api",
+          "description": "Verify E1-S2-AC3: exactly 3 rows return in ascending id order"
+        }
+      ]
+    },
+    {
+      "id": "VM-009",
+      "ac_id": "E1-S2-AC4",
+      "story_id": "E1-S2",
+      "brd_id": "FRD-24",
+      "group": "B",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-009-api",
+          "layer": "api",
+          "description": "Verify E1-S2-AC4: no audit row exists for it, because the audit write shares the action's transaction"
+        }
+      ]
+    },
+    {
+      "id": "VM-010",
+      "ac_id": "E1-S3-AC1",
+      "story_id": "E1-S3",
+      "brd_id": "FRD-26",
+      "group": "A",
+      "required_layers": [
+        "unit"
+      ],
+      "implementation_paths": [
+        "e1-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-010-unit",
+          "layer": "unit",
+          "description": "Verify E1-S3-AC1: exactly one JSON log line has the keys ts, level, event, correlation_id, method, path, status, duration_ms"
+        }
+      ]
+    },
+    {
+      "id": "VM-011",
+      "ac_id": "E1-S3-AC2",
+      "story_id": "E1-S3",
+      "brd_id": "FRD-26",
+      "group": "A",
+      "required_layers": [
+        "unit"
+      ],
+      "implementation_paths": [
+        "e1-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-011-unit",
+          "layer": "unit",
+          "description": "Verify E1-S3-AC2: a missing header yields a UUID4 echoed in the response header and equal to the log's correlation_id, `req-12345678` is reused as-is, and `a b!` is replaced by a"
+        }
+      ]
+    },
+    {
+      "id": "VM-012",
+      "ac_id": "E1-S3-AC3",
+      "story_id": "E1-S3",
+      "brd_id": "FRD-23",
+      "group": "A",
+      "required_layers": [
+        "unit",
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-012-unit",
+          "layer": "unit",
+          "description": "Verify E1-S3-AC3: neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears"
+        },
+        {
+          "id": "CHK-VM-012-api",
+          "layer": "api",
+          "description": "Verify E1-S3-AC3: neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears"
+        }
+      ],
+      "obligations": [
+        "OBL-Application.created_at-format",
+        "OBL-Application.created_at-required",
+        "OBL-CreateApplicationRequest.aadhaar-pattern",
+        "OBL-CreateApplicationRequest.aadhaar-required",
+        "OBL-CreateApplicationRequest.pan-pattern",
+        "OBL-CreateApplicationRequest.pan-required"
+      ]
+    },
+    {
+      "id": "VM-013",
+      "ac_id": "E1-S3-AC4",
+      "story_id": "E1-S3",
+      "brd_id": "FRD-23",
+      "group": "A",
+      "required_layers": [
+        "unit",
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-013-unit",
+          "layer": "unit",
+          "description": "Verify E1-S3-AC4: the document ID appears and the filename does not"
+        },
+        {
+          "id": "CHK-VM-013-api",
+          "layer": "api",
+          "description": "Verify E1-S3-AC4: the document ID appears and the filename does not"
+        }
+      ],
+      "obligations": [
+        "OBL-Document.id-minimum",
+        "OBL-Document.id-required",
+        "OBL-UploadDocumentRequest.filename-minLength",
+        "OBL-UploadDocumentRequest.filename-required"
+      ]
+    },
+    {
+      "id": "VM-014",
+      "ac_id": "E1-S3-AC5",
+      "story_id": "E1-S3",
+      "brd_id": "FRD-26",
+      "group": "A",
+      "required_layers": [
+        "unit",
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-014-unit",
+          "layer": "unit",
+          "description": "Verify E1-S3-AC5: the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter"
+        },
+        {
+          "id": "CHK-VM-014-api",
+          "layer": "api",
+          "description": "Verify E1-S3-AC5: the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter"
+        }
+      ],
+      "obligations": [
+        "OBL-ErrorEnvelope.error-required",
+        "OBL-ErrorEnvelope.error.code-required",
+        "OBL-ErrorEnvelope.error.correlation_id-required",
+        "OBL-ErrorEnvelope.error.message-required"
+      ]
+    },
+    {
+      "id": "VM-015",
+      "ac_id": "E1-S4-AC1",
+      "story_id": "E1-S4",
+      "brd_id": "FRD-20",
+      "group": "A",
+      "required_layers": [
+        "unit",
+        "performance",
+        "api"
+      ],
+      "implementation_paths": [
+        "e1-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-015-unit",
+          "layer": "unit",
+          "description": "Verify E1-S4-AC1: it is 200 {\"status\":\"ok\"} in at most 1000 ms"
+        },
+        {
+          "id": "CHK-VM-015-performance",
+          "layer": "performance",
+          "description": "Verify E1-S4-AC1: it is 200 {\"status\":\"ok\"} in at most 1000 ms"
+        },
+        {
+          "id": "CHK-VM-015-api",
+          "layer": "api",
+          "description": "Verify E1-S4-AC1: it is 200 {\"status\":\"ok\"} in at most 1000 ms"
+        }
+      ]
+    },
+    {
+      "id": "VM-016",
+      "ac_id": "E1-S4-AC2",
+      "story_id": "E1-S4",
+      "brd_id": "FRD-25",
+      "group": "A",
+      "required_layers": [
+        "unit"
+      ],
+      "implementation_paths": [
+        "e1-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-016-unit",
+          "layer": "unit",
+          "description": "Verify E1-S4-AC2: none re-run and schema_migrations still has 3 rows with SHA-256 values"
+        }
+      ]
+    },
+    {
+      "id": "VM-017",
+      "ac_id": "E1-S4-AC3",
+      "story_id": "E1-S4",
+      "brd_id": "FRD-25",
+      "group": "A",
+      "required_layers": [
+        "unit"
+      ],
+      "implementation_paths": [
+        "e1-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-017-unit",
+          "layer": "unit",
+          "description": "Verify E1-S4-AC3: startup aborts with MIGRATION_CHECKSUM_MISMATCH and /health never returns 200"
+        }
+      ]
+    },
+    {
+      "id": "VM-018",
+      "ac_id": "E1-S4-AC4",
+      "story_id": "E1-S4",
+      "brd_id": "FRD-28",
+      "group": "A",
+      "required_layers": [
+        "unit"
+      ],
+      "implementation_paths": [
+        "e1-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-018-unit",
+          "layer": "unit",
+          "description": "Verify E1-S4-AC4: no module imports from a higher layer in the order types, config, repository, service, api, ui"
+        }
+      ]
+    },
+    {
+      "id": "VM-019",
+      "ac_id": "E1-S4-AC5",
+      "story_id": "E1-S4",
+      "brd_id": "FRD-19",
+      "group": "A",
+      "required_layers": [
+        "unit"
+      ],
+      "implementation_paths": [
+        "e1-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-019-unit",
+          "layer": "unit",
+          "description": "Verify E1-S4-AC5: it finds no float type, no float( call, and no REAL money column"
+        }
+      ],
+      "obligations": [
+        "OBL-Money-pattern"
+      ]
+    },
+    {
+      "id": "VM-020",
+      "ac_id": "E2-S1-AC1",
+      "story_id": "E2-S1",
+      "brd_id": "FRD-1",
+      "group": "B",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-020-api",
+          "layer": "api",
+          "description": "Verify E2-S1-AC1: exactly 3 products return (PERSONAL, VEHICLE, EDUCATION), each with policy_version 1"
+        }
+      ],
+      "obligations": [
+        "OBL-PolicyDetail.products-required",
+        "OBL-PolicyDetail.products.EDUCATION-required",
+        "OBL-PolicyDetail.products.PERSONAL-required",
+        "OBL-PolicyDetail.products.VEHICLE-required",
+        "OBL-PolicyDetail.version-required",
+        "OBL-PolicyFile.products-required",
+        "OBL-PolicyFile.products.EDUCATION-required",
+        "OBL-PolicyFile.products.PERSONAL-required",
+        "OBL-PolicyFile.products.VEHICLE-required",
+        "OBL-PolicyVersion.sha256-pattern",
+        "OBL-PolicyVersion.sha256-required",
+        "OBL-PolicyVersion.version-minimum",
+        "OBL-PolicyVersion.version-required",
+        "OBL-PolicyVersionPage.items-required",
+        "OBL-PolicyVersionPage.limit-required",
+        "OBL-PolicyVersionPage.offset-required",
+        "OBL-PolicyVersionPage.total-required",
+        "OBL-User.active-required"
+      ]
+    },
+    {
+      "id": "VM-021",
+      "ac_id": "E2-S1-AC2",
+      "story_id": "E2-S1",
+      "brd_id": "FRD-1",
+      "group": "B",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-021-api",
+          "layer": "api",
+          "description": "Verify E2-S1-AC2: each differs in at least one threshold (min_income is 25000.00, 30000.00, 20000.00)"
+        }
+      ],
+      "obligations": [
+        "OBL-ProductRule.annual_rate_pct-pattern",
+        "OBL-ProductRule.annual_rate_pct-required",
+        "OBL-ProductRule.min_age-minimum",
+        "OBL-ProductRule.min_age-required",
+        "OBL-ProductRule.min_amount-required",
+        "OBL-ProductRule.min_income-required",
+        "OBL-ProductRule.min_tenure_months-minimum",
+        "OBL-ProductRule.min_tenure_months-required",
+        "OBL-ProductRule.policy_version-minimum",
+        "OBL-ProductRule.policy_version-required",
+        "OBL-ProductRule.product_type-required"
+      ]
+    },
+    {
+      "id": "VM-022",
+      "ac_id": "E2-S1-AC3",
+      "story_id": "E2-S1",
+      "brd_id": "FRD-1",
+      "group": "B",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-022-api",
+          "layer": "api",
+          "description": "Verify E2-S1-AC3: required_documents has 3 entries for PERSONAL and 4 each for VEHICLE and EDUCATION"
+        }
+      ],
+      "obligations": [
+        "OBL-ProductRule.required_documents-required"
+      ]
+    },
+    {
+      "id": "VM-023",
+      "ac_id": "E2-S1-AC4",
+      "story_id": "E2-S1",
+      "brd_id": "FRD-1",
+      "group": "B",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-023-api",
+          "layer": "api",
+          "description": "Verify E2-S1-AC4: it is 401"
+        }
+      ]
+    },
+    {
+      "id": "VM-024",
+      "ac_id": "E2-S1-AC5",
+      "story_id": "E2-S1",
+      "brd_id": "FRD-25",
+      "group": "B",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-024-api",
+          "layer": "api",
+          "description": "Verify E2-S1-AC5: startup aborts with POLICY_CHECKSUM_MISMATCH"
+        }
+      ]
+    },
+    {
+      "id": "VM-025",
+      "ac_id": "E2-S2-AC1",
+      "story_id": "E2-S2",
+      "brd_id": "FRD-2",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-025-api",
+          "layer": "api",
+          "description": "Verify E2-S2-AC1: it is 201 with id 1, status DRAFT, applicant_user_id 4"
+        }
+      ],
+      "obligations": [
+        "OBL-Application.age_years-minimum",
+        "OBL-Application.age_years-required",
+        "OBL-Application.applicant_user_id-minimum",
+        "OBL-Application.applicant_user_id-required",
+        "OBL-Application.monthly_income-required",
+        "OBL-Application.requested_amount-required",
+        "OBL-Application.status-required",
+        "OBL-ApplicationStatus-enum",
+        "OBL-CreateApplicationRequest.age_years-required",
+        "OBL-CreateApplicationRequest.requested_amount-required",
+        "OBL-PolicyDetail.status-enum",
+        "OBL-PolicyDetail.status-required",
+        "OBL-PolicyStatus-enum"
+      ]
+    },
+    {
+      "id": "VM-026",
+      "ac_id": "E2-S2-AC2",
+      "story_id": "E2-S2",
+      "brd_id": "FRD-2",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-026-api",
+          "layer": "api",
+          "description": "Verify E2-S2-AC2: required_documents is ID_PROOF, ADDRESS_PROOF, SALARY_SLIP (each MISSING); a VEHICLE application lists 4 documents including VEHICLE_QUOTATION; an EDUCATION one"
+        }
+      ],
+      "obligations": [
+        "OBL-Application.required_documents-required",
+        "OBL-Document.application_id-minimum",
+        "OBL-Document.application_id-required"
+      ]
+    },
+    {
+      "id": "VM-027",
+      "ac_id": "E2-S2-AC3",
+      "story_id": "E2-S2",
+      "brd_id": "FRD-2",
+      "group": "C",
+      "required_layers": [
+        "api",
+        "unit"
+      ],
+      "implementation_paths": [
+        "e2-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-027-api",
+          "layer": "api",
+          "description": "Verify E2-S2-AC3: it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively"
+        },
+        {
+          "id": "CHK-VM-027-unit",
+          "layer": "unit",
+          "description": "Verify E2-S2-AC3: it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively"
+        }
+      ],
+      "obligations": [
+        "OBL-ProductRule.max_amount-required",
+        "OBL-ProductRule.max_tenure_months-minimum",
+        "OBL-ProductRule.max_tenure_months-required"
+      ]
+    },
+    {
+      "id": "VM-028",
+      "ac_id": "E2-S2-AC4",
+      "story_id": "E2-S2",
+      "brd_id": "FRD-23",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-028-api",
+          "layer": "api",
+          "description": "Verify E2-S2-AC4: it is 422 VALIDATION_ERROR; a valid application returns pan_masked \"******234F\" and aadhaar_masked \"********9012\" and no raw values"
+        }
+      ],
+      "obligations": [
+        "OBL-Application.aadhaar_masked-pattern",
+        "OBL-Application.aadhaar_masked-required",
+        "OBL-Application.pan_masked-pattern",
+        "OBL-Application.pan_masked-required"
+      ]
+    },
+    {
+      "id": "VM-029",
+      "ac_id": "E2-S2-AC5",
+      "story_id": "E2-S2",
+      "brd_id": "FRD-2",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-029-api",
+          "layer": "api",
+          "description": "Verify E2-S2-AC5: it is 404"
+        }
+      ]
+    },
+    {
+      "id": "VM-030",
+      "ac_id": "E2-S3-AC1",
+      "story_id": "E2-S3",
+      "brd_id": "FRD-2",
+      "group": "D",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-030-api",
+          "layer": "api",
+          "description": "Verify E2-S3-AC1: it is 201 and that document is UPLOADED with no file content stored"
+        }
+      ],
+      "obligations": [
+        "OBL-Document.type-required",
+        "OBL-Document.uploaded_at-format",
+        "OBL-DocumentType-enum"
+      ]
+    },
+    {
+      "id": "VM-031",
+      "ac_id": "E2-S3-AC2",
+      "story_id": "E2-S3",
+      "brd_id": "FRD-2",
+      "group": "D",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-031-api",
+          "layer": "api",
+          "description": "Verify E2-S3-AC2: it is 422 DOCUMENT_TYPE_NOT_REQUIRED"
+        }
+      ],
+      "obligations": [
+        "OBL-CreateApplicationRequest.product_type-required",
+        "OBL-UploadDocumentRequest.type-required"
+      ]
+    },
+    {
+      "id": "VM-032",
+      "ac_id": "E2-S3-AC3",
+      "story_id": "E2-S3",
+      "brd_id": "FRD-2",
+      "group": "D",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-032-api",
+          "layer": "api",
+          "description": "Verify E2-S3-AC3: it is 409 MISSING_DOCUMENTS with missing [\"SALARY_SLIP\"] and status stays DRAFT"
+        }
+      ],
+      "obligations": [
+        "OBL-Document.status-required",
+        "OBL-DocumentChecklistItem.status-required",
+        "OBL-DocumentStatus-enum"
+      ]
+    },
+    {
+      "id": "VM-033",
+      "ac_id": "E2-S3-AC4",
+      "story_id": "E2-S3",
+      "brd_id": "FRD-2",
+      "group": "D",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-033-api",
+          "layer": "api",
+          "description": "Verify E2-S3-AC4: it is 200, status SUBMITTED, policy_version 1, and submitted_at set"
+        }
+      ],
+      "obligations": [
+        "OBL-PolicyVersion.status-enum",
+        "OBL-PolicyVersion.status-required"
+      ]
+    },
+    {
+      "id": "VM-034",
+      "ac_id": "E2-S3-AC5",
+      "story_id": "E2-S3",
+      "brd_id": "FRD-2",
+      "group": "D",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e2-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-034-api",
+          "layer": "api",
+          "description": "Verify E2-S3-AC5: it is 409 ALREADY_SUBMITTED"
+        }
+      ],
+      "obligations": [
+        "OBL-Application.submitted_at-format"
+      ]
+    },
+    {
+      "id": "VM-035",
+      "ac_id": "E2-S4-AC1",
+      "story_id": "E2-S4",
+      "brd_id": "FRD-2",
+      "group": "F",
+      "required_layers": [
+        "e2e"
+      ],
+      "implementation_paths": [
+        "e2-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-035-e2e",
+          "layer": "e2e",
+          "description": "Verify E2-S4-AC1: a three-step flow (Product, Details, Documents and submit) shows one step at a time with a progress indicator and no horizontal scroll"
+        }
+      ],
+      "obligations": [
+        "OBL-VerificationQueuePage.limit-required",
+        "OBL-VerificationQueuePage.offset-required",
+        "OBL-VerificationQueuePage.total-required"
+      ]
+    },
+    {
+      "id": "VM-036",
+      "ac_id": "E2-S4-AC2",
+      "story_id": "E2-S4",
+      "brd_id": "FRD-2",
+      "group": "F",
+      "required_layers": [
+        "e2e"
+      ],
+      "implementation_paths": [
+        "e2-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-036-e2e",
+          "layer": "e2e",
+          "description": "Verify E2-S4-AC2: an inline error shows \"12-60 months\" before they continue"
+        }
+      ],
+      "obligations": [
+        "OBL-Application.tenure_months-minimum",
+        "OBL-Application.tenure_months-required",
+        "OBL-CreateApplicationRequest.tenure_months-required"
+      ]
+    },
+    {
+      "id": "VM-037",
+      "ac_id": "E2-S4-AC3",
+      "story_id": "E2-S4",
+      "brd_id": "FRD-6",
+      "group": "F",
+      "required_layers": [
+        "e2e"
+      ],
+      "implementation_paths": [
+        "e2-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-037-e2e",
+          "layer": "e2e",
+          "description": "Verify E2-S4-AC3: a table lists documents; at 375x812 the same data shows as stacked cards; verifying one removes it without a page reload"
+        }
+      ]
+    },
+    {
+      "id": "VM-038",
+      "ac_id": "E3-S1-AC1",
+      "story_id": "E3-S1",
+      "brd_id": "FRD-6",
+      "group": "E",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-038-api",
+          "layer": "api",
+          "description": "Verify E3-S1-AC1: 3 items return oldest first, each with document_id, application_id 1, and type"
+        }
+      ],
+      "obligations": [
+        "OBL-AuditEntryPage.items-required",
+        "OBL-DocumentChecklistItem.type-required",
+        "OBL-VerificationQueueItem.application_id-minimum",
+        "OBL-VerificationQueueItem.application_id-required",
+        "OBL-VerificationQueueItem.document_id-minimum",
+        "OBL-VerificationQueueItem.document_id-required",
+        "OBL-VerificationQueueItem.type-required",
+        "OBL-VerificationQueueItem.uploaded_at-format",
+        "OBL-VerificationQueueItem.uploaded_at-required",
+        "OBL-VerificationQueuePage.items-required"
+      ]
+    },
+    {
+      "id": "VM-039",
+      "ac_id": "E3-S1-AC2",
+      "story_id": "E3-S1",
+      "brd_id": "FRD-6",
+      "group": "E",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-039-api",
+          "layer": "api",
+          "description": "Verify E3-S1-AC2: it is 200 VERIFIED, verified_by 3, an audit row DOCUMENT_VERIFIED is written, and the item leaves the queue"
+        }
+      ],
+      "obligations": [
+        "OBL-Document.reason-maxLength",
+        "OBL-Document.reason-minLength",
+        "OBL-Document.verified_at-format",
+        "OBL-DocumentChecklistItem.reason-maxLength",
+        "OBL-User.display_name-minLength",
+        "OBL-User.display_name-required",
+        "OBL-VerifyDocumentRequest.outcome-enum",
+        "OBL-VerifyDocumentRequest.outcome-required",
+        "OBL-VerifyDocumentRequest.reason-maxLength",
+        "OBL-VerifyDocumentRequest.reason-minLength",
+        "OBL-VerifyDocumentRequest.reason-required"
+      ]
+    },
+    {
+      "id": "VM-040",
+      "ac_id": "E3-S1-AC3",
+      "story_id": "E3-S1",
+      "brd_id": "FRD-6",
+      "group": "E",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-040-api",
+          "layer": "api",
+          "description": "Verify E3-S1-AC3: it is 200 REJECTED with the reason, an audit row DOCUMENT_REJECTED is written, and the application still reads SUBMITTED"
+        }
+      ]
+    },
+    {
+      "id": "VM-041",
+      "ac_id": "E3-S1-AC4",
+      "story_id": "E3-S1",
+      "brd_id": "FRD-6",
+      "group": "E",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-041-api",
+          "layer": "api",
+          "description": "Verify E3-S1-AC4: it is 422 VALIDATION_ERROR and no audit row is written"
+        }
+      ]
+    },
+    {
+      "id": "VM-042",
+      "ac_id": "E3-S1-AC5",
+      "story_id": "E3-S1",
+      "brd_id": "FRD-6",
+      "group": "E",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-042-api",
+          "layer": "api",
+          "description": "Verify E3-S1-AC5: it is 403 for the CUSTOMER token and 409 ALREADY_VERIFIED for the already-verified document"
+        }
+      ]
+    },
+    {
+      "id": "VM-043",
+      "ac_id": "E3-S2-AC1",
+      "story_id": "E3-S2",
+      "brd_id": "FRD-3",
+      "group": "A",
+      "required_layers": [
+        "api",
+        "unit"
+      ],
+      "implementation_paths": [
+        "e3-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-043-api",
+          "layer": "api",
+          "description": "Verify E3-S2-AC1: the score is 740"
+        },
+        {
+          "id": "CHK-VM-043-unit",
+          "layer": "unit",
+          "description": "Verify E3-S2-AC1: the score is 740"
+        }
+      ],
+      "obligations": [
+        "OBL-Application.credit_flags-required",
+        "OBL-CreateApplicationRequest.credit_flags-required"
+      ]
+    },
+    {
+      "id": "VM-044",
+      "ac_id": "E3-S2-AC2",
+      "story_id": "E3-S2",
+      "brd_id": "FRD-3",
+      "group": "A",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-044-api",
+          "layer": "api",
+          "description": "Verify E3-S2-AC2: the first scores 680 and the second scores 500"
+        }
+      ],
+      "obligations": [
+        "OBL-CreditFlags.prior_default-required"
+      ]
+    },
+    {
+      "id": "VM-045",
+      "ac_id": "E3-S2-AC3",
+      "story_id": "E3-S2",
+      "brd_id": "FRD-3",
+      "group": "A",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-045-api",
+          "layer": "api",
+          "description": "Verify E3-S2-AC3: all 100 scores are identical"
+        }
+      ]
+    },
+    {
+      "id": "VM-046",
+      "ac_id": "E3-S2-AC4",
+      "story_id": "E3-S2",
+      "brd_id": "FRD-3",
+      "group": "A",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-046-api",
+          "layer": "api",
+          "description": "Verify E3-S2-AC4: age 40 gives 700, income \"70000.00\" gives 690, missed_payment_12m gives 620, thin_file gives 640, and prior_default gives 530"
+        }
+      ],
+      "obligations": [
+        "OBL-CreditFlags.missed_payment_12m-required",
+        "OBL-CreditFlags.thin_file-required"
+      ]
+    },
+    {
+      "id": "VM-047",
+      "ac_id": "E3-S2-AC5",
+      "story_id": "E3-S2",
+      "brd_id": "FRD-3",
+      "group": "A",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-047-api",
+          "layer": "api",
+          "description": "Verify E3-S2-AC5: the first scores 350 and both of the second case scores are 790"
+        }
+      ]
+    },
+    {
+      "id": "VM-048",
+      "ac_id": "E3-S3-AC1",
+      "story_id": "E3-S3",
+      "brd_id": "FRD-4",
+      "group": "E",
+      "required_layers": [
+        "api",
+        "unit"
+      ],
+      "implementation_paths": [
+        "e3-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-048-api",
+          "layer": "api",
+          "description": "Verify E3-S3-AC1: decision AUTO_APPROVE, score 740, reason_codes [\"SCORE_MEETS_AUTO_APPROVE\"], policy_version 1, status APPROVED, and one ApplicationApproved event is published"
+        },
+        {
+          "id": "CHK-VM-048-unit",
+          "layer": "unit",
+          "description": "Verify E3-S3-AC1: decision AUTO_APPROVE, score 740, reason_codes [\"SCORE_MEETS_AUTO_APPROVE\"], policy_version 1, status APPROVED, and one ApplicationApproved event is published"
+        }
+      ],
+      "obligations": [
+        "OBL-Decision.decision-required",
+        "OBL-Decision.policy_version-minimum",
+        "OBL-Decision.policy_version-required",
+        "OBL-Decision.reason_codes-required",
+        "OBL-Decision.score-maximum",
+        "OBL-Decision.score-minimum",
+        "OBL-Decision.score-required",
+        "OBL-PolicyDetail.override_reason_codes-required",
+        "OBL-PolicyDetail.reason_codes-required",
+        "OBL-PolicyFile.override_reason_codes-required",
+        "OBL-PolicyFile.reason_codes-required",
+        "OBL-PolicyVersion.approved_at-format",
+        "OBL-ReasonCode-enum"
+      ]
+    },
+    {
+      "id": "VM-049",
+      "ac_id": "E3-S3-AC2",
+      "story_id": "E3-S3",
+      "brd_id": "FRD-4",
+      "group": "E",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-049-api",
+          "layer": "api",
+          "description": "Verify E3-S3-AC2: decision MANUAL_REVIEW with [\"SCORE_IN_REVIEW_BAND\"] and status MANUAL_REVIEW"
+        }
+      ]
+    },
+    {
+      "id": "VM-050",
+      "ac_id": "E3-S3-AC3",
+      "story_id": "E3-S3",
+      "brd_id": "FRD-4",
+      "group": "E",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-050-api",
+          "layer": "api",
+          "description": "Verify E3-S3-AC3: decision AUTO_REJECT with [\"SCORE_BELOW_MIN\"] and status REJECTED"
+        }
+      ],
+      "obligations": [
+        "OBL-ProductRule.auto_reject_below_score-maximum",
+        "OBL-ProductRule.auto_reject_below_score-minimum"
+      ]
+    },
+    {
+      "id": "VM-051",
+      "ac_id": "E3-S3-AC4",
+      "story_id": "E3-S3",
+      "brd_id": "FRD-4",
+      "group": "E",
+      "required_layers": [
+        "api",
+        "unit"
+      ],
+      "implementation_paths": [
+        "e3-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-051-api",
+          "layer": "api",
+          "description": "Verify E3-S3-AC4: decision AUTO_REJECT with [\"AGE_OUT_OF_RANGE\"] only"
+        },
+        {
+          "id": "CHK-VM-051-unit",
+          "layer": "unit",
+          "description": "Verify E3-S3-AC4: decision AUTO_REJECT with [\"AGE_OUT_OF_RANGE\"] only"
+        }
+      ]
+    },
+    {
+      "id": "VM-052",
+      "ac_id": "E3-S3-AC5",
+      "story_id": "E3-S3",
+      "brd_id": "FRD-4",
+      "group": "E",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-052-api",
+          "layer": "api",
+          "description": "Verify E3-S3-AC5: A uses policy_version 1 and is MANUAL_REVIEW (score 640), while B uses policy_version 2 and is AUTO_REJECT with [\"INCOME_BELOW_MIN\"]"
+        }
+      ],
+      "obligations": [
+        "OBL-ProductRule.auto_approve_min_score-maximum",
+        "OBL-ProductRule.auto_approve_min_score-minimum"
+      ]
+    },
+    {
+      "id": "VM-053",
+      "ac_id": "E3-S3-AC6",
+      "story_id": "E3-S3",
+      "brd_id": "FRD-4",
+      "group": "E",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s3-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-053-api",
+          "layer": "api",
+          "description": "Verify E3-S3-AC6: the DRAFT case is 409 NOT_SUBMITTED and the already-decided case is 409 ALREADY_DECIDED with the stored decision unchanged"
+        }
+      ],
+      "obligations": [
+        "OBL-Decision.decided_at-format",
+        "OBL-Decision.decided_at-required",
+        "OBL-UnderwriteResponse.decision-required",
+        "OBL-UnderwriteResponse.reason_codes-required"
+      ]
+    },
+    {
+      "id": "VM-054",
+      "ac_id": "E3-S4-AC1",
+      "story_id": "E3-S4",
+      "brd_id": "FRD-5",
+      "group": "F",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-054-api",
+          "layer": "api",
+          "description": "Verify E3-S4-AC1: it raises PolicyViolationException with code INCOME_BELOW_MIN"
+        }
+      ]
+    },
+    {
+      "id": "VM-055",
+      "ac_id": "E3-S4-AC2",
+      "story_id": "E3-S4",
+      "brd_id": "FRD-5",
+      "group": "F",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-055-api",
+          "layer": "api",
+          "description": "Verify E3-S4-AC2: no exception is raised and the decision is MANUAL_REVIEW"
+        }
+      ]
+    },
+    {
+      "id": "VM-056",
+      "ac_id": "E3-S4-AC3",
+      "story_id": "E3-S4",
+      "brd_id": "FRD-5",
+      "group": "F",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s4-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-056-api",
+          "layer": "api",
+          "description": "Verify E3-S4-AC3: it is 200 with AUTO_REJECT, reason_codes [\"INCOME_BELOW_MIN\"], status REJECTED, and a persisted decisions row"
+        }
+      ],
+      "obligations": [
+        "OBL-UnderwriteResponse.status-required"
+      ]
+    },
+    {
+      "id": "VM-057",
+      "ac_id": "E3-S5-AC1",
+      "story_id": "E3-S5",
+      "brd_id": "FRD-14",
+      "group": "F",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s5-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-057-api",
+          "layer": "api",
+          "description": "Verify E3-S5-AC1: it is 200, status APPROVED, resolution MANUAL_REVIEW/APPROVED, an audit row REVIEW_APPROVED with actor 3, and an ApplicationApproved event"
+        }
+      ],
+      "obligations": [
+        "OBL-Resolution.kind-enum",
+        "OBL-Resolution.kind-required",
+        "OBL-Resolution.outcome-enum",
+        "OBL-Resolution.outcome-required",
+        "OBL-Resolution.resolved_at-format",
+        "OBL-Resolution.resolved_at-required",
+        "OBL-Resolution.resolved_by-minimum",
+        "OBL-Resolution.resolved_by-required",
+        "OBL-ResolutionKind-enum",
+        "OBL-ResolutionOutcome-enum",
+        "OBL-ReviewRequest.outcome-enum",
+        "OBL-ReviewRequest.outcome-required"
+      ]
+    },
+    {
+      "id": "VM-058",
+      "ac_id": "E3-S5-AC2",
+      "story_id": "E3-S5",
+      "brd_id": "FRD-14",
+      "group": "F",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s5-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-058-api",
+          "layer": "api",
+          "description": "Verify E3-S5-AC2: status REJECTED, audit row REVIEW_REJECTED, and no event"
+        }
+      ],
+      "obligations": [
+        "OBL-ReviewRequest.reason-maxLength",
+        "OBL-ReviewRequest.reason-minLength",
+        "OBL-ReviewRequest.reason-required"
+      ]
+    },
+    {
+      "id": "VM-059",
+      "ac_id": "E3-S5-AC3",
+      "story_id": "E3-S5",
+      "brd_id": "FRD-15",
+      "group": "F",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s5-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-059-api",
+          "layer": "api",
+          "description": "Verify E3-S5-AC3: it is 200, status APPROVED, the decision row still reads AUTO_REJECT, an audit row DECISION_OVERRIDDEN with actor 1, the reason code, the comment, before REJECT"
+        }
+      ],
+      "obligations": [
+        "OBL-AuditEntry.comment-maxLength",
+        "OBL-OverrideReasonCode-enum",
+        "OBL-Resolution.comment-maxLength",
+        "OBL-Resolution.comment-minLength",
+        "OBL-Resolution.comment-required"
+      ]
+    },
+    {
+      "id": "VM-060",
+      "ac_id": "E3-S5-AC4",
+      "story_id": "E3-S5",
+      "brd_id": "FRD-15",
+      "group": "F",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s5-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-060-api",
+          "layer": "api",
+          "description": "Verify E3-S5-AC4: the same outcome as AC3 with actor 3 in the audit row"
+        }
+      ]
+    },
+    {
+      "id": "VM-061",
+      "ac_id": "E3-S5-AC5",
+      "story_id": "E3-S5",
+      "brd_id": "FRD-14",
+      "group": "F",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e3-s5-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-061-api",
+          "layer": "api",
+          "description": "Verify E3-S5-AC5: it is 409 NOT_OVERRIDABLE, 422, 409 NOT_IN_REVIEW, and 403 respectively"
+        }
+      ],
+      "obligations": [
+        "OBL-OverrideRequest.comment-maxLength",
+        "OBL-OverrideRequest.comment-minLength",
+        "OBL-OverrideRequest.comment-required",
+        "OBL-OverrideRequest.reason_code-required"
+      ]
+    },
+    {
+      "id": "VM-062",
+      "ac_id": "E3-S6-AC1",
+      "story_id": "E3-S6",
+      "brd_id": "FRD-14",
+      "group": "G",
+      "required_layers": [
+        "e2e"
+      ],
+      "implementation_paths": [
+        "e3-s6-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-062-e2e",
+          "layer": "e2e",
+          "description": "Verify E3-S6-AC1: it shows score 680, the reason code with its message, and policy version 1; at 375x812 the panels stack with no horizontal scroll"
+        }
+      ],
+      "obligations": [
+        "OBL-UnderwriteResponse.policy_version-required",
+        "OBL-UnderwriteResponse.score-required"
+      ]
+    },
+    {
+      "id": "VM-063",
+      "ac_id": "E3-S6-AC2",
+      "story_id": "E3-S6",
+      "brd_id": "FRD-15",
+      "group": "G",
+      "required_layers": [
+        "e2e"
+      ],
+      "implementation_paths": [
+        "e3-s6-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-063-e2e",
+          "layer": "e2e",
+          "description": "Verify E3-S6-AC2: Submit is disabled; with both set it enables and success shows a confirmation"
+        }
+      ]
+    },
+    {
+      "id": "VM-064",
+      "ac_id": "E3-S6-AC3",
+      "story_id": "E3-S6",
+      "brd_id": "FRD-14",
+      "group": "G",
+      "required_layers": [
+        "e2e"
+      ],
+      "implementation_paths": [
+        "e3-s6-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-064-e2e",
+          "layer": "e2e",
+          "description": "Verify E3-S6-AC3: Approve and Reject are disabled"
+        }
+      ]
+    },
+    {
+      "id": "VM-065",
+      "ac_id": "E4-S1-AC1",
+      "story_id": "E4-S1",
+      "brd_id": "FRD-16",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e4-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-065-api",
+          "layer": "api",
+          "description": "Verify E4-S1-AC1: it is 201 with version 2, status DRAFT, file policy_v0002.json written, an audit row POLICY_CREATED, and the SHA-256 of policy_v0001.json unchanged"
+        }
+      ],
+      "obligations": [
+        "OBL-CreatePolicyRequest.base_version-required",
+        "OBL-PolicyFile.version-minimum",
+        "OBL-PolicyFile.version-required",
+        "OBL-PolicyVersion.base_version-minimum",
+        "OBL-PolicyVersion.created_at-format",
+        "OBL-PolicyVersion.created_at-required",
+        "OBL-PolicyVersion.created_by-minimum",
+        "OBL-PolicyVersion.created_by-required"
+      ]
+    },
+    {
+      "id": "VM-066",
+      "ac_id": "E4-S1-AC2",
+      "story_id": "E4-S1",
+      "brd_id": "FRD-16",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e4-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-066-api",
+          "layer": "api",
+          "description": "Verify E4-S1-AC2: PERSONAL min_income is still \"25000.00\" and policy_version is 1"
+        }
+      ]
+    },
+    {
+      "id": "VM-067",
+      "ac_id": "E4-S1-AC3",
+      "story_id": "E4-S1",
+      "brd_id": "FRD-16",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e4-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-067-api",
+          "layer": "api",
+          "description": "Verify E4-S1-AC3: it is 200 APPROVED with approved_by 1, an audit row POLICY_APPROVED, and GET /api/products shows PERSONAL min_income \"30000.00\" with policy_version 2"
+        }
+      ]
+    },
+    {
+      "id": "VM-068",
+      "ac_id": "E4-S1-AC4",
+      "story_id": "E4-S1",
+      "brd_id": "FRD-22",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e4-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-068-api",
+          "layer": "api",
+          "description": "Verify E4-S1-AC4: the HTTP verbs return 405 and the SQL UPDATE aborts at the database"
+        }
+      ],
+      "obligations": [
+        "OBL-CreatePolicyRequest.changes-required"
+      ]
+    },
+    {
+      "id": "VM-069",
+      "ac_id": "E4-S1-AC5",
+      "story_id": "E4-S1",
+      "brd_id": "FRD-16",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e4-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-069-api",
+          "layer": "api",
+          "description": "Verify E4-S1-AC5: it is 403"
+        }
+      ]
+    },
+    {
+      "id": "VM-070",
+      "ac_id": "E4-S1-AC6",
+      "story_id": "E4-S1",
+      "brd_id": "FRD-16",
+      "group": "C",
+      "required_layers": [
+        "api"
+      ],
+      "implementation_paths": [
+        "e4-s1-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-070-api",
+          "layer": "api",
+          "description": "Verify E4-S1-AC6: it is 422 VALIDATION_ERROR naming the offending field and no file is written"
+        }
+      ],
+      "obligations": [
+        "OBL-CreateApplicationRequest.monthly_income-required"
+      ]
+    },
+    {
+      "id": "VM-071",
+      "ac_id": "E4-S2-AC1",
+      "story_id": "E4-S2",
+      "brd_id": "FRD-16",
+      "group": "D",
+      "required_layers": [
+        "e2e"
+      ],
+      "implementation_paths": [
+        "e4-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-071-e2e",
+          "layer": "e2e",
+          "description": "Verify E4-S2-AC1: the product forms stack in one column with no horizontal scroll"
+        }
+      ]
+    },
+    {
+      "id": "VM-072",
+      "ac_id": "E4-S2-AC2",
+      "story_id": "E4-S2",
+      "brd_id": "FRD-16",
+      "group": "D",
+      "required_layers": [
+        "e2e"
+      ],
+      "implementation_paths": [
+        "e4-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-072-e2e",
+          "layer": "e2e",
+          "description": "Verify E4-S2-AC2: an inline error appears before submit and the Save button is disabled"
+        }
+      ],
+      "obligations": [
+        "OBL-ProductRule.max_age-minimum",
+        "OBL-ProductRule.max_age-required"
+      ]
+    },
+    {
+      "id": "VM-073",
+      "ac_id": "E4-S2-AC3",
+      "story_id": "E4-S2",
+      "brd_id": "FRD-16",
+      "group": "D",
+      "required_layers": [
+        "e2e"
+      ],
+      "implementation_paths": [
+        "e4-s2-component"
+      ],
+      "checks": [
+        {
+          "id": "CHK-VM-073-e2e",
+          "layer": "e2e",
+          "description": "Verify E4-S2-AC3: the page shows \"Draft v2\" and the new version appears in the list"
+        }
+      ]
+    }
+  ]
+}

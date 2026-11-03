@@ -1,0 +1,854 @@
+[
+  {
+    "id": "OBL-Application.aadhaar_masked-pattern",
+    "text": "Application.aadhaar_masked: pattern"
+  },
+  {
+    "id": "OBL-Application.aadhaar_masked-required",
+    "text": "Application.aadhaar_masked: required"
+  },
+  {
+    "id": "OBL-Application.age_years-minimum",
+    "text": "Application.age_years: minimum"
+  },
+  {
+    "id": "OBL-Application.age_years-required",
+    "text": "Application.age_years: required"
+  },
+  {
+    "id": "OBL-Application.applicant_user_id-minimum",
+    "text": "Application.applicant_user_id: minimum"
+  },
+  {
+    "id": "OBL-Application.applicant_user_id-required",
+    "text": "Application.applicant_user_id: required"
+  },
+  {
+    "id": "OBL-Application.created_at-format",
+    "text": "Application.created_at: format"
+  },
+  {
+    "id": "OBL-Application.created_at-required",
+    "text": "Application.created_at: required"
+  },
+  {
+    "id": "OBL-Application.credit_flags-required",
+    "text": "Application.credit_flags: required"
+  },
+  {
+    "id": "OBL-Application.id-minimum",
+    "text": "Application.id: minimum"
+  },
+  {
+    "id": "OBL-Application.id-required",
+    "text": "Application.id: required"
+  },
+  {
+    "id": "OBL-Application.monthly_income-required",
+    "text": "Application.monthly_income: required"
+  },
+  {
+    "id": "OBL-Application.pan_masked-pattern",
+    "text": "Application.pan_masked: pattern"
+  },
+  {
+    "id": "OBL-Application.pan_masked-required",
+    "text": "Application.pan_masked: required"
+  },
+  {
+    "id": "OBL-Application.product_type-required",
+    "text": "Application.product_type: required"
+  },
+  {
+    "id": "OBL-Application.requested_amount-required",
+    "text": "Application.requested_amount: required"
+  },
+  {
+    "id": "OBL-Application.required_documents-required",
+    "text": "Application.required_documents: required"
+  },
+  {
+    "id": "OBL-Application.status-required",
+    "text": "Application.status: required"
+  },
+  {
+    "id": "OBL-Application.submitted_at-format",
+    "text": "Application.submitted_at: format"
+  },
+  {
+    "id": "OBL-Application.tenure_months-minimum",
+    "text": "Application.tenure_months: minimum"
+  },
+  {
+    "id": "OBL-Application.tenure_months-required",
+    "text": "Application.tenure_months: required"
+  },
+  {
+    "id": "OBL-ApplicationStatus-enum",
+    "text": "ApplicationStatus: enum"
+  },
+  {
+    "id": "OBL-AuditAction-enum",
+    "text": "AuditAction: enum"
+  },
+  {
+    "id": "OBL-AuditEntry.action-required",
+    "text": "AuditEntry.action: required"
+  },
+  {
+    "id": "OBL-AuditEntry.actor_role-required",
+    "text": "AuditEntry.actor_role: required"
+  },
+  {
+    "id": "OBL-AuditEntry.actor_user_id-minimum",
+    "text": "AuditEntry.actor_user_id: minimum"
+  },
+  {
+    "id": "OBL-AuditEntry.actor_user_id-required",
+    "text": "AuditEntry.actor_user_id: required"
+  },
+  {
+    "id": "OBL-AuditEntry.comment-maxLength",
+    "text": "AuditEntry.comment: maxLength"
+  },
+  {
+    "id": "OBL-AuditEntry.correlation_id-pattern",
+    "text": "AuditEntry.correlation_id: pattern"
+  },
+  {
+    "id": "OBL-AuditEntry.correlation_id-required",
+    "text": "AuditEntry.correlation_id: required"
+  },
+  {
+    "id": "OBL-AuditEntry.entity_id-minimum",
+    "text": "AuditEntry.entity_id: minimum"
+  },
+  {
+    "id": "OBL-AuditEntry.entity_id-required",
+    "text": "AuditEntry.entity_id: required"
+  },
+  {
+    "id": "OBL-AuditEntry.entity_type-minLength",
+    "text": "AuditEntry.entity_type: minLength"
+  },
+  {
+    "id": "OBL-AuditEntry.entity_type-required",
+    "text": "AuditEntry.entity_type: required"
+  },
+  {
+    "id": "OBL-AuditEntry.id-minimum",
+    "text": "AuditEntry.id: minimum"
+  },
+  {
+    "id": "OBL-AuditEntry.id-required",
+    "text": "AuditEntry.id: required"
+  },
+  {
+    "id": "OBL-AuditEntry.occurred_at-format",
+    "text": "AuditEntry.occurred_at: format"
+  },
+  {
+    "id": "OBL-AuditEntry.occurred_at-required",
+    "text": "AuditEntry.occurred_at: required"
+  },
+  {
+    "id": "OBL-AuditEntryPage.items-required",
+    "text": "AuditEntryPage.items: required"
+  },
+  {
+    "id": "OBL-AuditEntryPage.limit-required",
+    "text": "AuditEntryPage.limit: required"
+  },
+  {
+    "id": "OBL-AuditEntryPage.offset-required",
+    "text": "AuditEntryPage.offset: required"
+  },
+  {
+    "id": "OBL-AuditEntryPage.total-required",
+    "text": "AuditEntryPage.total: required"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.aadhaar-pattern",
+    "text": "CreateApplicationRequest.aadhaar: pattern"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.aadhaar-required",
+    "text": "CreateApplicationRequest.aadhaar: required"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.age_years-required",
+    "text": "CreateApplicationRequest.age_years: required"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.credit_flags-required",
+    "text": "CreateApplicationRequest.credit_flags: required"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.monthly_income-required",
+    "text": "CreateApplicationRequest.monthly_income: required"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.pan-pattern",
+    "text": "CreateApplicationRequest.pan: pattern"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.pan-required",
+    "text": "CreateApplicationRequest.pan: required"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.product_type-required",
+    "text": "CreateApplicationRequest.product_type: required"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.requested_amount-required",
+    "text": "CreateApplicationRequest.requested_amount: required"
+  },
+  {
+    "id": "OBL-CreateApplicationRequest.tenure_months-required",
+    "text": "CreateApplicationRequest.tenure_months: required"
+  },
+  {
+    "id": "OBL-CreatePolicyRequest.base_version-required",
+    "text": "CreatePolicyRequest.base_version: required"
+  },
+  {
+    "id": "OBL-CreatePolicyRequest.changes-required",
+    "text": "CreatePolicyRequest.changes: required"
+  },
+  {
+    "id": "OBL-CreditFlags.missed_payment_12m-required",
+    "text": "CreditFlags.missed_payment_12m: required"
+  },
+  {
+    "id": "OBL-CreditFlags.prior_default-required",
+    "text": "CreditFlags.prior_default: required"
+  },
+  {
+    "id": "OBL-CreditFlags.thin_file-required",
+    "text": "CreditFlags.thin_file: required"
+  },
+  {
+    "id": "OBL-CurrentUser.email-format",
+    "text": "CurrentUser.email: format"
+  },
+  {
+    "id": "OBL-CurrentUser.email-required",
+    "text": "CurrentUser.email: required"
+  },
+  {
+    "id": "OBL-CurrentUser.role-required",
+    "text": "CurrentUser.role: required"
+  },
+  {
+    "id": "OBL-CurrentUser.user_id-required",
+    "text": "CurrentUser.user_id: required"
+  },
+  {
+    "id": "OBL-Decision.decided_at-format",
+    "text": "Decision.decided_at: format"
+  },
+  {
+    "id": "OBL-Decision.decided_at-required",
+    "text": "Decision.decided_at: required"
+  },
+  {
+    "id": "OBL-Decision.decision-required",
+    "text": "Decision.decision: required"
+  },
+  {
+    "id": "OBL-Decision.policy_version-minimum",
+    "text": "Decision.policy_version: minimum"
+  },
+  {
+    "id": "OBL-Decision.policy_version-required",
+    "text": "Decision.policy_version: required"
+  },
+  {
+    "id": "OBL-Decision.reason_codes-required",
+    "text": "Decision.reason_codes: required"
+  },
+  {
+    "id": "OBL-Decision.score-maximum",
+    "text": "Decision.score: maximum"
+  },
+  {
+    "id": "OBL-Decision.score-minimum",
+    "text": "Decision.score: minimum"
+  },
+  {
+    "id": "OBL-Decision.score-required",
+    "text": "Decision.score: required"
+  },
+  {
+    "id": "OBL-DecisionType-enum",
+    "text": "DecisionType: enum"
+  },
+  {
+    "id": "OBL-Document.application_id-minimum",
+    "text": "Document.application_id: minimum"
+  },
+  {
+    "id": "OBL-Document.application_id-required",
+    "text": "Document.application_id: required"
+  },
+  {
+    "id": "OBL-Document.id-minimum",
+    "text": "Document.id: minimum"
+  },
+  {
+    "id": "OBL-Document.id-required",
+    "text": "Document.id: required"
+  },
+  {
+    "id": "OBL-Document.reason-maxLength",
+    "text": "Document.reason: maxLength"
+  },
+  {
+    "id": "OBL-Document.reason-minLength",
+    "text": "Document.reason: minLength"
+  },
+  {
+    "id": "OBL-Document.status-required",
+    "text": "Document.status: required"
+  },
+  {
+    "id": "OBL-Document.type-required",
+    "text": "Document.type: required"
+  },
+  {
+    "id": "OBL-Document.uploaded_at-format",
+    "text": "Document.uploaded_at: format"
+  },
+  {
+    "id": "OBL-Document.verified_at-format",
+    "text": "Document.verified_at: format"
+  },
+  {
+    "id": "OBL-DocumentChecklistItem.reason-maxLength",
+    "text": "DocumentChecklistItem.reason: maxLength"
+  },
+  {
+    "id": "OBL-DocumentChecklistItem.status-required",
+    "text": "DocumentChecklistItem.status: required"
+  },
+  {
+    "id": "OBL-DocumentChecklistItem.type-required",
+    "text": "DocumentChecklistItem.type: required"
+  },
+  {
+    "id": "OBL-DocumentStatus-enum",
+    "text": "DocumentStatus: enum"
+  },
+  {
+    "id": "OBL-DocumentType-enum",
+    "text": "DocumentType: enum"
+  },
+  {
+    "id": "OBL-ErrorEnvelope.error-required",
+    "text": "ErrorEnvelope.error: required"
+  },
+  {
+    "id": "OBL-ErrorEnvelope.error.code-required",
+    "text": "ErrorEnvelope.error.code: required"
+  },
+  {
+    "id": "OBL-ErrorEnvelope.error.correlation_id-required",
+    "text": "ErrorEnvelope.error.correlation_id: required"
+  },
+  {
+    "id": "OBL-ErrorEnvelope.error.message-required",
+    "text": "ErrorEnvelope.error.message: required"
+  },
+  {
+    "id": "OBL-LoginRequest.email-format",
+    "text": "LoginRequest.email: format"
+  },
+  {
+    "id": "OBL-LoginRequest.email-required",
+    "text": "LoginRequest.email: required"
+  },
+  {
+    "id": "OBL-LoginRequest.password-required",
+    "text": "LoginRequest.password: required"
+  },
+  {
+    "id": "OBL-LoginResponse.access_token-required",
+    "text": "LoginResponse.access_token: required"
+  },
+  {
+    "id": "OBL-LoginResponse.expires_in-enum",
+    "text": "LoginResponse.expires_in: enum"
+  },
+  {
+    "id": "OBL-LoginResponse.expires_in-required",
+    "text": "LoginResponse.expires_in: required"
+  },
+  {
+    "id": "OBL-LoginResponse.role-required",
+    "text": "LoginResponse.role: required"
+  },
+  {
+    "id": "OBL-LoginResponse.token_type-enum",
+    "text": "LoginResponse.token_type: enum"
+  },
+  {
+    "id": "OBL-LoginResponse.token_type-required",
+    "text": "LoginResponse.token_type: required"
+  },
+  {
+    "id": "OBL-Money-pattern",
+    "text": "Money: pattern"
+  },
+  {
+    "id": "OBL-OverrideReasonCode-enum",
+    "text": "OverrideReasonCode: enum"
+  },
+  {
+    "id": "OBL-OverrideRequest.comment-maxLength",
+    "text": "OverrideRequest.comment: maxLength"
+  },
+  {
+    "id": "OBL-OverrideRequest.comment-minLength",
+    "text": "OverrideRequest.comment: minLength"
+  },
+  {
+    "id": "OBL-OverrideRequest.comment-required",
+    "text": "OverrideRequest.comment: required"
+  },
+  {
+    "id": "OBL-OverrideRequest.reason_code-required",
+    "text": "OverrideRequest.reason_code: required"
+  },
+  {
+    "id": "OBL-PolicyDetail.override_reason_codes-required",
+    "text": "PolicyDetail.override_reason_codes: required"
+  },
+  {
+    "id": "OBL-PolicyDetail.products-required",
+    "text": "PolicyDetail.products: required"
+  },
+  {
+    "id": "OBL-PolicyDetail.products.EDUCATION-required",
+    "text": "PolicyDetail.products.EDUCATION: required"
+  },
+  {
+    "id": "OBL-PolicyDetail.products.PERSONAL-required",
+    "text": "PolicyDetail.products.PERSONAL: required"
+  },
+  {
+    "id": "OBL-PolicyDetail.products.VEHICLE-required",
+    "text": "PolicyDetail.products.VEHICLE: required"
+  },
+  {
+    "id": "OBL-PolicyDetail.reason_codes-required",
+    "text": "PolicyDetail.reason_codes: required"
+  },
+  {
+    "id": "OBL-PolicyDetail.status-enum",
+    "text": "PolicyDetail.status: enum"
+  },
+  {
+    "id": "OBL-PolicyDetail.status-required",
+    "text": "PolicyDetail.status: required"
+  },
+  {
+    "id": "OBL-PolicyDetail.version-required",
+    "text": "PolicyDetail.version: required"
+  },
+  {
+    "id": "OBL-PolicyFile.override_reason_codes-required",
+    "text": "PolicyFile.override_reason_codes: required"
+  },
+  {
+    "id": "OBL-PolicyFile.products-required",
+    "text": "PolicyFile.products: required"
+  },
+  {
+    "id": "OBL-PolicyFile.products.EDUCATION-required",
+    "text": "PolicyFile.products.EDUCATION: required"
+  },
+  {
+    "id": "OBL-PolicyFile.products.PERSONAL-required",
+    "text": "PolicyFile.products.PERSONAL: required"
+  },
+  {
+    "id": "OBL-PolicyFile.products.VEHICLE-required",
+    "text": "PolicyFile.products.VEHICLE: required"
+  },
+  {
+    "id": "OBL-PolicyFile.reason_codes-required",
+    "text": "PolicyFile.reason_codes: required"
+  },
+  {
+    "id": "OBL-PolicyFile.version-minimum",
+    "text": "PolicyFile.version: minimum"
+  },
+  {
+    "id": "OBL-PolicyFile.version-required",
+    "text": "PolicyFile.version: required"
+  },
+  {
+    "id": "OBL-PolicyStatus-enum",
+    "text": "PolicyStatus: enum"
+  },
+  {
+    "id": "OBL-PolicyVersion.approved_at-format",
+    "text": "PolicyVersion.approved_at: format"
+  },
+  {
+    "id": "OBL-PolicyVersion.base_version-minimum",
+    "text": "PolicyVersion.base_version: minimum"
+  },
+  {
+    "id": "OBL-PolicyVersion.created_at-format",
+    "text": "PolicyVersion.created_at: format"
+  },
+  {
+    "id": "OBL-PolicyVersion.created_at-required",
+    "text": "PolicyVersion.created_at: required"
+  },
+  {
+    "id": "OBL-PolicyVersion.created_by-minimum",
+    "text": "PolicyVersion.created_by: minimum"
+  },
+  {
+    "id": "OBL-PolicyVersion.created_by-required",
+    "text": "PolicyVersion.created_by: required"
+  },
+  {
+    "id": "OBL-PolicyVersion.sha256-pattern",
+    "text": "PolicyVersion.sha256: pattern"
+  },
+  {
+    "id": "OBL-PolicyVersion.sha256-required",
+    "text": "PolicyVersion.sha256: required"
+  },
+  {
+    "id": "OBL-PolicyVersion.status-enum",
+    "text": "PolicyVersion.status: enum"
+  },
+  {
+    "id": "OBL-PolicyVersion.status-required",
+    "text": "PolicyVersion.status: required"
+  },
+  {
+    "id": "OBL-PolicyVersion.version-minimum",
+    "text": "PolicyVersion.version: minimum"
+  },
+  {
+    "id": "OBL-PolicyVersion.version-required",
+    "text": "PolicyVersion.version: required"
+  },
+  {
+    "id": "OBL-PolicyVersionPage.items-required",
+    "text": "PolicyVersionPage.items: required"
+  },
+  {
+    "id": "OBL-PolicyVersionPage.limit-required",
+    "text": "PolicyVersionPage.limit: required"
+  },
+  {
+    "id": "OBL-PolicyVersionPage.offset-required",
+    "text": "PolicyVersionPage.offset: required"
+  },
+  {
+    "id": "OBL-PolicyVersionPage.total-required",
+    "text": "PolicyVersionPage.total: required"
+  },
+  {
+    "id": "OBL-ProductRule.annual_rate_pct-pattern",
+    "text": "ProductRule.annual_rate_pct: pattern"
+  },
+  {
+    "id": "OBL-ProductRule.annual_rate_pct-required",
+    "text": "ProductRule.annual_rate_pct: required"
+  },
+  {
+    "id": "OBL-ProductRule.auto_approve_min_score-maximum",
+    "text": "ProductRule.auto_approve_min_score: maximum"
+  },
+  {
+    "id": "OBL-ProductRule.auto_approve_min_score-minimum",
+    "text": "ProductRule.auto_approve_min_score: minimum"
+  },
+  {
+    "id": "OBL-ProductRule.auto_reject_below_score-maximum",
+    "text": "ProductRule.auto_reject_below_score: maximum"
+  },
+  {
+    "id": "OBL-ProductRule.auto_reject_below_score-minimum",
+    "text": "ProductRule.auto_reject_below_score: minimum"
+  },
+  {
+    "id": "OBL-ProductRule.max_age-minimum",
+    "text": "ProductRule.max_age: minimum"
+  },
+  {
+    "id": "OBL-ProductRule.max_age-required",
+    "text": "ProductRule.max_age: required"
+  },
+  {
+    "id": "OBL-ProductRule.max_amount-required",
+    "text": "ProductRule.max_amount: required"
+  },
+  {
+    "id": "OBL-ProductRule.max_tenure_months-minimum",
+    "text": "ProductRule.max_tenure_months: minimum"
+  },
+  {
+    "id": "OBL-ProductRule.max_tenure_months-required",
+    "text": "ProductRule.max_tenure_months: required"
+  },
+  {
+    "id": "OBL-ProductRule.min_age-minimum",
+    "text": "ProductRule.min_age: minimum"
+  },
+  {
+    "id": "OBL-ProductRule.min_age-required",
+    "text": "ProductRule.min_age: required"
+  },
+  {
+    "id": "OBL-ProductRule.min_amount-required",
+    "text": "ProductRule.min_amount: required"
+  },
+  {
+    "id": "OBL-ProductRule.min_income-required",
+    "text": "ProductRule.min_income: required"
+  },
+  {
+    "id": "OBL-ProductRule.min_tenure_months-minimum",
+    "text": "ProductRule.min_tenure_months: minimum"
+  },
+  {
+    "id": "OBL-ProductRule.min_tenure_months-required",
+    "text": "ProductRule.min_tenure_months: required"
+  },
+  {
+    "id": "OBL-ProductRule.policy_version-minimum",
+    "text": "ProductRule.policy_version: minimum"
+  },
+  {
+    "id": "OBL-ProductRule.policy_version-required",
+    "text": "ProductRule.policy_version: required"
+  },
+  {
+    "id": "OBL-ProductRule.product_type-required",
+    "text": "ProductRule.product_type: required"
+  },
+  {
+    "id": "OBL-ProductRule.required_documents-required",
+    "text": "ProductRule.required_documents: required"
+  },
+  {
+    "id": "OBL-ProductType-enum",
+    "text": "ProductType: enum"
+  },
+  {
+    "id": "OBL-ReasonCode-enum",
+    "text": "ReasonCode: enum"
+  },
+  {
+    "id": "OBL-Resolution.comment-maxLength",
+    "text": "Resolution.comment: maxLength"
+  },
+  {
+    "id": "OBL-Resolution.comment-minLength",
+    "text": "Resolution.comment: minLength"
+  },
+  {
+    "id": "OBL-Resolution.comment-required",
+    "text": "Resolution.comment: required"
+  },
+  {
+    "id": "OBL-Resolution.kind-enum",
+    "text": "Resolution.kind: enum"
+  },
+  {
+    "id": "OBL-Resolution.kind-required",
+    "text": "Resolution.kind: required"
+  },
+  {
+    "id": "OBL-Resolution.outcome-enum",
+    "text": "Resolution.outcome: enum"
+  },
+  {
+    "id": "OBL-Resolution.outcome-required",
+    "text": "Resolution.outcome: required"
+  },
+  {
+    "id": "OBL-Resolution.resolved_at-format",
+    "text": "Resolution.resolved_at: format"
+  },
+  {
+    "id": "OBL-Resolution.resolved_at-required",
+    "text": "Resolution.resolved_at: required"
+  },
+  {
+    "id": "OBL-Resolution.resolved_by-minimum",
+    "text": "Resolution.resolved_by: minimum"
+  },
+  {
+    "id": "OBL-Resolution.resolved_by-required",
+    "text": "Resolution.resolved_by: required"
+  },
+  {
+    "id": "OBL-ResolutionKind-enum",
+    "text": "ResolutionKind: enum"
+  },
+  {
+    "id": "OBL-ResolutionOutcome-enum",
+    "text": "ResolutionOutcome: enum"
+  },
+  {
+    "id": "OBL-ReviewRequest.outcome-enum",
+    "text": "ReviewRequest.outcome: enum"
+  },
+  {
+    "id": "OBL-ReviewRequest.outcome-required",
+    "text": "ReviewRequest.outcome: required"
+  },
+  {
+    "id": "OBL-ReviewRequest.reason-maxLength",
+    "text": "ReviewRequest.reason: maxLength"
+  },
+  {
+    "id": "OBL-ReviewRequest.reason-minLength",
+    "text": "ReviewRequest.reason: minLength"
+  },
+  {
+    "id": "OBL-ReviewRequest.reason-required",
+    "text": "ReviewRequest.reason: required"
+  },
+  {
+    "id": "OBL-Role-enum",
+    "text": "Role: enum"
+  },
+  {
+    "id": "OBL-UnderwriteResponse.decision-required",
+    "text": "UnderwriteResponse.decision: required"
+  },
+  {
+    "id": "OBL-UnderwriteResponse.policy_version-required",
+    "text": "UnderwriteResponse.policy_version: required"
+  },
+  {
+    "id": "OBL-UnderwriteResponse.reason_codes-required",
+    "text": "UnderwriteResponse.reason_codes: required"
+  },
+  {
+    "id": "OBL-UnderwriteResponse.score-required",
+    "text": "UnderwriteResponse.score: required"
+  },
+  {
+    "id": "OBL-UnderwriteResponse.status-required",
+    "text": "UnderwriteResponse.status: required"
+  },
+  {
+    "id": "OBL-UploadDocumentRequest.filename-minLength",
+    "text": "UploadDocumentRequest.filename: minLength"
+  },
+  {
+    "id": "OBL-UploadDocumentRequest.filename-required",
+    "text": "UploadDocumentRequest.filename: required"
+  },
+  {
+    "id": "OBL-UploadDocumentRequest.type-required",
+    "text": "UploadDocumentRequest.type: required"
+  },
+  {
+    "id": "OBL-User.active-required",
+    "text": "User.active: required"
+  },
+  {
+    "id": "OBL-User.display_name-minLength",
+    "text": "User.display_name: minLength"
+  },
+  {
+    "id": "OBL-User.display_name-required",
+    "text": "User.display_name: required"
+  },
+  {
+    "id": "OBL-User.email-format",
+    "text": "User.email: format"
+  },
+  {
+    "id": "OBL-User.email-required",
+    "text": "User.email: required"
+  },
+  {
+    "id": "OBL-User.id-minimum",
+    "text": "User.id: minimum"
+  },
+  {
+    "id": "OBL-User.id-required",
+    "text": "User.id: required"
+  },
+  {
+    "id": "OBL-User.role-required",
+    "text": "User.role: required"
+  },
+  {
+    "id": "OBL-VerificationQueueItem.application_id-minimum",
+    "text": "VerificationQueueItem.application_id: minimum"
+  },
+  {
+    "id": "OBL-VerificationQueueItem.application_id-required",
+    "text": "VerificationQueueItem.application_id: required"
+  },
+  {
+    "id": "OBL-VerificationQueueItem.document_id-minimum",
+    "text": "VerificationQueueItem.document_id: minimum"
+  },
+  {
+    "id": "OBL-VerificationQueueItem.document_id-required",
+    "text": "VerificationQueueItem.document_id: required"
+  },
+  {
+    "id": "OBL-VerificationQueueItem.type-required",
+    "text": "VerificationQueueItem.type: required"
+  },
+  {
+    "id": "OBL-VerificationQueueItem.uploaded_at-format",
+    "text": "VerificationQueueItem.uploaded_at: format"
+  },
+  {
+    "id": "OBL-VerificationQueueItem.uploaded_at-required",
+    "text": "VerificationQueueItem.uploaded_at: required"
+  },
+  {
+    "id": "OBL-VerificationQueuePage.items-required",
+    "text": "VerificationQueuePage.items: required"
+  },
+  {
+    "id": "OBL-VerificationQueuePage.limit-required",
+    "text": "VerificationQueuePage.limit: required"
+  },
+  {
+    "id": "OBL-VerificationQueuePage.offset-required",
+    "text": "VerificationQueuePage.offset: required"
+  },
+  {
+    "id": "OBL-VerificationQueuePage.total-required",
+    "text": "VerificationQueuePage.total: required"
+  },
+  {
+    "id": "OBL-VerifyDocumentRequest.outcome-enum",
+    "text": "VerifyDocumentRequest.outcome: enum"
+  },
+  {
+    "id": "OBL-VerifyDocumentRequest.outcome-required",
+    "text": "VerifyDocumentRequest.outcome: required"
+  },
+  {
+    "id": "OBL-VerifyDocumentRequest.reason-maxLength",
+    "text": "VerifyDocumentRequest.reason: maxLength"
+  },
+  {
+    "id": "OBL-VerifyDocumentRequest.reason-minLength",
+    "text": "VerifyDocumentRequest.reason: minLength"
+  },
+  {
+    "id": "OBL-VerifyDocumentRequest.reason-required",
+    "text": "VerifyDocumentRequest.reason: required"
+  }
+]

@@ -20,7 +20,10 @@
       "FRD-27",
       "FRD-28"
     ],
-    "br_acceptance_ids": [],
+    "br_acceptance_ids": [
+      "FRD-48",
+      "FRD-47"
+    ],
     "scope_out": [
       "any functional endpoint beyond health"
     ]
@@ -75,9 +78,24 @@
     "none": false
   },
   "tests": {
-    "matrix_ids": [],
-    "case_ids": [],
-    "layers": []
+    "matrix_ids": [
+      "VM-015",
+      "VM-016",
+      "VM-017",
+      "VM-018",
+      "VM-019"
+    ],
+    "case_ids": [
+      "VM-015",
+      "VM-016",
+      "VM-017",
+      "VM-018",
+      "VM-019"
+    ],
+    "layers": [
+      "unit",
+      "performance"
+    ]
   },
   "provenance": {
     "story_path": "specs/stories/E1-S4.md",

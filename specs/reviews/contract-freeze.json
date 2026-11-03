@@ -1,0 +1,34 @@
+{
+  "frozenAt": "2026-11-03T05:17:03.837Z",
+  "source": "specs\\test_artefacts\\test-plan.md",
+  "files": [
+    {
+      "path": "sprint-contracts\\A.json",
+      "sha256": "d93046c6a09acd3cccac3b8fd3ed3e19e6f7164d175d26a9561d66c79962ddf6"
+    },
+    {
+      "path": "sprint-contracts\\B.json",
+      "sha256": "12215aaca67a2a71bba64cb8ab4c560e27880bf78d65fc10b7ceeec22a51459c"
+    },
+    {
+      "path": "sprint-contracts\\C.json",
+      "sha256": "32e390eeb334a9c8283bf5e30e762022c807dc92eea07fb34ff58f8c23734134"
+    },
+    {
+      "path": "sprint-contracts\\D.json",
+      "sha256": "8bf1b0278b4975b6dfed0a4813207427e83589d93110a65f939244df4b4b849e"
+    },
+    {
+      "path": "sprint-contracts\\F.json",
+      "sha256": "1a84539616153ddfb780a1ba0850aea4ab85ff19c74f18592f30a4074eb8b21f"
+    },
+    {
+      "path": "sprint-contracts\\E.json",
+      "sha256": "2df85b4a073306569f9897dd1916af318a84286ba7d3b8474e8e4bdc5620a4fc"
+    },
+    {
+      "path": "sprint-contracts\\G.json",
+      "sha256": "8e110a0458c3ff8f831f4eaf9abafc820b1dc28ed6cb76a5f94f6e951e585c25"
+    }
+  ]
+}

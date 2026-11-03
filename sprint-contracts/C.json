@@ -1,0 +1,134 @@
+{
+  "group": "C",
+  "stories": [
+    "E2-S2",
+    "E4-S1"
+  ],
+  "features": [
+    "F025",
+    "F026",
+    "F027",
+    "F028",
+    "F029",
+    "F065",
+    "F066",
+    "F067",
+    "F068",
+    "F069",
+    "F070"
+  ],
+  "contract": {
+    "api_checks": [
+      {
+        "id": "QA-VM-025",
+        "matrix_ids": [
+          "VM-025"
+        ],
+        "method": "POST",
+        "path": "/api/applications",
+        "expected_status": 200,
+        "description": "POST /api/applications as customer 4 with the AC payload; expect 201, id 1, DRAFT, applicant_user_id 4"
+      },
+      {
+        "id": "QA-VM-026",
+        "matrix_ids": [
+          "VM-026"
+        ],
+        "method": "GET",
+        "path": "/api/applications/1",
+        "expected_status": 200,
+        "description": "GET /api/applications/1 and a VEHICLE and EDUCATION equivalent; assert required_documents lists, all MISSING"
+      },
+      {
+        "id": "QA-VM-027",
+        "matrix_ids": [
+          "VM-027"
+        ],
+        "method": "POST",
+        "path": "/api/applications",
+        "expected_status": 200,
+        "description": "POST /api/applications PERSONAL tenure 72, then amount 10000.00; expect 422 TENURE_OUT_OF_RANGE / AMOUNT_OUT_OF_RANGE"
+      },
+      {
+        "id": "QA-VM-028",
+        "matrix_ids": [
+          "VM-028"
+        ],
+        "method": "POST",
+        "path": "/api/applications",
+        "expected_status": 200,
+        "description": "POST /api/applications with PAN 'abc', 11-digit Aadhaar -> 422 VALIDATION_ERROR; valid -> pan_masked ******234F, aadhaar_masked ********9012, no raw values"
+      },
+      {
+        "id": "QA-VM-029",
+        "matrix_ids": [
+          "VM-029"
+        ],
+        "method": "GET",
+        "path": "/api/applications/1",
+        "expected_status": 200,
+        "description": "GET /api/applications/1 as customer 5; expect 404"
+      },
+      {
+        "id": "QA-VM-065",
+        "matrix_ids": [
+          "VM-065"
+        ],
+        "method": "POST",
+        "path": "/api/policies",
+        "expected_status": 200,
+        "description": "POST /api/policies base_version 1 PERSONAL.min_income 30000.00 as user 2; expect 201 v2 DRAFT, policy_v0002.json written, audit POLICY_CREATED, SHA-256 of policy_v0001.json unchanged"
+      },
+      {
+        "id": "QA-VM-066",
+        "matrix_ids": [
+          "VM-066"
+        ],
+        "method": "GET",
+        "path": "/api/products",
+        "expected_status": 200,
+        "description": "GET /api/products -> 200 while v2 is DRAFT; PERSONAL min_income 25000.00, policy_version 1"
+      },
+      {
+        "id": "QA-VM-067",
+        "matrix_ids": [
+          "VM-067"
+        ],
+        "method": "POST",
+        "path": "/api/policies/2/approve",
+        "expected_status": 200,
+        "description": "POST /api/policies/2/approve as ADMIN; expect 200 APPROVED, approved_by 1, audit POLICY_APPROVED, GET /api/products shows 30000.00 v2"
+      },
+      {
+        "id": "QA-VM-068",
+        "matrix_ids": [
+          "VM-068"
+        ],
+        "method": "PUT",
+        "path": "/api/policies/1",
+        "expected_status": 405,
+        "description": "PUT /api/policies/1 -> 405; PATCH and DELETE /api/policies/1 -> 405; raw SQL UPDATE of its thresholds aborts"
+      },
+      {
+        "id": "QA-VM-069",
+        "matrix_ids": [
+          "VM-069"
+        ],
+        "method": "POST",
+        "path": "/api/policies/2/approve",
+        "expected_status": 200,
+        "description": "POST /api/policies/2/approve as POLICY_EDITOR user 2; expect 403"
+      },
+      {
+        "id": "QA-VM-070",
+        "matrix_ids": [
+          "VM-070"
+        ],
+        "method": "POST",
+        "path": "/api/policies",
+        "expected_status": 200,
+        "description": "POST /api/policies with auto_reject_below_score 750 > auto_approve_min_score 700, and min_income -1; expect 422 VALIDATION_ERROR naming field, no file written"
+      }
+    ]
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "group": "F",
+  "stories": [
+    "E2-S4",
+    "E3-S4",
+    "E3-S5"
+  ],
+  "features": [
+    "F035",
+    "F036",
+    "F037",
+    "F054",
+    "F055",
+    "F056",
+    "F057",
+    "F058",
+    "F059",
+    "F060",
+    "F061"
+  ],
+  "contract": {
+    "api_checks": [
+      {
+        "id": "QA-VM-054",
+        "matrix_ids": [
+          "VM-054"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/underwrite",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/underwrite -> 200 with income 24999.99 vs min 25000.00; expect INCOME_BELOW_MIN raised by the rule engine and surfaced as the reason code"
+      },
+      {
+        "id": "QA-VM-055",
+        "matrix_ids": [
+          "VM-055"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/underwrite",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/underwrite -> 200 with income 25000.00 (age 30, score 640); expect no policy violation, MANUAL_REVIEW"
+      },
+      {
+        "id": "QA-VM-056",
+        "matrix_ids": [
+          "VM-056"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/underwrite",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/underwrite -> 200 with income 24999.99; expect AUTO_REJECT [INCOME_BELOW_MIN], REJECTED, decisions row persisted"
+      },
+      {
+        "id": "QA-VM-057",
+        "matrix_ids": [
+          "VM-057"
+        ],
+        "method": "POST",
+        "path": "/api/applications/2/review",
+        "expected_status": 200,
+        "description": "POST /api/applications/2/review {APPROVE, reason} as user 3; expect 200 APPROVED, audit REVIEW_APPROVED actor 3, ApplicationApproved event"
+      },
+      {
+        "id": "QA-VM-058",
+        "matrix_ids": [
+          "VM-058"
+        ],
+        "method": "POST",
+        "path": "/api/applications/2/review",
+        "expected_status": 200,
+        "description": "POST /api/applications/2/review {REJECT, reason}; expect REJECTED, audit REVIEW_REJECTED, no event"
+      },
+      {
+        "id": "QA-VM-059",
+        "matrix_ids": [
+          "VM-059"
+        ],
+        "method": "POST",
+        "path": "/api/applications/3/override",
+        "expected_status": 200,
+        "description": "POST /api/applications/3/override as ADMIN user 1 {COMPENSATING_FACTORS, comment}; expect APPROVED, decision row still AUTO_REJECT, audit DECISION_OVERRIDDEN before/after, event"
+      },
+      {
+        "id": "QA-VM-060",
+        "matrix_ids": [
+          "VM-060"
+        ],
+        "method": "POST",
+        "path": "/api/applications/4/override",
+        "expected_status": 200,
+        "description": "POST /api/applications/4/override as UNDERWRITER user 3 {DATA_CORRECTION}; same outcome, actor 3"
+      },
+      {
+        "id": "QA-VM-061",
+        "matrix_ids": [
+          "VM-061"
+        ],
+        "method": "POST",
+        "path": "/api/applications/{id}/override",
+        "expected_status": 409,
+        "description": "POST /api/applications/{id}/override -> 409 NOT_OVERRIDABLE for MANUAL_REVIEW or already overridden; -> 422 for reason_code FOO or empty comment; POST /api/applications/{id}/review -> 409 NOT_IN_REVIEW; CUSTOMER -> 403"
+      }
+    ],
+    "playwright_checks": [
+      {
+        "id": "QA-VM-035",
+        "matrix_ids": [
+          "VM-035"
+        ],
+        "description": "Playwright at 375x812: open apply flow; assert one step visible at a time, progress indicator, no horizontal scroll (scrollWidth <= clientWidth)",
+        "url": "/",
+        "steps": [
+          {
+            "action": "interact",
+            "assertion": "Playwright at 375x812: open apply flow; assert one step visible at a time, progress indicator, no horizontal scroll (scrollWidth <= clientWidth)"
+          }
+        ]
+      },
+      {
+        "id": "QA-VM-036",
+        "matrix_ids": [
+          "VM-036"
+        ],
+        "description": "Playwright: Details step, enter tenure 72 for PERSONAL; assert inline '12-60 months' error before Continue",
+        "url": "/",
+        "steps": [
+          {
+            "action": "interact",
+            "assertion": "Playwright: Details step, enter tenure 72 for PERSONAL; assert inline '12-60 months' error before Continue"
+          }
+        ]
+      },
+      {
+        "id": "QA-VM-037",
+        "matrix_ids": [
+          "VM-037"
+        ],
+        "description": "Playwright as underwriter: at 1280x800 assert table, at 375x812 stacked cards; verify a document and assert row removed with no navigation",
+        "url": "/",
+        "steps": [
+          {
+            "action": "interact",
+            "assertion": "Playwright as underwriter: at 1280x800 assert table, at 375x812 stacked cards; verify a document and assert row removed with no navigation"
+          }
+        ]
+      }
+    ],
+    "accessibility_checks": {
+      "required": true,
+      "block_impacts": [
+        "serious",
+        "critical"
+      ]
+    }
+  }
+}

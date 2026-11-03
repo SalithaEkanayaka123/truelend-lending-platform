@@ -1,0 +1,112 @@
+{
+  "group": "B",
+  "stories": [
+    "E1-S2",
+    "E2-S1"
+  ],
+  "features": [
+    "F006",
+    "F007",
+    "F008",
+    "F009",
+    "F020",
+    "F021",
+    "F022",
+    "F023",
+    "F024"
+  ],
+  "contract": {
+    "api_checks": [
+      {
+        "id": "QA-VM-006",
+        "matrix_ids": [
+          "VM-006"
+        ],
+        "method": "GET",
+        "path": "/api/audit?entity_type=application&entity_id=7",
+        "expected_status": 200,
+        "description": "GET /api/audit?entity_type=application&entity_id=7 -> 200 as ADMIN, after user 3 performed an audited action on application 7; row has actor, role, entity, UTC occurred_at, correlation_id == X-Correlation-ID response header"
+      },
+      {
+        "id": "QA-VM-007",
+        "matrix_ids": [
+          "VM-007"
+        ],
+        "method": "GET",
+        "path": "/api/audit",
+        "expected_status": 200,
+        "description": "GET /api/audit -> 200 as ADMIN; then run UPDATE and DELETE on audit_log via sqlite; expect abort and rows unchanged"
+      },
+      {
+        "id": "QA-VM-008",
+        "matrix_ids": [
+          "VM-008"
+        ],
+        "method": "GET",
+        "path": "/api/audit?entity_type=application&entity_id=7",
+        "expected_status": 200,
+        "description": "GET /api/audit?entity_type=application&entity_id=7 as ADMIN; expect 3 rows ascending by id"
+      },
+      {
+        "id": "QA-VM-009",
+        "matrix_ids": [
+          "VM-009"
+        ],
+        "method": "GET",
+        "path": "/api/audit?entity_type=application&entity_id=1",
+        "expected_status": 200,
+        "description": "GET /api/audit?entity_type=application&entity_id=1 -> 200 as ADMIN, after an action that returned 409; expect no audit row for it"
+      },
+      {
+        "id": "QA-VM-020",
+        "matrix_ids": [
+          "VM-020"
+        ],
+        "method": "GET",
+        "path": "/api/products",
+        "expected_status": 200,
+        "description": "GET /api/products authenticated; expect 3 products PERSONAL/VEHICLE/EDUCATION, policy_version 1"
+      },
+      {
+        "id": "QA-VM-021",
+        "matrix_ids": [
+          "VM-021"
+        ],
+        "method": "GET",
+        "path": "/api/products;",
+        "expected_status": 200,
+        "description": "GET /api/products; compare rule sets pairwise; min_income 25000.00/30000.00/20000.00"
+      },
+      {
+        "id": "QA-VM-022",
+        "matrix_ids": [
+          "VM-022"
+        ],
+        "method": "GET",
+        "path": "/api/products;",
+        "expected_status": 200,
+        "description": "GET /api/products; required_documents count 3 for PERSONAL, 4 for VEHICLE and EDUCATION"
+      },
+      {
+        "id": "QA-VM-023",
+        "matrix_ids": [
+          "VM-023"
+        ],
+        "method": "GET",
+        "path": "/api/products",
+        "expected_status": 200,
+        "description": "GET /api/products with no token; expect 401"
+      },
+      {
+        "id": "QA-VM-024",
+        "matrix_ids": [
+          "VM-024"
+        ],
+        "method": "GET",
+        "path": "/health",
+        "expected_status": 200,
+        "description": "GET /health -> 200 on a clean start; then edit policy_v0001.json on disk and restart; expect abort POLICY_CHECKSUM_MISMATCH"
+      }
+    ]
+  }
+}

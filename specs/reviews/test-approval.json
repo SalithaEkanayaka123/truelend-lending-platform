@@ -1,0 +1,45 @@
+{
+  "phase": "test",
+  "status": "approved",
+  "rounds": [
+    {
+      "round": 1,
+      "verdict": "approved",
+      "feedback": [],
+      "changes": [
+        "Added API checks QA-VM-012..015 for E1-S3-AC3/AC4/AC5 and E1-S4-AC1; documented Clock seam and AC4 test route; noted obligation-index net-new mismatch"
+      ],
+      "declined": [],
+      "questions_asked": 0,
+      "answered": 0,
+      "recordedAt": "2026-11-03T05:16:14.864Z"
+    },
+    {
+      "round": 2,
+      "verdict": "approved",
+      "feedback": [],
+      "changes": [
+        "Rewrote non-HTTP Observe cells to METHOD /path form so contracts freeze"
+      ],
+      "declined": [],
+      "questions_asked": 0,
+      "answered": 0,
+      "recordedAt": "2026-11-03T05:17:03.520Z"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "specs/test_artefacts/test-plan.md",
+      "sha256": "fd7f10dfd2b9fe52379a2c1181aed6dd1590d45787589253d4e6e56edee988c8"
+    },
+    {
+      "path": "specs/test_artefacts/verification-matrix.json",
+      "sha256": "f176ab7691c19cb1fe3a2133adba06f4a373996c03c9d6aa44e9b3ef1a615cc3"
+    }
+  ],
+  "low_engagement": true,
+  "waived_by": null,
+  "approvedAt": "2026-11-03T05:17:03.520Z",
+  "session_id": "ea37eb06-bbab-42d0-b472-e75542e5f420",
+  "in_session": false
+}

@@ -52,9 +52,23 @@
     "none": false
   },
   "tests": {
-    "matrix_ids": [],
-    "case_ids": [],
-    "layers": []
+    "matrix_ids": [
+      "VM-001",
+      "VM-002",
+      "VM-003",
+      "VM-004",
+      "VM-005"
+    ],
+    "case_ids": [
+      "VM-001",
+      "VM-002",
+      "VM-003",
+      "VM-004",
+      "VM-005"
+    ],
+    "layers": [
+      "api"
+    ]
   },
   "provenance": {
     "story_path": "specs/stories/E1-S1.md",

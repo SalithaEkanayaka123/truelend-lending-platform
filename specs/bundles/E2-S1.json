@@ -69,9 +69,23 @@
     "none": false
   },
   "tests": {
-    "matrix_ids": [],
-    "case_ids": [],
-    "layers": []
+    "matrix_ids": [
+      "VM-020",
+      "VM-021",
+      "VM-022",
+      "VM-023",
+      "VM-024"
+    ],
+    "case_ids": [
+      "VM-020",
+      "VM-021",
+      "VM-022",
+      "VM-023",
+      "VM-024"
+    ],
+    "layers": [
+      "api"
+    ]
   },
   "provenance": {
     "story_path": "specs/stories/E2-S1.md",
