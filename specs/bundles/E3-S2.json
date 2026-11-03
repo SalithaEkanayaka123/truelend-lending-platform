@@ -35,7 +35,9 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/service/scoring.py"
+    ],
     "layer": "Service"
   },
   "operations": {

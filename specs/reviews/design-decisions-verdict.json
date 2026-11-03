@@ -7,9 +7,9 @@
   "decisions_sha256": "523338b21449c077916cbfaf179c3e4360a393f6c86b846dcc6fa594d8563a32",
   "session_id": "434991f6-e252-404a-9d26-0da8fc5e2eaf",
   "in_session": false,
-  "carried": false,
-  "revalidated_by": null,
+  "carried": true,
+  "revalidated_by": "00a85262-3547-4e33-980e-521afdacbda2",
   "stamped_against": "523338b21449c077916cbfaf179c3e4360a393f6c86b846dcc6fa594d8563a32",
   "errors": [],
-  "checked_at": "2026-11-03T03:37:28.215Z"
+  "checked_at": "2026-11-03T03:44:55.971Z"
 }

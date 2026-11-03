@@ -33,7 +33,9 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/service/underwriting_service.py"
+    ],
     "layer": "Service"
   },
   "operations": {

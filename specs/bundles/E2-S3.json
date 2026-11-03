@@ -35,7 +35,9 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/service/document_service.py"
+    ],
     "layer": "Service"
   },
   "operations": {

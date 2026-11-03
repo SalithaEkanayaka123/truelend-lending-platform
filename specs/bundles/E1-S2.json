@@ -32,7 +32,10 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/repository/audit_repo.py",
+      "backend/src/truelend/api/audit_router.py"
+    ],
     "layer": "Repository"
   },
   "operations": {

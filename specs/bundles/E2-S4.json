@@ -34,7 +34,20 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "frontend/src/types/*",
+      "frontend/src/config/messages.ts",
+      "frontend/src/config/tokens.css",
+      "frontend/src/api/httpClient.ts",
+      "frontend/src/api/authContext.ts",
+      "frontend/src/service/products.ts",
+      "frontend/src/service/applications.ts",
+      "frontend/src/service/documents.ts",
+      "frontend/src/service/verification.ts",
+      "frontend/src/ui/apply/*",
+      "frontend/src/ui/verification/*",
+      "frontend/src/ui/components/*"
+    ],
     "layer": "UI"
   },
   "operations": {

@@ -36,7 +36,10 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/service/verification_service.py",
+      "backend/src/truelend/api/documents_router.py"
+    ],
     "layer": "Service"
   },
   "operations": {

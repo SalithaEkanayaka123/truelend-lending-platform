@@ -31,7 +31,10 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "frontend/src/service/decisions.ts",
+      "frontend/src/ui/decision/*"
+    ],
     "layer": "UI"
   },
   "operations": {

@@ -39,7 +39,9 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/api/policies_router.py"
+    ],
     "layer": "Service"
   },
   "operations": {

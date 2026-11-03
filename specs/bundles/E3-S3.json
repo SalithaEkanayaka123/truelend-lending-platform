@@ -37,7 +37,11 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/service/underwriting_service.py",
+      "backend/src/truelend/repository/decisions_repo.py",
+      "backend/migrations/0004_decisions_and_resolutions.sql"
+    ],
     "layer": "Service"
   },
   "operations": {

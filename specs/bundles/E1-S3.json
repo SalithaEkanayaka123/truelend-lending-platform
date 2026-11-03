@@ -33,7 +33,10 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/config/logging.py",
+      "backend/src/truelend/api/middleware.py"
+    ],
     "layer": "Config"
   },
   "operations": {

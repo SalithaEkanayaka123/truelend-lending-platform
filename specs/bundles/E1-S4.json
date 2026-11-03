@@ -37,7 +37,19 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/types/enums.py",
+      "backend/src/truelend/types/errors.py",
+      "backend/src/truelend/types/money.py",
+      "backend/src/truelend/types/contracts.py",
+      "backend/src/truelend/config/settings.py",
+      "backend/src/truelend/config/errors.py",
+      "backend/src/truelend/config/db.py",
+      "backend/src/truelend/config/money.py",
+      "backend/src/truelend/api/main.py",
+      "backend/src/truelend/api/health_router.py",
+      "backend/migrations/0001_users_and_audit.sql"
+    ],
     "layer": "Config"
   },
   "operations": {

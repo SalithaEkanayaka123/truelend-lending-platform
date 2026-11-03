@@ -36,7 +36,13 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "backend/src/truelend/repository/applications_repo.py",
+      "backend/src/truelend/repository/documents_repo.py",
+      "backend/src/truelend/service/application_service.py",
+      "backend/src/truelend/api/applications_router.py",
+      "backend/migrations/0003_applications_and_documents.sql"
+    ],
     "layer": "API"
   },
   "operations": {

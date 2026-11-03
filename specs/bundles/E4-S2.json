@@ -30,7 +30,10 @@
     "amendment": null
   },
   "structure": {
-    "owned_files": [],
+    "owned_files": [
+      "frontend/src/service/policies.ts",
+      "frontend/src/ui/policy/*"
+    ],
     "layer": "UI"
   },
   "operations": {
