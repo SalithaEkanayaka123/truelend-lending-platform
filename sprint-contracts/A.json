@@ -78,7 +78,7 @@
         "method": "GET",
         "path": "/openapi.json",
         "expected_status": 200,
-        "description": "GET /openapi.json -> 200; enumerate the app route table; every route but POST /api/auth/login and GET /health has the auth dependency"
+        "description": "GET /openapi.json -> 200 with TRUELEND_ENV=test; enumerate the app route table (including /api/_test/boom, which requires ADMIN); every route but POST /api/auth/login and GET /health has the auth dependency"
       },
       {
         "id": "QA-VM-012",
@@ -108,7 +108,17 @@
         "method": "GET",
         "path": "/api/_test/boom",
         "expected_status": 500,
-        "description": "GET /api/_test/boom -> 500 (test-only route raising an unhandled exception); expect error envelope with no stack trace, and a JSON log line holding the redacted trace"
+        "description": "GET /api/_test/boom -> 500 with an ADMIN token, app started with TRUELEND_ENV=test (test-only route raising an unhandled exception); expect error envelope with no stack trace, and a JSON log line holding the redacted trace"
+      },
+      {
+        "id": "QA-VM-014-NT",
+        "matrix_ids": [
+          "VM-014"
+        ],
+        "method": "GET",
+        "path": "/api/_test/boom",
+        "expected_status": 404,
+        "description": "GET /api/_test/boom -> 404 with an ADMIN token, app started with TRUELEND_ENV unset (and again with a non-test value); expect the route is not registered, so the error envelope is NOT_FOUND and no exception is raised"
       },
       {
         "id": "QA-VM-015",

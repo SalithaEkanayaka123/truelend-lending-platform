@@ -114,10 +114,11 @@ Evaluator QA procedure (`api` / `playwright`). Fill Observe (method/path or UI s
 | A | QA-VM-002 | api | VM-002 | POST /api/auth/login wrong password for known and unknown email; expect 401 UNAUTHENTICATED, identical bodies, no token |
 | A | QA-VM-003 | api | VM-003 | GET /api/auth/me with no header and with a 1801s-old token; expect 401 each |
 | A | QA-VM-004 | api | VM-004 | GET /api/audit with CUSTOMER token; expect 403 FORBIDDEN |
-| A | QA-VM-005 | api | VM-005 | GET /openapi.json -> 200; enumerate the app route table; every route but POST /api/auth/login and GET /health has the auth dependency |
+| A | QA-VM-005 | api | VM-005 | GET /openapi.json -> 200 with TRUELEND_ENV=test; enumerate the app route table (including /api/_test/boom, which requires ADMIN); every route but POST /api/auth/login and GET /health has the auth dependency |
 | A | QA-VM-012 | api | VM-012 | POST /api/applications with PAN ABCDE1234F and Aadhaar 1234 5678 9012 (success and a 422 error path); scan captured logs for ABCDE1234F, 123456789012, 1234 5678 9012; expect none |
 | A | QA-VM-013 | api | VM-013 | POST /api/applications/{id}/documents {type, filename salary_slip_jan.pdf}; capture logs; expect the document id present and the filename absent |
-| A | QA-VM-014 | api | VM-014 | GET /api/_test/boom -> 500 (test-only route raising an unhandled exception); expect error envelope with no stack trace, and a JSON log line holding the redacted trace |
+| A | QA-VM-014 | api | VM-014 | GET /api/_test/boom -> 500 with an ADMIN token, app started with TRUELEND_ENV=test (test-only route raising an unhandled exception); expect error envelope with no stack trace, and a JSON log line holding the redacted trace |
+| A | QA-VM-014-NT | api | VM-014 | GET /api/_test/boom -> 404 with an ADMIN token, app started with TRUELEND_ENV unset (and again with a non-test value); expect the route is not registered, so the error envelope is NOT_FOUND and no exception is raised |
 | A | QA-VM-015 | api | VM-015 | GET /health with no token; expect 200 {"status":"ok"} in at most 1000 ms |
 | B | QA-VM-006 | api | VM-006 | GET /api/audit?entity_type=application&entity_id=7 -> 200 as ADMIN, after user 3 performed an audited action on application 7; row has actor, role, entity, UTC occurred_at, correlation_id == X-Correlation-ID response header |
 | B | QA-VM-007 | api | VM-007 | GET /api/audit -> 200 as ADMIN; then run UPDATE and DELETE on audit_log via sqlite; expect abort and rows unchanged |
@@ -182,6 +183,8 @@ Evaluator QA procedure (`api` / `playwright`). Fill Observe (method/path or UI s
 
 - **Clock (E1-S1-AC1, AC3):** an injectable `Clock` protocol in the Types layer, injected through the app factory. This is an E1-S1 implementation detail and is not in `specs/design/`. Tests advance a fake Clock to issue a token and then age it past 1800 s (1801 s for AC3).
 - **Document storage (E1-S3-AC4):** no storage port exists (metadata only). AC4 is tested through the documents API plus captured logs.
+- **Test-only route `/api/_test/boom` (E1-S3-AC5):** `TRUELEND_ENV` is read in the Config layer. The app factory registers `/api/_test/boom` only when it equals `test`; any other value or an unset variable leaves the route unregistered (404). The route requires an ADMIN token, so it also satisfies E1-S1-AC5 (VM-005, which enumerates the route table in the test environment). QA-VM-014 calls it with an ADMIN token and expects 500; QA-VM-014-NT starts the app without `TRUELEND_ENV=test` and expects 404. This is an implementation detail and is not in `specs/design/`.
+- **Evaluator environment:** the evaluator must start the app with `TRUELEND_ENV=test` for every check except QA-VM-014-NT, which starts it with the variable unset.
 - **Added API checks:** QA-VM-012..015 cover E1-S3-AC3, AC4, AC5 and E1-S4-AC1 at API level, in addition to their unit layers.
 - **Obligation grounding:** `trace-check.js` against `obligation-index.json` reports 213/213 obligations covered but 32 FRD-traced rows as net-new. This is an id-set mismatch (those rows trace to FRD ids absent from that index), not missing coverage. The AC-level grounding gate (73/73) is authoritative.
 

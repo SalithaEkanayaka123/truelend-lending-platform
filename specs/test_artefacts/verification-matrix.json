@@ -360,6 +360,11 @@
           "id": "CHK-VM-014-api",
           "layer": "api",
           "description": "Verify E1-S3-AC5: the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter"
+        },
+        {
+          "id": "CHK-VM-014-api-nontest",
+          "layer": "api",
+          "description": "Verify E1-S3-AC5 test-only route: GET /api/_test/boom returns 404 when TRUELEND_ENV is not test"
         }
       ],
       "obligations": [
