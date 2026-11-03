@@ -1,0 +1,117 @@
+{
+  "pass": true,
+  "slots": [
+    {
+      "slot": "functional",
+      "requirement_ids": [
+        "FRD-1",
+        "FRD-2",
+        "FRD-3",
+        "FRD-4",
+        "FRD-5",
+        "FRD-6",
+        "FRD-7",
+        "FRD-8",
+        "FRD-9",
+        "FRD-10",
+        "FRD-11",
+        "FRD-12",
+        "FRD-13",
+        "FRD-14",
+        "FRD-15",
+        "FRD-16",
+        "FRD-17",
+        "FRD-18",
+        "FRD-19",
+        "FRD-20",
+        "FRD-21",
+        "FRD-23",
+        "FRD-25",
+        "FRD-27",
+        "FRD-28"
+      ],
+      "na_reason": "",
+      "covered": true,
+      "excuse_offered": false
+    },
+    {
+      "slot": "data_lifecycle",
+      "requirement_ids": [
+        "FRD-19",
+        "FRD-22"
+      ],
+      "na_reason": "",
+      "covered": true,
+      "excuse_offered": false
+    },
+    {
+      "slot": "integration",
+      "requirement_ids": [],
+      "na_reason": "The source PRD states no requirement for this slot; /spec authors one only if a later story needs it.",
+      "covered": true,
+      "excuse_offered": true
+    },
+    {
+      "slot": "performance",
+      "requirement_ids": [],
+      "na_reason": "The source PRD states no requirement for this slot; /spec authors one only if a later story needs it.",
+      "covered": true,
+      "excuse_offered": true
+    },
+    {
+      "slot": "security_authz",
+      "requirement_ids": [
+        "FRD-10",
+        "FRD-16",
+        "FRD-17",
+        "FRD-20",
+        "FRD-24"
+      ],
+      "na_reason": "",
+      "covered": true,
+      "excuse_offered": false
+    },
+    {
+      "slot": "privacy_retention",
+      "requirement_ids": [],
+      "na_reason": "The source PRD states no requirement for this slot; /spec authors one only if a later story needs it.",
+      "covered": true,
+      "excuse_offered": true
+    },
+    {
+      "slot": "observability",
+      "requirement_ids": [
+        "FRD-26"
+      ],
+      "na_reason": "",
+      "covered": true,
+      "excuse_offered": false
+    },
+    {
+      "slot": "operability_failure",
+      "requirement_ids": [],
+      "na_reason": "The source PRD states no requirement for this slot; /spec authors one only if a later story needs it.",
+      "covered": true,
+      "excuse_offered": true
+    },
+    {
+      "slot": "ux_accessibility",
+      "requirement_ids": [],
+      "na_reason": "The source PRD states no requirement for this slot; /spec authors one only if a later story needs it.",
+      "covered": true,
+      "excuse_offered": true
+    },
+    {
+      "slot": "constraints",
+      "requirement_ids": [],
+      "na_reason": "The source PRD states no requirement for this slot; /spec authors one only if a later story needs it.",
+      "covered": true,
+      "excuse_offered": true
+    }
+  ],
+  "uncovered": [],
+  "unjustified": [],
+  "invalid_slots": [],
+  "untagged": [],
+  "warnings": []
+}

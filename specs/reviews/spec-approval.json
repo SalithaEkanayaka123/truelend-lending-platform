@@ -1,0 +1,47 @@
+{
+  "phase": "spec",
+  "status": "approved",
+  "rounds": [
+    {
+      "round": 1,
+      "verdict": "approved",
+      "feedback": [],
+      "changes": [
+        "D3 gained accepts_verdict (spec-acceptance, 19 NFR-only criterion ids); spec-acceptance-grounding blocking true -> false."
+      ],
+      "declined": [
+        "Accepted as-is: 7 unresolved interface contracts (IC-1,2,5,6,7,9,10) handled as serial hand-off in /implement; E1-S1 -> E1-S2 contract-edge label kept (hard edges keep them in C1, no parallelism claimed)."
+      ],
+      "questions_asked": 1,
+      "answered": 1,
+      "recordedAt": "2026-11-03T03:21:06.769Z"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "specs/stories/epics.md",
+      "sha256": "90dc2fcc5665e75ad06a1644858711dceba72f68aa61dba354e37b911e6c3b5d"
+    },
+    {
+      "path": "specs/stories/dependency-graph.md",
+      "sha256": "46b3504451e3a343d0c02e83fb06535090600442bd7dc3741014ad81160644da"
+    },
+    {
+      "path": "specs/stories/stories.json",
+      "sha256": "7a4ed4e41cd39b81b103905d6c4ebdb6a33aea6399147ea8449d0e24939e50dd"
+    },
+    {
+      "path": "features.json",
+      "sha256": "64b440bdaec99315a1c510d91940d3483fa113381e1ed906b7f52eb224c34532"
+    },
+    {
+      "path": "specs/decisions/spec-decisions.json",
+      "sha256": "5f7695d43f50c819507b0286e725f34c8ae7e2d51d3ab773a49c071470afeb83"
+    }
+  ],
+  "low_engagement": false,
+  "waived_by": null,
+  "approvedAt": "2026-11-03T03:21:06.769Z",
+  "session_id": "eebc0347-714c-41a9-950a-547fa5657514",
+  "in_session": false
+}

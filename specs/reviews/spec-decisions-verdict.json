@@ -1,0 +1,15 @@
+{
+  "gate": "spec-decisions",
+  "pass": true,
+  "waived_by": null,
+  "claimed_lane": null,
+  "session_lane": null,
+  "decisions_sha256": "5f7695d43f50c819507b0286e725f34c8ae7e2d51d3ab773a49c071470afeb83",
+  "session_id": "eebc0347-714c-41a9-950a-547fa5657514",
+  "in_session": false,
+  "carried": false,
+  "revalidated_by": null,
+  "stamped_against": "5f7695d43f50c819507b0286e725f34c8ae7e2d51d3ab773a49c071470afeb83",
+  "errors": [],
+  "checked_at": "2026-11-03T03:20:59.560Z"
+}

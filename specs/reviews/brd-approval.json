@@ -1,0 +1,31 @@
+{
+  "phase": "brd",
+  "status": "approved",
+  "rounds": [
+    {
+      "round": 1,
+      "verdict": "approved",
+      "feedback": [],
+      "changes": [],
+      "declined": [],
+      "questions_asked": 0,
+      "answered": 0,
+      "recordedAt": "2026-11-02T08:07:21.224Z"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "specs/brd/brd.md",
+      "sha256": "e14a3191da44bfebf8bd94b88830112267a08392dcf9fa4a044c53d242513d51"
+    },
+    {
+      "path": "specs/brd/brd-requirements.json",
+      "sha256": "d5ab51e34296c5b6c38664ea5d46c8e2f9692960075c1faeeaaf98013951860e"
+    }
+  ],
+  "low_engagement": true,
+  "waived_by": null,
+  "approvedAt": "2026-11-02T08:07:21.224Z",
+  "session_id": "861f48db-2dee-4e2f-9ca9-5c320c3c14ef",
+  "in_session": false
+}

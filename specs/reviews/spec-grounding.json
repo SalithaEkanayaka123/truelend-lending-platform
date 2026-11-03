@@ -1,0 +1,29 @@
+{
+  "layer": "spec",
+  "pass": true,
+  "blocking": false,
+  "accepted": 0,
+  "required_total": 19,
+  "required_covered": 19,
+  "downstream_total": 16,
+  "scope": {
+    "source": "specs/decisions/spec-decisions.json",
+    "milestone": "M1",
+    "in_scope": 19,
+    "deferred": 9,
+    "deferred_ids": [
+      "FRD-7",
+      "FRD-8",
+      "FRD-9",
+      "FRD-10",
+      "FRD-11",
+      "FRD-12",
+      "FRD-13",
+      "FRD-17",
+      "FRD-18"
+    ],
+    "unmatched_ids": []
+  },
+  "net_new": [],
+  "dropped": []
+}
