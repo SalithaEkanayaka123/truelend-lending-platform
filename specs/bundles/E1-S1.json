@@ -15,7 +15,9 @@
     "brd_ids": [
       "FRD-24"
     ],
-    "br_acceptance_ids": [],
+    "br_acceptance_ids": [
+      "FRD-24"
+    ],
     "scope_out": [
       "token refresh; password reset; user administration (seed users only)"
     ]

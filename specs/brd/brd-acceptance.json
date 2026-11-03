@@ -98,5 +98,45 @@
     "id": "FRD-48",
     "requirement": "FR-20",
     "text": "GET /health without a token returns 200 with {\"status\":\"ok\"} in at most 1000 ms after the process reports ready."
+  },
+  {
+    "id": "FRD-21",
+    "requirement": "NFR-01",
+    "text": "Every money value (principal, interest, EMI) is computed in fixed-point decimal and rounded half-up to 2 decimal places; no money value is held, stored or computed as a floating-point number."
+  },
+  {
+    "id": "FRD-22",
+    "requirement": "NFR-02",
+    "text": "An UPDATE or DELETE against an approved policy version, a generated repayment schedule or an audit row is rejected and the row is unchanged: 0 permitted modifications, enforced in application code and by database triggers."
+  },
+  {
+    "id": "FRD-23",
+    "requirement": "NFR-03",
+    "text": "With a synthetic PAN, Aadhaar and salary document submitted, captured logs, including error paths, contain 0 occurrences of an identifier value or document filename."
+  },
+  {
+    "id": "FRD-24",
+    "requirement": "NFR-04",
+    "text": "Every route except login and health enforces authentication at the controller layer (100% of routes); each underwriter action writes an audit row carrying the user ID and a timestamp."
+  },
+  {
+    "id": "FRD-25",
+    "requirement": "NFR-05",
+    "text": "An applied database migration or approved policy file edited on disk is detected by its SHA-256 at startup and aborts startup: 0 edits to an applied migration or approved policy file go undetected."
+  },
+  {
+    "id": "FRD-26",
+    "requirement": "NFR-06",
+    "text": "Every request produces one structured JSON log line carrying a request correlation ID, on 100% of lines."
+  },
+  {
+    "id": "FRD-27",
+    "requirement": "NFR-07",
+    "text": "GET /health returns 200 within 1 second of a successful startup."
+  },
+  {
+    "id": "FRD-28",
+    "requirement": "NFR-08",
+    "text": "At least 3 structural tests enforce the architecture rules (policy version cannot be mutated; the EMI invariant holds; no module imports from a higher layer) and run on every pull request."
   }
 ]

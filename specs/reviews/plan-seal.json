@@ -1,7 +1,7 @@
 {
   "status": "sealed",
   "waived_by": null,
-  "sealedAt": "2026-11-03T05:35:06.404Z",
+  "sealedAt": "2026-11-03T05:56:58.955Z",
   "artifacts": [
     {
       "path": "specs/brd/brd.md",
@@ -95,32 +95,32 @@
     },
     {
       "path": "specs\\bundles\\E1-S1.json",
-      "sha256": "429fb68cc3567f05bcb5ae3ac80a6d11a474b56fe5c798f77287ceaaca27b505",
+      "sha256": "a1bedd232052e3a2db57546503e9b6ded4836a7b7cd340c33da01f61d329b014",
       "phase": null
     },
     {
       "path": "specs\\bundles\\E1-S2.json",
-      "sha256": "cd1ec13198af01c582d2653b882f27f890eff1243448f49ac958ef87120c9998",
+      "sha256": "3870d91c0df93b2d8570160a18e4b00cc6b2473a13ff2419c53b8dd29ba1e1d5",
       "phase": null
     },
     {
       "path": "specs\\bundles\\E1-S3.json",
-      "sha256": "5318f35eabb36656fa9d0351b5834793e4668ddb8902c6fb15a72aaf337263e0",
+      "sha256": "46b818dc0d8fbcad4336912992263be9a8bf870ff6c3022f8cff4b85060ba69d",
       "phase": null
     },
     {
       "path": "specs\\bundles\\E1-S4.json",
-      "sha256": "ce0e9e5dd5d34b9e7d6589e8b928f2e3d2921dd58f4828ff6df4ce0ff88987a4",
+      "sha256": "c7b374995a7f1376876a25becc0d4b8ffa7767851b2199d36a0d16cbf23cef0b",
       "phase": null
     },
     {
       "path": "specs\\bundles\\E2-S1.json",
-      "sha256": "30d5a3126d6dbcc662148abf52222b6cb293550c809ec9d849b19f72a41e6e05",
+      "sha256": "f20510c8f11f7fef4942160733d8b6643cc2dff1524c52f700e02deac901312c",
       "phase": null
     },
     {
       "path": "specs\\bundles\\E2-S2.json",
-      "sha256": "be9c139eed237f1d213ed26cc0f839beb107f33f6e772f1fea4b0b0cee526079",
+      "sha256": "631424205bd896626752dcf91ec6fd5a900948ed84786594be3d023874f3c9af",
       "phase": null
     },
     {
@@ -135,7 +135,7 @@
     },
     {
       "path": "specs\\bundles\\E3-S1.json",
-      "sha256": "a6e177fdcd036e663927526f55de18654686ed04c7a30b84bf8e9b94bd23fcd3",
+      "sha256": "0715b53c775f1882d6c771b79e448fb5513b81cc8b455415193eb4605483b22c",
       "phase": null
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "path": "specs\\bundles\\E3-S5.json",
-      "sha256": "20a8c384158b4ca13536a684c3a412773379f986a37f59cded80aabb68ff4769",
+      "sha256": "ae9e92960970a13fe8d5f50f22877694a162af3293af00ca955037b59fee2cfe",
       "phase": null
     },
     {
@@ -165,7 +165,7 @@
     },
     {
       "path": "specs\\bundles\\E4-S1.json",
-      "sha256": "37bc792aebc170ac1696ae5b4dc6a28820d3c26d66f8b3d89614281cf44e4a3d",
+      "sha256": "bc6793b95b53e7970d93077dfd63be5a11b9cc3ae5ce6ab467c49d1e526e38c7",
       "phase": null
     },
     {

@@ -18,7 +18,8 @@
       "FRD-34"
     ],
     "br_acceptance_ids": [
-      "FRD-34"
+      "FRD-34",
+      "FRD-24"
     ],
     "scope_out": [
       "document content review (metadata only)"

@@ -18,7 +18,8 @@
       "FRD-30"
     ],
     "br_acceptance_ids": [
-      "FRD-30"
+      "FRD-30",
+      "FRD-23"
     ],
     "scope_out": [
       "co-applicants; editing an application after submission; withdrawing an application"

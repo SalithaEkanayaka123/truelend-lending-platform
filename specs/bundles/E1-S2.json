@@ -15,7 +15,10 @@
       "FRD-22",
       "FRD-24"
     ],
-    "br_acceptance_ids": [],
+    "br_acceptance_ids": [
+      "FRD-22",
+      "FRD-24"
+    ],
     "scope_out": [
       "automated-decision logging (not an underwriter action); customer action logging"
     ]

@@ -19,7 +19,9 @@
       "FRD-29"
     ],
     "br_acceptance_ids": [
-      "FRD-29"
+      "FRD-29",
+      "FRD-24",
+      "FRD-25"
     ],
     "scope_out": [
       "creating or approving policy versions (E4-S1); a fourth product type"

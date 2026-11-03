@@ -1,15 +1,15 @@
 {
   "layer": "spec-acceptance",
-  "pass": false,
+  "pass": true,
   "blocking": false,
-  "accepted": 19,
-  "required_total": 11,
-  "required_covered": 11,
+  "accepted": 0,
+  "required_total": 19,
+  "required_covered": 19,
   "downstream_total": 73,
   "scope": {
     "source": "specs/decisions/spec-decisions.json",
     "milestone": "M1",
-    "in_scope": 11,
+    "in_scope": 19,
     "deferred": 9,
     "deferred_ids": [
       "FRD-35",
@@ -22,132 +22,8 @@
       "FRD-45",
       "FRD-46"
     ],
-    "unmatched_ids": [
-      "NFR-01",
-      "NFR-02",
-      "NFR-03",
-      "NFR-04",
-      "NFR-05",
-      "NFR-06",
-      "NFR-07",
-      "NFR-08"
-    ]
+    "unmatched_ids": []
   },
-  "net_new": [
-    {
-      "id": "E1-S1-AC1",
-      "text": "",
-      "reason": "traces (FRD-24) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S1-AC2",
-      "text": "",
-      "reason": "traces (FRD-24) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S1-AC3",
-      "text": "",
-      "reason": "traces (FRD-24) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S1-AC4",
-      "text": "",
-      "reason": "traces (FRD-24) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S1-AC5",
-      "text": "",
-      "reason": "traces (FRD-24) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S2-AC1",
-      "text": "",
-      "reason": "traces (FRD-24) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S2-AC2",
-      "text": "",
-      "reason": "traces (FRD-22) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S2-AC3",
-      "text": "",
-      "reason": "traces (FRD-24) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S2-AC4",
-      "text": "",
-      "reason": "traces (FRD-24, FRD-22) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S3-AC1",
-      "text": "",
-      "reason": "traces (FRD-26) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S3-AC2",
-      "text": "",
-      "reason": "traces (FRD-26) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S3-AC3",
-      "text": "",
-      "reason": "traces (FRD-23) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S3-AC4",
-      "text": "",
-      "reason": "traces (FRD-23) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S3-AC5",
-      "text": "",
-      "reason": "traces (FRD-26, FRD-23) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S4-AC2",
-      "text": "",
-      "reason": "traces (FRD-25) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S4-AC3",
-      "text": "",
-      "reason": "traces (FRD-25) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E1-S4-AC4",
-      "text": "",
-      "reason": "traces (FRD-28) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E2-S1-AC5",
-      "text": "",
-      "reason": "traces (FRD-25) resolve to no upstream id",
-      "accepted_by": "D3"
-    },
-    {
-      "id": "E4-S1-AC4",
-      "text": "",
-      "reason": "traces (FRD-22, FRD-25, FRD-28) resolve to no upstream id",
-      "accepted_by": "D3"
-    }
-  ],
+  "net_new": [],
   "dropped": []
 }

@@ -21,7 +21,10 @@
       "FRD-44"
     ],
     "br_acceptance_ids": [
-      "FRD-44"
+      "FRD-44",
+      "FRD-22",
+      "FRD-25",
+      "FRD-28"
     ],
     "scope_out": [
       "a fourth product type; editing score weights through the policy editor; rolling back an approved policy version"

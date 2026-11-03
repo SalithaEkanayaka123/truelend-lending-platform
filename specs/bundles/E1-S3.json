@@ -16,7 +16,10 @@
       "FRD-23",
       "FRD-26"
     ],
-    "br_acceptance_ids": [],
+    "br_acceptance_ids": [
+      "FRD-23",
+      "FRD-26"
+    ],
     "scope_out": [
       "request/response body logging of any kind"
     ]

@@ -21,7 +21,8 @@
     ],
     "br_acceptance_ids": [
       "FRD-42",
-      "FRD-43"
+      "FRD-43",
+      "FRD-24"
     ],
     "scope_out": [
       "overriding anything other than an AUTO_REJECT; listing/filtering applications across the portfolio (FR-10, deferred to M2)"
