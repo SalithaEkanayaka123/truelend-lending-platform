@@ -1,1 +1,1442 @@
-[]
+[
+  {
+    "id": "F001",
+    "category": "security",
+    "story": "E1-S1",
+    "group": "A",
+    "cluster": "C1",
+    "acceptance_criterion": "E1-S1-AC1",
+    "description": "the response is 200 with expires_in 1800 and role CUSTOMER",
+    "steps": [
+      "Given seeded user customer1@example.test with the correct password",
+      "When they POST /api/auth/login",
+      "Assert the response is 200 with expires_in 1800",
+      "Assert role CUSTOMER"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F002",
+    "category": "security",
+    "story": "E1-S1",
+    "group": "A",
+    "cluster": "C1",
+    "acceptance_criterion": "E1-S1-AC2",
+    "description": "it is 401 UNAUTHENTICATED with no token and the same body whether or not the email exists",
+    "steps": [
+      "Given a wrong password",
+      "When they POST /api/auth/login",
+      "Assert it is 401 UNAUTHENTICATED with no token",
+      "Assert the same body whether or not the email exists"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F003",
+    "category": "security",
+    "story": "E1-S1",
+    "group": "A",
+    "cluster": "C1",
+    "acceptance_criterion": "E1-S1-AC3",
+    "description": "it is 401",
+    "steps": [
+      "Given no Authorization header, or a token 1801 seconds old",
+      "When they GET /api/auth/me",
+      "Assert it is 401"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F004",
+    "category": "functional",
+    "story": "E1-S1",
+    "group": "A",
+    "cluster": "C1",
+    "acceptance_criterion": "E1-S1-AC4",
+    "description": "it is 403 FORBIDDEN",
+    "steps": [
+      "Given a CUSTOMER token",
+      "When they GET /api/audit",
+      "Assert it is 403 FORBIDDEN"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F005",
+    "category": "security",
+    "story": "E1-S1",
+    "group": "A",
+    "cluster": "C1",
+    "acceptance_criterion": "E1-S1-AC5",
+    "description": "every route except POST /api/auth/login and GET /health declares the auth dependency",
+    "steps": [
+      "Given the registered route table",
+      "When it is enumerated",
+      "Assert every route except POST /api/auth/login",
+      "Assert GET /health declares the auth dependency"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F006",
+    "category": "functional",
+    "story": "E1-S2",
+    "group": "B",
+    "cluster": "C1",
+    "acceptance_criterion": "E1-S2-AC1",
+    "description": "one audit_log row has actor_user_id 3, actor_role UNDERWRITER, entity_type application, entity_id 7, a UTC occurred_at, and correlation_id equal to the response header",
+    "steps": [
+      "Given UNDERWRITER user 3 performing an audited action on application 7",
+      "When it succeeds",
+      "Assert one audit_log row has actor_user_id 3, actor_role UNDERWRITER, entity_type application, entity_id 7, a UTC occurred_at,",
+      "Assert correlation_id equal to the response header"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F007",
+    "category": "functional",
+    "story": "E1-S2",
+    "group": "B",
+    "cluster": "C1",
+    "acceptance_criterion": "E1-S2-AC2",
+    "description": "the database aborts and the row is unchanged",
+    "steps": [
+      "Given an existing audit row",
+      "When any UPDATE or DELETE runs on audit_log",
+      "Assert the database aborts",
+      "Assert the row is unchanged"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F008",
+    "category": "functional",
+    "story": "E1-S2",
+    "group": "B",
+    "cluster": "C1",
+    "acceptance_criterion": "E1-S2-AC3",
+    "description": "exactly 3 rows return in ascending id order",
+    "steps": [
+      "Given 3 audit rows for application 7 and 2 for application 8",
+      "When ADMIN GETs /api/audit?entity_type=application&entity_id=7",
+      "Assert exactly 3 rows return in ascending id order"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F009",
+    "category": "functional",
+    "story": "E1-S2",
+    "group": "B",
+    "cluster": "C1",
+    "acceptance_criterion": "E1-S2-AC4",
+    "description": "no audit row exists for it, because the audit write shares the action's transaction",
+    "steps": [
+      "Given an audited action that fails with a 409",
+      "When the request ends",
+      "Assert no audit row exists for it, because the audit write shares the action's transaction"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F010",
+    "category": "functional",
+    "story": "E1-S3",
+    "group": "A",
+    "cluster": "C2",
+    "acceptance_criterion": "E1-S3-AC1",
+    "description": "exactly one JSON log line has the keys ts, level, event, correlation_id, method, path, status, duration_ms",
+    "steps": [
+      "Given any completed request",
+      "When output is captured",
+      "Assert exactly one JSON log line has the keys ts, level, event, correlation_id, method, path, status, duration_ms"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F011",
+    "category": "functional",
+    "story": "E1-S3",
+    "group": "A",
+    "cluster": "C2",
+    "acceptance_criterion": "E1-S3-AC2",
+    "description": "a missing header yields a UUID4 echoed in the response header and equal to the log's correlation_id, `req-12345678` is reused as-is, and `a b!` is replaced by a UUID4",
+    "steps": [
+      "Given no inbound X-Correlation-ID, or an inbound `req-12345678`, or an inbound `a b!`",
+      "When the request completes",
+      "Assert a missing header yields a UUID4 echoed in the response header",
+      "Assert equal to the log's correlation_id, `req-12345678` is reused as-is,",
+      "Assert `a b!` is replaced by a UUID4"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F012",
+    "category": "functional",
+    "story": "E1-S3",
+    "group": "A",
+    "cluster": "C2",
+    "acceptance_criterion": "E1-S3-AC3",
+    "description": "neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears",
+    "steps": [
+      "Given an application created with PAN ABCDE1234F and Aadhaar 1234 5678 9012",
+      "When all captured logs, including error paths, are scanned",
+      "Assert neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F013",
+    "category": "functional",
+    "story": "E1-S3",
+    "group": "A",
+    "cluster": "C2",
+    "acceptance_criterion": "E1-S3-AC4",
+    "description": "the document ID appears and the filename does not",
+    "steps": [
+      "Given a document upload with filename salary_slip_jan.pdf",
+      "When logs are scanned",
+      "Assert the document ID appears",
+      "Assert the filename does not"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F014",
+    "category": "functional",
+    "story": "E1-S3",
+    "group": "A",
+    "cluster": "C2",
+    "acceptance_criterion": "E1-S3-AC5",
+    "description": "the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter",
+    "steps": [
+      "Given an unhandled exception",
+      "When it propagates",
+      "Assert the response is 500 with the error envelope",
+      "Assert no stack trace,",
+      "Assert the trace is logged as JSON through the redaction filter"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F015",
+    "category": "functional",
+    "story": "E1-S4",
+    "group": "A",
+    "cluster": "C3",
+    "acceptance_criterion": "E1-S4-AC1",
+    "description": "it is 200 {\"status\":\"ok\"} in at most 1000 ms",
+    "steps": [
+      "Given the process has reported ready",
+      "When GET /health is requested without a token",
+      "Assert it is 200 {\"status\":\"ok\"} in at most 1000 ms"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F016",
+    "category": "functional",
+    "story": "E1-S4",
+    "group": "A",
+    "cluster": "C3",
+    "acceptance_criterion": "E1-S4-AC2",
+    "description": "none re-run and schema_migrations still has 3 rows with SHA-256 values",
+    "steps": [
+      "Given migrations 0001 through 0003 already applied",
+      "When the app starts again",
+      "Assert none re-run",
+      "Assert schema_migrations still has 3 rows with SHA-256 values"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F017",
+    "category": "functional",
+    "story": "E1-S4",
+    "group": "A",
+    "cluster": "C3",
+    "acceptance_criterion": "E1-S4-AC3",
+    "description": "startup aborts with MIGRATION_CHECKSUM_MISMATCH and /health never returns 200",
+    "steps": [
+      "Given applied migration 0002 edited on disk",
+      "When the app starts",
+      "Assert startup aborts with MIGRATION_CHECKSUM_MISMATCH",
+      "Assert /health never returns 200"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F018",
+    "category": "functional",
+    "story": "E1-S4",
+    "group": "A",
+    "cluster": "C3",
+    "acceptance_criterion": "E1-S4-AC4",
+    "description": "no module imports from a higher layer in the order types, config, repository, service, api, ui",
+    "steps": [
+      "Given the source tree under backend/src/truelend and frontend/src",
+      "When the layer test runs",
+      "Assert no module imports from a higher layer in the order types, config, repository, service, api, ui"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F019",
+    "category": "functional",
+    "story": "E1-S4",
+    "group": "A",
+    "cluster": "C3",
+    "acceptance_criterion": "E1-S4-AC5",
+    "description": "it finds no float type, no float( call, and no REAL money column",
+    "steps": [
+      "Given the money code paths",
+      "When the static scan runs",
+      "Assert it finds no float type, no float( call,",
+      "Assert no REAL money column"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F020",
+    "category": "security",
+    "story": "E2-S1",
+    "group": "B",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S1-AC1",
+    "description": "exactly 3 products return (PERSONAL, VEHICLE, EDUCATION), each with policy_version 1",
+    "steps": [
+      "Given seeded policy version 1",
+      "When an authenticated user GETs /api/products",
+      "Assert exactly 3 products return (PERSONAL, VEHICLE, EDUCATION), each with policy_version 1"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F021",
+    "category": "functional",
+    "story": "E2-S1",
+    "group": "B",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S1-AC2",
+    "description": "each differs in at least one threshold (min_income is 25000.00, 30000.00, 20000.00)",
+    "steps": [
+      "Given version 1",
+      "When the rule sets are compared pairwise",
+      "Assert each differs in at least one threshold (min_income is 25000.00, 30000.00, 20000.00)"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F022",
+    "category": "functional",
+    "story": "E2-S1",
+    "group": "B",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S1-AC3",
+    "description": "required_documents has 3 entries for PERSONAL and 4 each for VEHICLE and EDUCATION",
+    "steps": [
+      "Given version 1",
+      "When the catalog is read",
+      "Assert required_documents has 3 entries for PERSONAL",
+      "Assert 4 each for VEHICLE",
+      "Assert EDUCATION"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F023",
+    "category": "security",
+    "story": "E2-S1",
+    "group": "B",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S1-AC4",
+    "description": "it is 401",
+    "steps": [
+      "Given no token",
+      "When GET /api/products is requested",
+      "Assert it is 401"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F024",
+    "category": "functional",
+    "story": "E2-S1",
+    "group": "B",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S1-AC5",
+    "description": "startup aborts with POLICY_CHECKSUM_MISMATCH",
+    "steps": [
+      "Given policy_v0001.json edited on disk",
+      "When the app starts",
+      "Assert startup aborts with POLICY_CHECKSUM_MISMATCH"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F025",
+    "category": "functional",
+    "story": "E2-S2",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S2-AC1",
+    "description": "it is 201 with id 1, status DRAFT, applicant_user_id 4",
+    "steps": [
+      "Given customer user 4 and policy v1",
+      "When they POST /api/applications with PERSONAL, amount \"200000.00\", tenure 24, age 30, income \"60000.00\", no flags, PAN ABCDE1234F, Aadhaar 123456789012",
+      "Assert it is 201 with id 1, status DRAFT, applicant_user_id 4"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F026",
+    "category": "functional",
+    "story": "E2-S2",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S2-AC2",
+    "description": "required_documents is ID_PROOF, ADDRESS_PROOF, SALARY_SLIP (each MISSING); a VEHICLE application lists 4 documents including VEHICLE_QUOTATION; an EDUCATION one includes ADMISSION_LETTER and FEE_STRUCTURE",
+    "steps": [
+      "Given that application",
+      "When it is returned",
+      "Assert required_documents is ID_PROOF, ADDRESS_PROOF, SALARY_SLIP (each MISSING); a VEHICLE application lists 4 documents including VEHICLE_QUOTATION; an EDUCATION one includes ADMISSION_LETTER",
+      "Assert FEE_STRUCTURE"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F027",
+    "category": "security",
+    "story": "E2-S2",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S2-AC3",
+    "description": "it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively",
+    "steps": [
+      "Given PERSONAL",
+      "When tenure is 72 (max 60), or amount is \"10000.00\" (min 50000.00)",
+      "Assert it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively"
+    ],
+    "verification": "characterization",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F028",
+    "category": "security",
+    "story": "E2-S2",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S2-AC4",
+    "description": "it is 422 VALIDATION_ERROR; a valid application returns pan_masked \"******234F\" and aadhaar_masked \"********9012\" and no raw values",
+    "steps": [
+      "Given PAN \"abc\" or an 11-digit Aadhaar",
+      "When posted",
+      "Assert it is 422 VALIDATION_ERROR; a valid application returns pan_masked \"******234F\"",
+      "Assert aadhaar_masked \"********9012\"",
+      "Assert no raw values"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F029",
+    "category": "functional",
+    "story": "E2-S2",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E2-S2-AC5",
+    "description": "it is 404",
+    "steps": [
+      "Given customer user 5",
+      "When they GET /api/applications/1",
+      "Assert it is 404"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F030",
+    "category": "functional",
+    "story": "E2-S3",
+    "group": "D",
+    "cluster": "C4",
+    "acceptance_criterion": "E2-S3-AC1",
+    "description": "it is 201 and that document is UPLOADED with no file content stored",
+    "steps": [
+      "Given application 1 in DRAFT",
+      "When the owner POSTs {type:\"ID_PROOF\", filename:\"id_front.png\"}",
+      "Assert it is 201",
+      "Assert that document is UPLOADED with no file content stored"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F031",
+    "category": "security",
+    "story": "E2-S3",
+    "group": "D",
+    "cluster": "C4",
+    "acceptance_criterion": "E2-S3-AC2",
+    "description": "it is 422 DOCUMENT_TYPE_NOT_REQUIRED",
+    "steps": [
+      "Given PERSONAL application 1",
+      "When they POST type VEHICLE_QUOTATION",
+      "Assert it is 422 DOCUMENT_TYPE_NOT_REQUIRED"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F032",
+    "category": "functional",
+    "story": "E2-S3",
+    "group": "D",
+    "cluster": "C4",
+    "acceptance_criterion": "E2-S3-AC3",
+    "description": "it is 409 MISSING_DOCUMENTS with missing [\"SALARY_SLIP\"] and status stays DRAFT",
+    "steps": [
+      "Given SALARY_SLIP is still MISSING",
+      "When they POST submit",
+      "Assert it is 409 MISSING_DOCUMENTS with missing [\"SALARY_SLIP\"]",
+      "Assert status stays DRAFT"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F033",
+    "category": "functional",
+    "story": "E2-S3",
+    "group": "D",
+    "cluster": "C4",
+    "acceptance_criterion": "E2-S3-AC4",
+    "description": "it is 200, status SUBMITTED, policy_version 1, and submitted_at set",
+    "steps": [
+      "Given all 3 documents UPLOADED and the active version 1",
+      "When they POST submit",
+      "Assert it is 200, status SUBMITTED, policy_version 1,",
+      "Assert submitted_at set"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F034",
+    "category": "functional",
+    "story": "E2-S3",
+    "group": "D",
+    "cluster": "C4",
+    "acceptance_criterion": "E2-S3-AC5",
+    "description": "it is 409 ALREADY_SUBMITTED",
+    "steps": [
+      "Given an already SUBMITTED application",
+      "When submit is posted again",
+      "Assert it is 409 ALREADY_SUBMITTED"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F035",
+    "category": "functional",
+    "story": "E2-S4",
+    "group": "F",
+    "cluster": "C5",
+    "acceptance_criterion": "E2-S4-AC1",
+    "description": "a three-step flow (Product, Details, Documents and submit) shows one step at a time with a progress indicator and no horizontal scroll",
+    "steps": [
+      "Given a customer on a 375x812 viewport",
+      "When they apply",
+      "Assert a three-step flow (Product, Details, Documents",
+      "Assert submit) shows one step at a time with a progress indicator",
+      "Assert no horizontal scroll"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F036",
+    "category": "functional",
+    "story": "E2-S4",
+    "group": "F",
+    "cluster": "C5",
+    "acceptance_criterion": "E2-S4-AC2",
+    "description": "an inline error shows \"12-60 months\" before they continue",
+    "steps": [
+      "Given the Details step",
+      "When they enter tenure 72 for PERSONAL",
+      "Assert an inline error shows \"12-60 months\" before they continue"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F037",
+    "category": "functional",
+    "story": "E2-S4",
+    "group": "F",
+    "cluster": "C5",
+    "acceptance_criterion": "E2-S4-AC3",
+    "description": "a table lists documents; at 375x812 the same data shows as stacked cards; verifying one removes it without a page reload",
+    "steps": [
+      "Given an underwriter on 1280x800",
+      "When they open the queue",
+      "Assert a table lists documents; at 375x812 the same data shows as stacked cards; verifying one removes it without a page reload"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F038",
+    "category": "functional",
+    "story": "E3-S1",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S1-AC1",
+    "description": "3 items return oldest first, each with document_id, application_id 1, and type",
+    "steps": [
+      "Given submitted application 1 with 3 UPLOADED documents",
+      "When UNDERWRITER user 3 GETs /api/verification-queue",
+      "Assert 3 items return oldest first, each with document_id, application_id 1,",
+      "Assert type"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F039",
+    "category": "functional",
+    "story": "E3-S1",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S1-AC2",
+    "description": "it is 200 VERIFIED, verified_by 3, an audit row DOCUMENT_VERIFIED is written, and the item leaves the queue",
+    "steps": [
+      "Given document 1",
+      "When user 3 POSTs {outcome:\"VERIFIED\", reason:\"Name matches PAN record\"}",
+      "Assert it is 200 VERIFIED, verified_by 3, an audit row DOCUMENT_VERIFIED is written,",
+      "Assert the item leaves the queue"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F040",
+    "category": "functional",
+    "story": "E3-S1",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S1-AC3",
+    "description": "it is 200 REJECTED with the reason, an audit row DOCUMENT_REJECTED is written, and the application still reads SUBMITTED",
+    "steps": [
+      "Given document 2",
+      "When user 3 POSTs {outcome:\"REJECTED\", reason:\"Image unreadable\"}",
+      "Assert it is 200 REJECTED with the reason, an audit row DOCUMENT_REJECTED is written,",
+      "Assert the application still reads SUBMITTED"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F041",
+    "category": "security",
+    "story": "E3-S1",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S1-AC4",
+    "description": "it is 422 VALIDATION_ERROR and no audit row is written",
+    "steps": [
+      "Given a missing, empty, or 501-character reason",
+      "When posted",
+      "Assert it is 422 VALIDATION_ERROR",
+      "Assert no audit row is written"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F042",
+    "category": "functional",
+    "story": "E3-S1",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S1-AC5",
+    "description": "it is 403 for the CUSTOMER token and 409 ALREADY_VERIFIED for the already-verified document",
+    "steps": [
+      "Given a CUSTOMER token, or an already VERIFIED document",
+      "When they GET the queue or POST verify, or verify is posted again",
+      "Assert it is 403 for the CUSTOMER token",
+      "Assert 409 ALREADY_VERIFIED for the already-verified document"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F043",
+    "category": "functional",
+    "story": "E3-S2",
+    "group": "A",
+    "cluster": "C6",
+    "acceptance_criterion": "E3-S2-AC1",
+    "description": "the score is 740",
+    "steps": [
+      "Given age 40, income \"100000.00\", no flags",
+      "When scored",
+      "Assert the score is 740"
+    ],
+    "verification": "characterization",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F044",
+    "category": "functional",
+    "story": "E3-S2",
+    "group": "A",
+    "cluster": "C6",
+    "acceptance_criterion": "E3-S2-AC2",
+    "description": "the first scores 680 and the second scores 500",
+    "steps": [
+      "Given age 30 with income \"60000.00\" and no flags, or age 30 with income \"30000.00\" and prior_default",
+      "When scored",
+      "Assert the first scores 680",
+      "Assert the second scores 500"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F045",
+    "category": "functional",
+    "story": "E3-S2",
+    "group": "A",
+    "cluster": "C6",
+    "acceptance_criterion": "E3-S2-AC3",
+    "description": "all 100 scores are identical",
+    "steps": [
+      "Given the same inputs",
+      "When scored 100 times",
+      "Assert all 100 scores are identical"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F046",
+    "category": "functional",
+    "story": "E3-S2",
+    "group": "A",
+    "cluster": "C6",
+    "acceptance_criterion": "E3-S2-AC4",
+    "description": "age 40 gives 700, income \"70000.00\" gives 690, missed_payment_12m gives 620, thin_file gives 640, and prior_default gives 530",
+    "steps": [
+      "Given the 680 baseline",
+      "When one input changes at a time",
+      "Assert age 40 gives 700, income \"70000.00\" gives 690, missed_payment_12m gives 620, thin_file gives 640,",
+      "Assert prior_default gives 530"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F047",
+    "category": "functional",
+    "story": "E3-S2",
+    "group": "A",
+    "cluster": "C6",
+    "acceptance_criterion": "E3-S2-AC5",
+    "description": "the first scores 350 and both of the second case scores are 790",
+    "steps": [
+      "Given age 18, income \"0.00\" and all three flags, or age 40 with income \"150000.00\" or \"500000.00\"",
+      "When scored",
+      "Assert the first scores 350",
+      "Assert both of the second case scores are 790"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F048",
+    "category": "functional",
+    "story": "E3-S3",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S3-AC1",
+    "description": "decision AUTO_APPROVE, score 740, reason_codes [\"SCORE_MEETS_AUTO_APPROVE\"], policy_version 1, status APPROVED, and one ApplicationApproved event is published",
+    "steps": [
+      "Given a submitted PERSONAL application (age 40, income \"100000.00\", no flags, pinned version 1)",
+      "When underwritten",
+      "Assert decision AUTO_APPROVE, score 740, reason_codes [\"SCORE_MEETS_AUTO_APPROVE\"], policy_version 1, status APPROVED,",
+      "Assert one ApplicationApproved event is published"
+    ],
+    "verification": "characterization",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F049",
+    "category": "functional",
+    "story": "E3-S3",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S3-AC2",
+    "description": "decision MANUAL_REVIEW with [\"SCORE_IN_REVIEW_BAND\"] and status MANUAL_REVIEW",
+    "steps": [
+      "Given age 30, income \"60000.00\", no flags (score 680, review band 600-699)",
+      "When underwritten",
+      "Assert decision MANUAL_REVIEW with [\"SCORE_IN_REVIEW_BAND\"]",
+      "Assert status MANUAL_REVIEW"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F050",
+    "category": "functional",
+    "story": "E3-S3",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S3-AC3",
+    "description": "decision AUTO_REJECT with [\"SCORE_BELOW_MIN\"] and status REJECTED",
+    "steps": [
+      "Given age 30, income \"30000.00\", prior_default (score 500)",
+      "When underwritten",
+      "Assert decision AUTO_REJECT with [\"SCORE_BELOW_MIN\"]",
+      "Assert status REJECTED"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F051",
+    "category": "functional",
+    "story": "E3-S3",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S3-AC4",
+    "description": "decision AUTO_REJECT with [\"AGE_OUT_OF_RANGE\"] only",
+    "steps": [
+      "Given age 70, income \"100000.00\" (score 700)",
+      "When underwritten",
+      "Assert decision AUTO_REJECT with [\"AGE_OUT_OF_RANGE\"] only"
+    ],
+    "verification": "characterization",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F052",
+    "category": "functional",
+    "story": "E3-S3",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S3-AC5",
+    "description": "A uses policy_version 1 and is MANUAL_REVIEW (score 640), while B uses policy_version 2 and is AUTO_REJECT with [\"INCOME_BELOW_MIN\"]",
+    "steps": [
+      "Given application A submitted under version 1, version 2 (PERSONAL min_income \"30000.00\") approved afterwards, and application B submitted after that, both age 30 with income \"26000.00\"",
+      "When underwritten",
+      "Assert A uses policy_version 1",
+      "Assert is MANUAL_REVIEW (score 640), while B uses policy_version 2",
+      "Assert is AUTO_REJECT with [\"INCOME_BELOW_MIN\"]"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F053",
+    "category": "functional",
+    "story": "E3-S3",
+    "group": "E",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S3-AC6",
+    "description": "the DRAFT case is 409 NOT_SUBMITTED and the already-decided case is 409 ALREADY_DECIDED with the stored decision unchanged",
+    "steps": [
+      "Given a DRAFT application, or an already decided one",
+      "When underwrite is called",
+      "Assert the DRAFT case is 409 NOT_SUBMITTED",
+      "Assert the already-decided case is 409 ALREADY_DECIDED with the stored decision unchanged"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F054",
+    "category": "functional",
+    "story": "E3-S4",
+    "group": "F",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S4-AC1",
+    "description": "it raises PolicyViolationException with code INCOME_BELOW_MIN",
+    "steps": [
+      "Given PERSONAL with min_income \"25000.00\"",
+      "When the rule engine evaluates income \"24999.99\"",
+      "Assert it raises PolicyViolationException with code INCOME_BELOW_MIN"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F055",
+    "category": "functional",
+    "story": "E3-S4",
+    "group": "F",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S4-AC2",
+    "description": "no exception is raised and the decision is MANUAL_REVIEW",
+    "steps": [
+      "Given income exactly \"25000.00\" (age 30, no flags, score 640)",
+      "When evaluated",
+      "Assert no exception is raised",
+      "Assert the decision is MANUAL_REVIEW"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F056",
+    "category": "functional",
+    "story": "E3-S4",
+    "group": "F",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S4-AC3",
+    "description": "it is 200 with AUTO_REJECT, reason_codes [\"INCOME_BELOW_MIN\"], status REJECTED, and a persisted decisions row",
+    "steps": [
+      "Given a submitted application with income \"24999.99\"",
+      "When underwrite is called",
+      "Assert it is 200 with AUTO_REJECT, reason_codes [\"INCOME_BELOW_MIN\"], status REJECTED,",
+      "Assert a persisted decisions row"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F057",
+    "category": "functional",
+    "story": "E3-S5",
+    "group": "F",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S5-AC1",
+    "description": "it is 200, status APPROVED, resolution MANUAL_REVIEW/APPROVED, an audit row REVIEW_APPROVED with actor 3, and an ApplicationApproved event",
+    "steps": [
+      "Given application 2 in MANUAL_REVIEW",
+      "When UNDERWRITER user 3 POSTs {outcome:\"APPROVE\", reason:\"Stable income, documents verified\"}",
+      "Assert it is 200, status APPROVED, resolution MANUAL_REVIEW/APPROVED, an audit row REVIEW_APPROVED with actor 3,",
+      "Assert an ApplicationApproved event"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F058",
+    "category": "functional",
+    "story": "E3-S5",
+    "group": "F",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S5-AC2",
+    "description": "status REJECTED, audit row REVIEW_REJECTED, and no event",
+    "steps": [
+      "Given the same state",
+      "When they POST REJECT with a reason",
+      "Assert status REJECTED, audit row REVIEW_REJECTED,",
+      "Assert no event"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F059",
+    "category": "functional",
+    "story": "E3-S5",
+    "group": "F",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S5-AC3",
+    "description": "it is 200, status APPROVED, the decision row still reads AUTO_REJECT, an audit row DECISION_OVERRIDDEN with actor 1, the reason code, the comment, before REJECTED/after APPROVED, and an event",
+    "steps": [
+      "Given application 3 with decision AUTO_REJECT",
+      "When ADMIN user 1 POSTs {reason_code:\"COMPENSATING_FACTORS\", comment:\"Co-signed by parent; income verified\"}",
+      "Assert it is 200, status APPROVED, the decision row still reads AUTO_REJECT, an audit row DECISION_OVERRIDDEN with actor 1, the reason code, the comment, before REJECTED/after APPROVED,",
+      "Assert an event"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F060",
+    "category": "functional",
+    "story": "E3-S5",
+    "group": "F",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S5-AC4",
+    "description": "the same outcome as AC3 with actor 3 in the audit row",
+    "steps": [
+      "Given application 4 with AUTO_REJECT",
+      "When UNDERWRITER user 3 overrides with DATA_CORRECTION",
+      "Assert the same outcome as AC3 with actor 3 in the audit row"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F061",
+    "category": "security",
+    "story": "E3-S5",
+    "group": "F",
+    "cluster": "C4",
+    "acceptance_criterion": "E3-S5-AC5",
+    "description": "it is 409 NOT_OVERRIDABLE, 422, 409 NOT_IN_REVIEW, and 403 respectively",
+    "steps": [
+      "Given an application in MANUAL_REVIEW or already overridden, or a reason_code \"FOO\" or an empty comment, or review on an application not in MANUAL_REVIEW, or a CUSTOMER token",
+      "When override or review is called",
+      "Assert it is 409 NOT_OVERRIDABLE, 422, 409 NOT_IN_REVIEW,",
+      "Assert 403 respectively"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F062",
+    "category": "functional",
+    "story": "E3-S6",
+    "group": "G",
+    "cluster": "C7",
+    "acceptance_criterion": "E3-S6-AC1",
+    "description": "it shows score 680, the reason code with its message, and policy version 1; at 375x812 the panels stack with no horizontal scroll",
+    "steps": [
+      "Given an underwriter opening application 2",
+      "When the page loads",
+      "Assert it shows score 680, the reason code with its message,",
+      "Assert policy version 1; at 375x812 the panels stack with no horizontal scroll"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F063",
+    "category": "functional",
+    "story": "E3-S6",
+    "group": "G",
+    "cluster": "C7",
+    "acceptance_criterion": "E3-S6-AC2",
+    "description": "Submit is disabled; with both set it enables and success shows a confirmation",
+    "steps": [
+      "Given the override dialog on an AUTO_REJECT application",
+      "When the comment is empty or no reason code is chosen",
+      "Assert Submit is disabled; with both set it enables",
+      "Assert success shows a confirmation"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F064",
+    "category": "functional",
+    "story": "E3-S6",
+    "group": "G",
+    "cluster": "C7",
+    "acceptance_criterion": "E3-S6-AC3",
+    "description": "Approve and Reject are disabled",
+    "steps": [
+      "Given a MANUAL_REVIEW application",
+      "When the reason field is empty",
+      "Assert Approve",
+      "Assert Reject are disabled"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F065",
+    "category": "functional",
+    "story": "E4-S1",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E4-S1-AC1",
+    "description": "it is 201 with version 2, status DRAFT, file policy_v0002.json written, an audit row POLICY_CREATED, and the SHA-256 of policy_v0001.json unchanged",
+    "steps": [
+      "Given POLICY_EDITOR user 2",
+      "When they POST /api/policies with base_version 1 and PERSONAL.min_income \"30000.00\"",
+      "Assert it is 201 with version 2, status DRAFT, file policy_v0002.json written, an audit row POLICY_CREATED,",
+      "Assert the SHA-256 of policy_v0001.json unchanged"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F066",
+    "category": "functional",
+    "story": "E4-S1",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E4-S1-AC2",
+    "description": "PERSONAL min_income is still \"25000.00\" and policy_version is 1",
+    "steps": [
+      "Given version 2 is DRAFT",
+      "When GET /api/products",
+      "Assert PERSONAL min_income is still \"25000.00\"",
+      "Assert policy_version is 1"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F067",
+    "category": "functional",
+    "story": "E4-S1",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E4-S1-AC3",
+    "description": "it is 200 APPROVED with approved_by 1, an audit row POLICY_APPROVED, and GET /api/products shows PERSONAL min_income \"30000.00\" with policy_version 2",
+    "steps": [
+      "Given ADMIN user 1",
+      "When they POST /api/policies/2/approve",
+      "Assert it is 200 APPROVED with approved_by 1, an audit row POLICY_APPROVED,",
+      "Assert GET /api/products shows PERSONAL min_income \"30000.00\" with policy_version 2"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F068",
+    "category": "functional",
+    "story": "E4-S1",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E4-S1-AC4",
+    "description": "the HTTP verbs return 405 and the SQL UPDATE aborts at the database",
+    "steps": [
+      "Given approved version 1",
+      "When PUT, PATCH, or DELETE hits /api/policies/1, or a raw SQL UPDATE changes its thresholds",
+      "Assert the HTTP verbs return 405",
+      "Assert the SQL UPDATE aborts at the database"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F069",
+    "category": "functional",
+    "story": "E4-S1",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E4-S1-AC5",
+    "description": "it is 403",
+    "steps": [
+      "Given POLICY_EDITOR user 2",
+      "When they POST /api/policies/2/approve",
+      "Assert it is 403"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F070",
+    "category": "security",
+    "story": "E4-S1",
+    "group": "C",
+    "cluster": "C3",
+    "acceptance_criterion": "E4-S1-AC6",
+    "description": "it is 422 VALIDATION_ERROR naming the offending field and no file is written",
+    "steps": [
+      "Given a change setting auto_reject_below_score 750 with auto_approve_min_score 700, or min_income \"-1\"",
+      "When POSTed",
+      "Assert it is 422 VALIDATION_ERROR naming the offending field",
+      "Assert no file is written"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F071",
+    "category": "functional",
+    "story": "E4-S2",
+    "group": "D",
+    "cluster": "C8",
+    "acceptance_criterion": "E4-S2-AC1",
+    "description": "the product forms stack in one column with no horizontal scroll",
+    "steps": [
+      "Given a POLICY_EDITOR on a 375x812 viewport",
+      "When they open the policy editor",
+      "Assert the product forms stack in one column with no horizontal scroll"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F072",
+    "category": "functional",
+    "story": "E4-S2",
+    "group": "D",
+    "cluster": "C8",
+    "acceptance_criterion": "E4-S2-AC2",
+    "description": "an inline error appears before submit and the Save button is disabled",
+    "steps": [
+      "Given the PERSONAL form",
+      "When they enter min_age 70 with max_age 60",
+      "Assert an inline error appears before submit",
+      "Assert the Save button is disabled"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  },
+  {
+    "id": "F073",
+    "category": "functional",
+    "story": "E4-S2",
+    "group": "D",
+    "cluster": "C8",
+    "acceptance_criterion": "E4-S2-AC3",
+    "description": "the page shows \"Draft v2\" and the new version appears in the list",
+    "steps": [
+      "Given valid changes",
+      "When they Save",
+      "Assert the page shows \"Draft v2\"",
+      "Assert the new version appears in the list"
+    ],
+    "verification": "default",
+    "passes": false,
+    "last_evaluated": null,
+    "failure_reason": null,
+    "failure_layer": null
+  }
+]

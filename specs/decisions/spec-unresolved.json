@@ -1,0 +1,21 @@
+{
+  "unresolved": [
+    {
+      "epic": "E1",
+      "question": "specs/reviews/spec-acceptance-grounding.json reports 19 blocking net-new findings (layer spec-acceptance). Each is an acceptance criterion whose only valid upstream trace is an NFR requirement id (NFR-01..NFR-08 / FRD-21..FRD-28), and specs/brd/brd-acceptance.json has no acceptance postcondition for any NFR (confirmed by this same gate's own UNMATCHED line: NFR-01..NFR-08 match no record in brd-acceptance.json). D3 already decided NFRs are handled as 'cross-cutting guard stories' with one authored observable criterion per NFR, which is exactly what these 19 criteria are -- but D3 carries no accepts_verdict for layer spec-acceptance, so trace-check.js's blocking stays true. render-procedure.md Step 6.46 names this exact situation and says the escape is explicit and human-owned (an accepts_verdict entry naming the decision and the finding ids); spec-render must not fabricate that acceptance itself.",
+      "blocks": [
+        "E1-S1-AC1", "E1-S1-AC2", "E1-S1-AC3", "E1-S1-AC4", "E1-S1-AC5",
+        "E1-S2-AC1", "E1-S2-AC2", "E1-S2-AC3", "E1-S2-AC4",
+        "E1-S3-AC1", "E1-S3-AC2", "E1-S3-AC3", "E1-S3-AC4", "E1-S3-AC5",
+        "E1-S4-AC2", "E1-S4-AC3", "E1-S4-AC4",
+        "E2-S1-AC5",
+        "E4-S1-AC4"
+      ],
+      "options": [
+        "Add an accepts_verdict to D3 in spec-decisions.json: { \"layer\": \"spec-acceptance\", \"ids\": [ ...the 19 ids above... ] }, recording that a human reviewed and accepted these as the authored NFR guard criteria D3 already called for.",
+        "Add an acceptance postcondition for each of NFR-01..NFR-08 to specs/brd/brd-acceptance.json (re-run /brd) so the gate has a real upstream id to trace these criteria to, instead of accepting a permanent gap.",
+        "Leave unaccepted and treat spec-acceptance-grounding.json#blocking == true as a known, reviewed non-blocker for this milestone -- but then /spec's phase-evaluation gate and human review (Step 8) must say so explicitly rather than silently proceed to /design."
+      ]
+    }
+  ]
+}

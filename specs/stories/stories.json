@@ -1,0 +1,1387 @@
+[
+  {
+    "id": "E1-S1",
+    "title": "Authentication and role guard",
+    "epic": "E1",
+    "layer": "API",
+    "story_points": 5,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "Every other capability in the platform sits behind this guard; without it no role (customer, underwriter, policy editor, admin) can be told apart or kept out of data that is not theirs.",
+    "scope_in": [
+      "POST /api/auth/login issuing a 1800s bearer JWT (HS256) keyed by email/password",
+      "GET /api/auth/me",
+      "a router-level auth dependency applied to every route except login and health",
+      "role enumeration CUSTOMER, UNDERWRITER, POLICY_EDITOR, ADMIN"
+    ],
+    "scope_out": [
+      "token refresh",
+      "password reset",
+      "user administration (seed users only)"
+    ],
+    "safeguards": [
+      "SG-9"
+    ],
+    "depends_on": [],
+    "traces": [
+      "FRD-24"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E1-S1-AC1",
+        "given": "seeded user customer1@example.test with the correct password",
+        "when": "they POST /api/auth/login",
+        "then": "the response is 200 with expires_in 1800 and role CUSTOMER",
+        "traces": [
+          "FRD-24"
+        ]
+      },
+      {
+        "id": "E1-S1-AC2",
+        "given": "a wrong password",
+        "when": "they POST /api/auth/login",
+        "then": "it is 401 UNAUTHENTICATED with no token and the same body whether or not the email exists",
+        "traces": [
+          "FRD-24"
+        ]
+      },
+      {
+        "id": "E1-S1-AC3",
+        "given": "no Authorization header, or a token 1801 seconds old",
+        "when": "they GET /api/auth/me",
+        "then": "it is 401",
+        "traces": [
+          "FRD-24"
+        ]
+      },
+      {
+        "id": "E1-S1-AC4",
+        "given": "a CUSTOMER token",
+        "when": "they GET /api/audit",
+        "then": "it is 403 FORBIDDEN",
+        "traces": [
+          "FRD-24"
+        ]
+      },
+      {
+        "id": "E1-S1-AC5",
+        "given": "the registered route table",
+        "when": "it is enumerated",
+        "then": "every route except POST /api/auth/login and GET /health declares the auth dependency",
+        "traces": [
+          "FRD-24"
+        ]
+      }
+    ],
+    "group": "A",
+    "cluster": "C1",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E1-S2",
+    "title": "Audit trail",
+    "epic": "E1",
+    "layer": "Repository",
+    "story_points": 3,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "A lender's underwriting decisions and overrides must be reconstructible after the fact; the audit row is the only record of who did what and when.",
+    "scope_in": [
+      "append-only audit_log table with actor, role, action, entity, correlation_id",
+      "the nine audited actions (POLICY_CREATED, POLICY_APPROVED, DOCUMENT_VERIFIED, DOCUMENT_REJECTED, REVIEW_APPROVED, REVIEW_REJECTED, DECISION_OVERRIDDEN, DISBURSEMENT_RECORDED, EOD_RUN)",
+      "GET /api/audit filtered by entity_type/entity_id, ADMIN only",
+      "a database trigger that aborts UPDATE/DELETE on audit_log"
+    ],
+    "scope_out": [
+      "automated-decision logging (not an underwriter action)",
+      "customer action logging"
+    ],
+    "depends_on": [
+      {
+        "story": "E1-S1",
+        "kind": "contract",
+        "artifact": "auth principal",
+        "reason": "audit rows need the authenticated actor and role"
+      }
+    ],
+    "traces": [
+      "FRD-22",
+      "FRD-24"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E1-S2-AC1",
+        "given": "UNDERWRITER user 3 performing an audited action on application 7",
+        "when": "it succeeds",
+        "then": "one audit_log row has actor_user_id 3, actor_role UNDERWRITER, entity_type application, entity_id 7, a UTC occurred_at, and correlation_id equal to the response header",
+        "traces": [
+          "FRD-24"
+        ]
+      },
+      {
+        "id": "E1-S2-AC2",
+        "given": "an existing audit row",
+        "when": "any UPDATE or DELETE runs on audit_log",
+        "then": "the database aborts and the row is unchanged",
+        "traces": [
+          "FRD-22"
+        ]
+      },
+      {
+        "id": "E1-S2-AC3",
+        "given": "3 audit rows for application 7 and 2 for application 8",
+        "when": "ADMIN GETs /api/audit?entity_type=application&entity_id=7",
+        "then": "exactly 3 rows return in ascending id order",
+        "traces": [
+          "FRD-24"
+        ]
+      },
+      {
+        "id": "E1-S2-AC4",
+        "given": "an audited action that fails with a 409",
+        "when": "the request ends",
+        "then": "no audit row exists for it, because the audit write shares the action's transaction",
+        "traces": [
+          "FRD-24",
+          "FRD-22"
+        ]
+      }
+    ],
+    "group": "B",
+    "cluster": "C1",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E1-S3",
+    "title": "JSON logs, correlation IDs, and redaction",
+    "epic": "E1",
+    "layer": "Config",
+    "story_points": 5,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "Synthetic PII (PAN, Aadhaar) and document filenames must never leak into logs, and every request must be traceable end to end by a correlation ID.",
+    "scope_in": [
+      "one structured JSON log line per request with ts/level/event/correlation_id/method/path/status/duration_ms",
+      "inbound X-Correlation-ID reuse/validation, generated UUID4 fallback, echoed response header",
+      "a redaction filter masking PAN/Aadhaar patterns and document filenames anywhere in a log record",
+      "the 500 error envelope with no stack trace in the response"
+    ],
+    "scope_out": [
+      "request/response body logging of any kind"
+    ],
+    "depends_on": [],
+    "traces": [
+      "FRD-23",
+      "FRD-26"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E1-S3-AC1",
+        "given": "any completed request",
+        "when": "output is captured",
+        "then": "exactly one JSON log line has the keys ts, level, event, correlation_id, method, path, status, duration_ms",
+        "traces": [
+          "FRD-26"
+        ]
+      },
+      {
+        "id": "E1-S3-AC2",
+        "given": "no inbound X-Correlation-ID, or an inbound `req-12345678`, or an inbound `a b!`",
+        "when": "the request completes",
+        "then": "a missing header yields a UUID4 echoed in the response header and equal to the log's correlation_id, `req-12345678` is reused as-is, and `a b!` is replaced by a UUID4",
+        "traces": [
+          "FRD-26"
+        ]
+      },
+      {
+        "id": "E1-S3-AC3",
+        "given": "an application created with PAN ABCDE1234F and Aadhaar 1234 5678 9012",
+        "when": "all captured logs, including error paths, are scanned",
+        "then": "neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears",
+        "traces": [
+          "FRD-23"
+        ]
+      },
+      {
+        "id": "E1-S3-AC4",
+        "given": "a document upload with filename salary_slip_jan.pdf",
+        "when": "logs are scanned",
+        "then": "the document ID appears and the filename does not",
+        "traces": [
+          "FRD-23"
+        ]
+      },
+      {
+        "id": "E1-S3-AC5",
+        "given": "an unhandled exception",
+        "when": "it propagates",
+        "then": "the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter",
+        "traces": [
+          "FRD-26",
+          "FRD-23"
+        ]
+      }
+    ],
+    "group": "A",
+    "cluster": "C2",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E1-S4",
+    "title": "Health, migrations, and architecture guards",
+    "epic": "E1",
+    "layer": "Config",
+    "story_points": 8,
+    "estimation_confidence": "medium",
+    "readiness": "ready",
+    "business_value": "Establishes the structural invariants the rest of the build is judged against: an unauthenticated readiness probe, tamper-evident migrations and policy files, a one-way layer order, and zero floating-point money.",
+    "scope_in": [
+      "GET /health (public, under 1000ms once ready)",
+      "numbered SQL migrations applied once and recorded with a SHA-256 in schema_migrations",
+      "startup abort on a changed applied migration (MIGRATION_CHECKSUM_MISMATCH)",
+      "an automated layering test (types < config < repository < service < api < ui, one-way)",
+      "a static scan for float types/calls and REAL money columns",
+      "seeding users (F0) and policy version 1 as APPROVED"
+    ],
+    "scope_out": [
+      "any functional endpoint beyond health"
+    ],
+    "depends_on": [],
+    "traces": [
+      "FRD-19",
+      "FRD-20",
+      "FRD-21",
+      "FRD-25",
+      "FRD-27",
+      "FRD-28"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E1-S4-AC1",
+        "given": "the process has reported ready",
+        "when": "GET /health is requested without a token",
+        "then": "it is 200 {\"status\":\"ok\"} in at most 1000 ms",
+        "traces": [
+          "FRD-20",
+          "FRD-27",
+          "FRD-48"
+        ]
+      },
+      {
+        "id": "E1-S4-AC2",
+        "given": "migrations 0001 through 0003 already applied",
+        "when": "the app starts again",
+        "then": "none re-run and schema_migrations still has 3 rows with SHA-256 values",
+        "traces": [
+          "FRD-25"
+        ]
+      },
+      {
+        "id": "E1-S4-AC3",
+        "given": "applied migration 0002 edited on disk",
+        "when": "the app starts",
+        "then": "startup aborts with MIGRATION_CHECKSUM_MISMATCH and /health never returns 200",
+        "traces": [
+          "FRD-25"
+        ]
+      },
+      {
+        "id": "E1-S4-AC4",
+        "given": "the source tree under backend/src/truelend and frontend/src",
+        "when": "the layer test runs",
+        "then": "no module imports from a higher layer in the order types, config, repository, service, api, ui",
+        "traces": [
+          "FRD-28"
+        ]
+      },
+      {
+        "id": "E1-S4-AC5",
+        "given": "the money code paths",
+        "when": "the static scan runs",
+        "then": "it finds no float type, no float( call, and no REAL money column",
+        "traces": [
+          "FRD-19",
+          "FRD-21",
+          "FRD-47"
+        ]
+      }
+    ],
+    "group": "A",
+    "cluster": "C3",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E2-S1",
+    "title": "Product catalog from the active policy",
+    "epic": "E2",
+    "layer": "API",
+    "story_points": 3,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "A customer must see the loan products and their thresholds before applying; the catalog is read live off whichever policy version is currently approved.",
+    "scope_in": [
+      "GET /api/products returning the active version's PERSONAL/VEHICLE/EDUCATION thresholds and required_documents",
+      "startup verification that policy_v0001.json matches its stored SHA-256"
+    ],
+    "scope_out": [
+      "creating or approving policy versions (E4-S1)",
+      "a fourth product type"
+    ],
+    "depends_on": [
+      {
+        "story": "E1-S1",
+        "kind": "contract",
+        "artifact": "auth guard",
+        "reason": "the catalog requires a valid token"
+      },
+      {
+        "story": "E1-S4",
+        "kind": "data",
+        "artifact": "seeded policy version 1",
+        "reason": "the catalog reads the seeded active policy"
+      }
+    ],
+    "traces": [
+      "FRD-1",
+      "FRD-24",
+      "FRD-25",
+      "FRD-29"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E2-S1-AC1",
+        "given": "seeded policy version 1",
+        "when": "an authenticated user GETs /api/products",
+        "then": "exactly 3 products return (PERSONAL, VEHICLE, EDUCATION), each with policy_version 1",
+        "traces": [
+          "FRD-1",
+          "FRD-29"
+        ]
+      },
+      {
+        "id": "E2-S1-AC2",
+        "given": "version 1",
+        "when": "the rule sets are compared pairwise",
+        "then": "each differs in at least one threshold (min_income is 25000.00, 30000.00, 20000.00)",
+        "traces": [
+          "FRD-1",
+          "FRD-29"
+        ]
+      },
+      {
+        "id": "E2-S1-AC3",
+        "given": "version 1",
+        "when": "the catalog is read",
+        "then": "required_documents has 3 entries for PERSONAL and 4 each for VEHICLE and EDUCATION",
+        "traces": [
+          "FRD-1",
+          "FRD-29"
+        ]
+      },
+      {
+        "id": "E2-S1-AC4",
+        "given": "no token",
+        "when": "GET /api/products is requested",
+        "then": "it is 401",
+        "traces": [
+          "FRD-1",
+          "FRD-24",
+          "FRD-29"
+        ]
+      },
+      {
+        "id": "E2-S1-AC5",
+        "given": "policy_v0001.json edited on disk",
+        "when": "the app starts",
+        "then": "startup aborts with POLICY_CHECKSUM_MISMATCH",
+        "traces": [
+          "FRD-25"
+        ]
+      }
+    ],
+    "group": "B",
+    "cluster": "C3",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E2-S2",
+    "title": "Apply for a loan",
+    "epic": "E2",
+    "layer": "API",
+    "story_points": 5,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "The customer's first concrete action: creating a DRAFT application pinned to a product and generating the right document checklist for it.",
+    "scope_in": [
+      "POST /api/applications creating a DRAFT with a per-product required-documents checklist (MISSING)",
+      "amount/tenure range validation against the active policy",
+      "PAN/Aadhaar format validation and masked display (pan_masked, aadhaar_masked)",
+      "ownership: another customer's application returns 404"
+    ],
+    "scope_out": [
+      "co-applicants",
+      "editing an application after submission",
+      "withdrawing an application"
+    ],
+    "safeguards": [
+      "SG-8"
+    ],
+    "depends_on": [
+      {
+        "story": "E2-S1",
+        "kind": "data",
+        "artifact": "policy thresholds and checklist",
+        "reason": "apply validates amount/tenure against the active policy and builds the document checklist"
+      },
+      {
+        "story": "E1-S1",
+        "kind": "contract",
+        "artifact": "auth guard",
+        "reason": "apply is a CUSTOMER-only route"
+      }
+    ],
+    "traces": [
+      "FRD-2",
+      "FRD-23",
+      "FRD-30"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E2-S2-AC1",
+        "given": "customer user 4 and policy v1",
+        "when": "they POST /api/applications with PERSONAL, amount \"200000.00\", tenure 24, age 30, income \"60000.00\", no flags, PAN ABCDE1234F, Aadhaar 123456789012",
+        "then": "it is 201 with id 1, status DRAFT, applicant_user_id 4",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S2-AC2",
+        "given": "that application",
+        "when": "it is returned",
+        "then": "required_documents is ID_PROOF, ADDRESS_PROOF, SALARY_SLIP (each MISSING); a VEHICLE application lists 4 documents including VEHICLE_QUOTATION; an EDUCATION one includes ADMISSION_LETTER and FEE_STRUCTURE",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S2-AC3",
+        "given": "PERSONAL",
+        "when": "tenure is 72 (max 60), or amount is \"10000.00\" (min 50000.00)",
+        "then": "it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S2-AC4",
+        "given": "PAN \"abc\" or an 11-digit Aadhaar",
+        "when": "posted",
+        "then": "it is 422 VALIDATION_ERROR; a valid application returns pan_masked \"******234F\" and aadhaar_masked \"********9012\" and no raw values",
+        "traces": [
+          "FRD-23",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S2-AC5",
+        "given": "customer user 5",
+        "when": "they GET /api/applications/1",
+        "then": "it is 404",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      }
+    ],
+    "group": "C",
+    "cluster": "C3",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E2-S3",
+    "title": "Upload documents and submit",
+    "epic": "E2",
+    "layer": "Service",
+    "story_points": 5,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "An application only becomes decision-ready once the required documents are recorded and the customer submits, pinning the policy version used for underwriting.",
+    "scope_in": [
+      "POST .../documents recording metadata only (type, filename), no file content",
+      "POST .../submit requiring every document UPLOADED or later, pinning the active policy version",
+      "re-upload of a REJECTED document resets it to UPLOADED"
+    ],
+    "scope_out": [
+      "real file storage, OCR, or virus scanning",
+      "editing an application after submission"
+    ],
+    "safeguards": [
+      "SG-2",
+      "SG-8"
+    ],
+    "depends_on": [
+      {
+        "story": "E2-S2",
+        "kind": "data",
+        "artifact": "application and checklist",
+        "reason": "upload and submit act on the created application and its document rows"
+      }
+    ],
+    "traces": [
+      "FRD-2",
+      "FRD-30"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E2-S3-AC1",
+        "given": "application 1 in DRAFT",
+        "when": "the owner POSTs {type:\"ID_PROOF\", filename:\"id_front.png\"}",
+        "then": "it is 201 and that document is UPLOADED with no file content stored",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S3-AC2",
+        "given": "PERSONAL application 1",
+        "when": "they POST type VEHICLE_QUOTATION",
+        "then": "it is 422 DOCUMENT_TYPE_NOT_REQUIRED",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S3-AC3",
+        "given": "SALARY_SLIP is still MISSING",
+        "when": "they POST submit",
+        "then": "it is 409 MISSING_DOCUMENTS with missing [\"SALARY_SLIP\"] and status stays DRAFT",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S3-AC4",
+        "given": "all 3 documents UPLOADED and the active version 1",
+        "when": "they POST submit",
+        "then": "it is 200, status SUBMITTED, policy_version 1, and submitted_at set",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S3-AC5",
+        "given": "an already SUBMITTED application",
+        "when": "submit is posted again",
+        "then": "it is 409 ALREADY_SUBMITTED",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      }
+    ],
+    "group": "D",
+    "cluster": "C4",
+    "invest": {
+      "independent": false
+    }
+  },
+  {
+    "id": "E2-S4",
+    "title": "Apply wizard and verification queue UI",
+    "epic": "E2",
+    "layer": "UI",
+    "story_points": 5,
+    "estimation_confidence": "medium",
+    "readiness": "ready",
+    "business_value": "The two demo-critical screens on the customer and underwriter sides of document intake: a mobile-friendly apply wizard and a responsive verification queue.",
+    "scope_in": [
+      "a three-step apply wizard (Product, Details, Documents and submit) with a progress indicator",
+      "inline range validation on the Details step",
+      "a verification queue that renders as a table on desktop and stacked cards on mobile, updating without a page reload"
+    ],
+    "scope_out": [
+      "real file upload UI beyond a stub form"
+    ],
+    "depends_on": [
+      {
+        "story": "E2-S3",
+        "kind": "contract",
+        "artifact": "apply/upload/submit endpoints",
+        "reason": "the apply wizard calls these endpoints"
+      },
+      {
+        "story": "E3-S1",
+        "kind": "contract",
+        "artifact": "verification-queue endpoint",
+        "reason": "the verification queue UI calls this endpoint"
+      }
+    ],
+    "traces": [
+      "FRD-2",
+      "FRD-6",
+      "FRD-34"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E2-S4-AC1",
+        "given": "a customer on a 375x812 viewport",
+        "when": "they apply",
+        "then": "a three-step flow (Product, Details, Documents and submit) shows one step at a time with a progress indicator and no horizontal scroll",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S4-AC2",
+        "given": "the Details step",
+        "when": "they enter tenure 72 for PERSONAL",
+        "then": "an inline error shows \"12-60 months\" before they continue",
+        "traces": [
+          "FRD-2",
+          "FRD-30"
+        ]
+      },
+      {
+        "id": "E2-S4-AC3",
+        "given": "an underwriter on 1280x800",
+        "when": "they open the queue",
+        "then": "a table lists documents; at 375x812 the same data shows as stacked cards; verifying one removes it without a page reload",
+        "traces": [
+          "FRD-6",
+          "FRD-34"
+        ]
+      }
+    ],
+    "group": "F",
+    "cluster": "C5",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E3-S1",
+    "title": "Verification queue",
+    "epic": "E3",
+    "layer": "Service",
+    "story_points": 3,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "An underwriter must be able to see all pending documents in one queue and clear each one, VERIFIED or REJECTED, with an audited reason.",
+    "scope_in": [
+      "GET /api/verification-queue listing UPLOADED documents oldest first, paginated",
+      "POST /api/documents/{id}/verify with outcome and a 1-500 character reason",
+      "VERIFIED is final; only a REJECTED document can be replaced"
+    ],
+    "scope_out": [
+      "document content review (metadata only)"
+    ],
+    "depends_on": [
+      {
+        "story": "E2-S3",
+        "kind": "data",
+        "artifact": "uploaded documents",
+        "reason": "the queue lists UPLOADED documents"
+      },
+      {
+        "story": "E1-S2",
+        "kind": "contract",
+        "artifact": "audit writer",
+        "reason": "verify/reject actions are audited"
+      }
+    ],
+    "traces": [
+      "FRD-6",
+      "FRD-24",
+      "FRD-34"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E3-S1-AC1",
+        "given": "submitted application 1 with 3 UPLOADED documents",
+        "when": "UNDERWRITER user 3 GETs /api/verification-queue",
+        "then": "3 items return oldest first, each with document_id, application_id 1, and type",
+        "traces": [
+          "FRD-6",
+          "FRD-34"
+        ]
+      },
+      {
+        "id": "E3-S1-AC2",
+        "given": "document 1",
+        "when": "user 3 POSTs {outcome:\"VERIFIED\", reason:\"Name matches PAN record\"}",
+        "then": "it is 200 VERIFIED, verified_by 3, an audit row DOCUMENT_VERIFIED is written, and the item leaves the queue",
+        "traces": [
+          "FRD-6",
+          "FRD-34",
+          "FRD-24"
+        ]
+      },
+      {
+        "id": "E3-S1-AC3",
+        "given": "document 2",
+        "when": "user 3 POSTs {outcome:\"REJECTED\", reason:\"Image unreadable\"}",
+        "then": "it is 200 REJECTED with the reason, an audit row DOCUMENT_REJECTED is written, and the application still reads SUBMITTED",
+        "traces": [
+          "FRD-6",
+          "FRD-34",
+          "FRD-24"
+        ]
+      },
+      {
+        "id": "E3-S1-AC4",
+        "given": "a missing, empty, or 501-character reason",
+        "when": "posted",
+        "then": "it is 422 VALIDATION_ERROR and no audit row is written",
+        "traces": [
+          "FRD-6",
+          "FRD-34"
+        ]
+      },
+      {
+        "id": "E3-S1-AC5",
+        "given": "a CUSTOMER token, or an already VERIFIED document",
+        "when": "they GET the queue or POST verify, or verify is posted again",
+        "then": "it is 403 for the CUSTOMER token and 409 ALREADY_VERIFIED for the already-verified document",
+        "traces": [
+          "FRD-6",
+          "FRD-24",
+          "FRD-34"
+        ]
+      }
+    ],
+    "group": "E",
+    "cluster": "C4",
+    "invest": {
+      "independent": false
+    }
+  },
+  {
+    "id": "E3-S2",
+    "title": "Credit-scoring stub",
+    "epic": "E3",
+    "layer": "Service",
+    "story_points": 3,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "Underwriting needs a deterministic, explainable score to compare against policy thresholds, without any real bureau integration.",
+    "scope_in": [
+      "a pure function score(age, income, credit_flags) -> integer",
+      "fixed formula: base 600 + age points + income points - flag penalties"
+    ],
+    "scope_out": [
+      "real bureau data",
+      "editable score weights"
+    ],
+    "safeguards": [
+      "SG-1"
+    ],
+    "depends_on": [],
+    "traces": [
+      "FRD-3",
+      "FRD-31"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E3-S2-AC1",
+        "given": "age 40, income \"100000.00\", no flags",
+        "when": "scored",
+        "then": "the score is 740",
+        "traces": [
+          "FRD-3",
+          "FRD-31"
+        ]
+      },
+      {
+        "id": "E3-S2-AC2",
+        "given": "age 30 with income \"60000.00\" and no flags, or age 30 with income \"30000.00\" and prior_default",
+        "when": "scored",
+        "then": "the first scores 680 and the second scores 500",
+        "traces": [
+          "FRD-3",
+          "FRD-31"
+        ]
+      },
+      {
+        "id": "E3-S2-AC3",
+        "given": "the same inputs",
+        "when": "scored 100 times",
+        "then": "all 100 scores are identical",
+        "traces": [
+          "FRD-3",
+          "FRD-31"
+        ]
+      },
+      {
+        "id": "E3-S2-AC4",
+        "given": "the 680 baseline",
+        "when": "one input changes at a time",
+        "then": "age 40 gives 700, income \"70000.00\" gives 690, missed_payment_12m gives 620, thin_file gives 640, and prior_default gives 530",
+        "traces": [
+          "FRD-3",
+          "FRD-31"
+        ]
+      },
+      {
+        "id": "E3-S2-AC5",
+        "given": "age 18, income \"0.00\" and all three flags, or age 40 with income \"150000.00\" or \"500000.00\"",
+        "when": "scored",
+        "then": "the first scores 350 and both of the second case scores are 790",
+        "traces": [
+          "FRD-3",
+          "FRD-31"
+        ]
+      }
+    ],
+    "group": "A",
+    "cluster": "C6",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E3-S3",
+    "title": "Underwriting decision with reason codes",
+    "epic": "E3",
+    "layer": "Service",
+    "story_points": 5,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "Turns a submitted application into AUTO_APPROVE, AUTO_REJECT, or MANUAL_REVIEW using the policy version pinned at submission, with explainable reason codes.",
+    "scope_in": [
+      "POST /api/applications/{id}/underwrite on a SUBMITTED application, callable once",
+      "rule order: income floor, age range, score thresholds",
+      "status mapping AUTO_APPROVE->APPROVED, AUTO_REJECT->REJECTED, MANUAL_REVIEW->MANUAL_REVIEW",
+      "ApplicationApproved event published in the same transaction on any transition to APPROVED"
+    ],
+    "scope_out": [
+      "re-underwriting after a policy change"
+    ],
+    "depends_on": [
+      {
+        "story": "E3-S2",
+        "kind": "contract",
+        "artifact": "score function",
+        "reason": "underwriting consumes the deterministic score"
+      },
+      {
+        "story": "E2-S3",
+        "kind": "data",
+        "artifact": "submitted application",
+        "reason": "underwriting runs on a SUBMITTED application with a pinned policy version"
+      }
+    ],
+    "traces": [
+      "FRD-4",
+      "FRD-16",
+      "FRD-32"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E3-S3-AC1",
+        "given": "a submitted PERSONAL application (age 40, income \"100000.00\", no flags, pinned version 1)",
+        "when": "underwritten",
+        "then": "decision AUTO_APPROVE, score 740, reason_codes [\"SCORE_MEETS_AUTO_APPROVE\"], policy_version 1, status APPROVED, and one ApplicationApproved event is published",
+        "traces": [
+          "FRD-4",
+          "FRD-32"
+        ]
+      },
+      {
+        "id": "E3-S3-AC2",
+        "given": "age 30, income \"60000.00\", no flags (score 680, review band 600-699)",
+        "when": "underwritten",
+        "then": "decision MANUAL_REVIEW with [\"SCORE_IN_REVIEW_BAND\"] and status MANUAL_REVIEW",
+        "traces": [
+          "FRD-4",
+          "FRD-32"
+        ]
+      },
+      {
+        "id": "E3-S3-AC3",
+        "given": "age 30, income \"30000.00\", prior_default (score 500)",
+        "when": "underwritten",
+        "then": "decision AUTO_REJECT with [\"SCORE_BELOW_MIN\"] and status REJECTED",
+        "traces": [
+          "FRD-4",
+          "FRD-32"
+        ]
+      },
+      {
+        "id": "E3-S3-AC4",
+        "given": "age 70, income \"100000.00\" (score 700)",
+        "when": "underwritten",
+        "then": "decision AUTO_REJECT with [\"AGE_OUT_OF_RANGE\"] only",
+        "traces": [
+          "FRD-4",
+          "FRD-32"
+        ]
+      },
+      {
+        "id": "E3-S3-AC5",
+        "given": "application A submitted under version 1, version 2 (PERSONAL min_income \"30000.00\") approved afterwards, and application B submitted after that, both age 30 with income \"26000.00\"",
+        "when": "underwritten",
+        "then": "A uses policy_version 1 and is MANUAL_REVIEW (score 640), while B uses policy_version 2 and is AUTO_REJECT with [\"INCOME_BELOW_MIN\"]",
+        "traces": [
+          "FRD-4",
+          "FRD-16",
+          "FRD-32"
+        ]
+      },
+      {
+        "id": "E3-S3-AC6",
+        "given": "a DRAFT application, or an already decided one",
+        "when": "underwrite is called",
+        "then": "the DRAFT case is 409 NOT_SUBMITTED and the already-decided case is 409 ALREADY_DECIDED with the stored decision unchanged",
+        "traces": [
+          "FRD-4",
+          "FRD-32"
+        ]
+      }
+    ],
+    "group": "E",
+    "cluster": "C4",
+    "invest": {
+      "independent": false
+    }
+  },
+  {
+    "id": "E3-S4",
+    "title": "Minimum-income violation",
+    "epic": "E3",
+    "layer": "Service",
+    "story_points": 2,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "A hard policy floor on income must reject automatically with a clear, audit-visible reason rather than silently falling through to scoring.",
+    "scope_in": [
+      "PolicyViolationException(INCOME_BELOW_MIN) raised by the rule engine below the product's min_income",
+      "the underwriting service catching it and persisting AUTO_REJECT/INCOME_BELOW_MIN"
+    ],
+    "scope_out": [
+      "any other policy-violation category"
+    ],
+    "depends_on": [
+      {
+        "story": "E3-S3",
+        "kind": "behavior",
+        "artifact": "decision persistence",
+        "reason": "the income violation is persisted through the same decision-recording behavior as other outcomes"
+      }
+    ],
+    "traces": [
+      "FRD-5",
+      "FRD-33"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E3-S4-AC1",
+        "given": "PERSONAL with min_income \"25000.00\"",
+        "when": "the rule engine evaluates income \"24999.99\"",
+        "then": "it raises PolicyViolationException with code INCOME_BELOW_MIN",
+        "traces": [
+          "FRD-5",
+          "FRD-33"
+        ]
+      },
+      {
+        "id": "E3-S4-AC2",
+        "given": "income exactly \"25000.00\" (age 30, no flags, score 640)",
+        "when": "evaluated",
+        "then": "no exception is raised and the decision is MANUAL_REVIEW",
+        "traces": [
+          "FRD-5",
+          "FRD-33"
+        ]
+      },
+      {
+        "id": "E3-S4-AC3",
+        "given": "a submitted application with income \"24999.99\"",
+        "when": "underwrite is called",
+        "then": "it is 200 with AUTO_REJECT, reason_codes [\"INCOME_BELOW_MIN\"], status REJECTED, and a persisted decisions row",
+        "traces": [
+          "FRD-5",
+          "FRD-33"
+        ]
+      }
+    ],
+    "group": "F",
+    "cluster": "C4",
+    "invest": {
+      "independent": false
+    }
+  },
+  {
+    "id": "E3-S5",
+    "title": "Manual review and override",
+    "epic": "E3",
+    "layer": "Service",
+    "story_points": 5,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "A human underwriter (or, for an override, an admin) must be able to resolve a MANUAL_REVIEW or reverse an AUTO_REJECT, with every such action audited.",
+    "scope_in": [
+      "POST .../review with outcome APPROVE|REJECT and a 1-500 character reason, UNDERWRITER only",
+      "POST .../override with reason_code (from the policy's override_reason_codes) and a comment, UNDERWRITER or ADMIN, on an AUTO_REJECT with no resolution yet",
+      "audit rows REVIEW_APPROVED, REVIEW_REJECTED, DECISION_OVERRIDDEN with before/after status"
+    ],
+    "scope_out": [
+      "overriding anything other than an AUTO_REJECT",
+      "listing/filtering applications across the portfolio (FR-10, deferred to M2)"
+    ],
+    "depends_on": [
+      {
+        "story": "E3-S3",
+        "kind": "data",
+        "artifact": "decisions",
+        "reason": "review and override act on an existing decision row"
+      },
+      {
+        "story": "E1-S2",
+        "kind": "contract",
+        "artifact": "audit writer",
+        "reason": "review and override actions are audited"
+      }
+    ],
+    "traces": [
+      "FRD-14",
+      "FRD-15",
+      "FRD-24",
+      "FRD-42",
+      "FRD-43"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E3-S5-AC1",
+        "given": "application 2 in MANUAL_REVIEW",
+        "when": "UNDERWRITER user 3 POSTs {outcome:\"APPROVE\", reason:\"Stable income, documents verified\"}",
+        "then": "it is 200, status APPROVED, resolution MANUAL_REVIEW/APPROVED, an audit row REVIEW_APPROVED with actor 3, and an ApplicationApproved event",
+        "traces": [
+          "FRD-14",
+          "FRD-42"
+        ]
+      },
+      {
+        "id": "E3-S5-AC2",
+        "given": "the same state",
+        "when": "they POST REJECT with a reason",
+        "then": "status REJECTED, audit row REVIEW_REJECTED, and no event",
+        "traces": [
+          "FRD-14",
+          "FRD-42"
+        ]
+      },
+      {
+        "id": "E3-S5-AC3",
+        "given": "application 3 with decision AUTO_REJECT",
+        "when": "ADMIN user 1 POSTs {reason_code:\"COMPENSATING_FACTORS\", comment:\"Co-signed by parent; income verified\"}",
+        "then": "it is 200, status APPROVED, the decision row still reads AUTO_REJECT, an audit row DECISION_OVERRIDDEN with actor 1, the reason code, the comment, before REJECTED/after APPROVED, and an event",
+        "traces": [
+          "FRD-15",
+          "FRD-43"
+        ]
+      },
+      {
+        "id": "E3-S5-AC4",
+        "given": "application 4 with AUTO_REJECT",
+        "when": "UNDERWRITER user 3 overrides with DATA_CORRECTION",
+        "then": "the same outcome as AC3 with actor 3 in the audit row",
+        "traces": [
+          "FRD-15",
+          "FRD-43"
+        ]
+      },
+      {
+        "id": "E3-S5-AC5",
+        "given": "an application in MANUAL_REVIEW or already overridden, or a reason_code \"FOO\" or an empty comment, or review on an application not in MANUAL_REVIEW, or a CUSTOMER token",
+        "when": "override or review is called",
+        "then": "it is 409 NOT_OVERRIDABLE, 422, 409 NOT_IN_REVIEW, and 403 respectively",
+        "traces": [
+          "FRD-14",
+          "FRD-15",
+          "FRD-24",
+          "FRD-42",
+          "FRD-43"
+        ]
+      }
+    ],
+    "group": "F",
+    "cluster": "C4",
+    "invest": {
+      "independent": false
+    }
+  },
+  {
+    "id": "E3-S6",
+    "title": "Decision review and override UI",
+    "epic": "E3",
+    "layer": "UI",
+    "story_points": 5,
+    "estimation_confidence": "medium",
+    "readiness": "ready",
+    "business_value": "Gives an underwriter the score, reason codes, and policy context needed to resolve a MANUAL_REVIEW or decide an override, on desktop and mobile.",
+    "scope_in": [
+      "a decision panel showing score, reason codes with customer-readable messages, and policy version",
+      "an override dialog requiring both a reason code and a comment before Submit enables",
+      "review Approve/Reject buttons disabled until a reason is entered"
+    ],
+    "scope_out": [
+      "the admin-only application list/filter view (FR-10, deferred to M2)"
+    ],
+    "depends_on": [
+      {
+        "story": "E3-S5",
+        "kind": "contract",
+        "artifact": "review/override endpoints",
+        "reason": "the decision UI calls these endpoints"
+      }
+    ],
+    "traces": [
+      "FRD-14",
+      "FRD-15"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E3-S6-AC1",
+        "given": "an underwriter opening application 2",
+        "when": "the page loads",
+        "then": "it shows score 680, the reason code with its message, and policy version 1; at 375x812 the panels stack with no horizontal scroll",
+        "traces": [
+          "FRD-14",
+          "FRD-42"
+        ]
+      },
+      {
+        "id": "E3-S6-AC2",
+        "given": "the override dialog on an AUTO_REJECT application",
+        "when": "the comment is empty or no reason code is chosen",
+        "then": "Submit is disabled; with both set it enables and success shows a confirmation",
+        "traces": [
+          "FRD-15",
+          "FRD-43"
+        ]
+      },
+      {
+        "id": "E3-S6-AC3",
+        "given": "a MANUAL_REVIEW application",
+        "when": "the reason field is empty",
+        "then": "Approve and Reject are disabled",
+        "traces": [
+          "FRD-14",
+          "FRD-42"
+        ]
+      }
+    ],
+    "group": "G",
+    "cluster": "C7",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E4-S1",
+    "title": "Create and approve policy versions",
+    "epic": "E4",
+    "layer": "Service",
+    "story_points": 5,
+    "estimation_confidence": "high",
+    "readiness": "ready",
+    "business_value": "Lets a policy editor adjust thresholds without a code change, while keeping every approved version immutable and auditable, and letting only an admin activate a new one.",
+    "scope_in": [
+      "POST /api/policies creating a new DRAFT version file, byte-identical predecessor",
+      "POST /api/policies/{version}/approve, ADMIN only, activating the highest-numbered APPROVED version",
+      "validation of rate/age/tenure/amount/score ranges before a file is written",
+      "no PUT/PATCH/DELETE route on /api/policies*; a DB trigger aborting any other UPDATE"
+    ],
+    "scope_out": [
+      "a fourth product type",
+      "editing score weights through the policy editor",
+      "rolling back an approved policy version"
+    ],
+    "safeguards": [
+      "SG-10"
+    ],
+    "depends_on": [
+      {
+        "story": "E1-S4",
+        "kind": "data",
+        "artifact": "seeded policy version 1",
+        "reason": "creating version 2 bases on the seeded version 1 file"
+      },
+      {
+        "story": "E1-S2",
+        "kind": "contract",
+        "artifact": "audit writer",
+        "reason": "policy create/approve actions are audited"
+      },
+      {
+        "story": "E1-S1",
+        "kind": "contract",
+        "artifact": "auth guard",
+        "reason": "only POLICY_EDITOR/ADMIN may call these routes"
+      }
+    ],
+    "traces": [
+      "FRD-16",
+      "FRD-22",
+      "FRD-25",
+      "FRD-28",
+      "FRD-44"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E4-S1-AC1",
+        "given": "POLICY_EDITOR user 2",
+        "when": "they POST /api/policies with base_version 1 and PERSONAL.min_income \"30000.00\"",
+        "then": "it is 201 with version 2, status DRAFT, file policy_v0002.json written, an audit row POLICY_CREATED, and the SHA-256 of policy_v0001.json unchanged",
+        "traces": [
+          "FRD-16",
+          "FRD-44",
+          "FRD-22"
+        ]
+      },
+      {
+        "id": "E4-S1-AC2",
+        "given": "version 2 is DRAFT",
+        "when": "GET /api/products",
+        "then": "PERSONAL min_income is still \"25000.00\" and policy_version is 1",
+        "traces": [
+          "FRD-16",
+          "FRD-44"
+        ]
+      },
+      {
+        "id": "E4-S1-AC3",
+        "given": "ADMIN user 1",
+        "when": "they POST /api/policies/2/approve",
+        "then": "it is 200 APPROVED with approved_by 1, an audit row POLICY_APPROVED, and GET /api/products shows PERSONAL min_income \"30000.00\" with policy_version 2",
+        "traces": [
+          "FRD-16",
+          "FRD-44"
+        ]
+      },
+      {
+        "id": "E4-S1-AC4",
+        "given": "approved version 1",
+        "when": "PUT, PATCH, or DELETE hits /api/policies/1, or a raw SQL UPDATE changes its thresholds",
+        "then": "the HTTP verbs return 405 and the SQL UPDATE aborts at the database",
+        "traces": [
+          "FRD-22",
+          "FRD-25",
+          "FRD-28"
+        ]
+      },
+      {
+        "id": "E4-S1-AC5",
+        "given": "POLICY_EDITOR user 2",
+        "when": "they POST /api/policies/2/approve",
+        "then": "it is 403",
+        "traces": [
+          "FRD-16",
+          "FRD-44"
+        ]
+      },
+      {
+        "id": "E4-S1-AC6",
+        "given": "a change setting auto_reject_below_score 750 with auto_approve_min_score 700, or min_income \"-1\"",
+        "when": "POSTed",
+        "then": "it is 422 VALIDATION_ERROR naming the offending field and no file is written",
+        "traces": [
+          "FRD-16",
+          "FRD-44"
+        ]
+      }
+    ],
+    "group": "C",
+    "cluster": "C3",
+    "invest": {
+      "independent": true
+    }
+  },
+  {
+    "id": "E4-S2",
+    "title": "Policy editor UI",
+    "epic": "E4",
+    "layer": "UI",
+    "story_points": 5,
+    "estimation_confidence": "medium",
+    "readiness": "ready",
+    "business_value": "Lets a policy editor change thresholds through a form instead of a file, with validation that prevents an invalid draft from ever being saved.",
+    "scope_in": [
+      "per-product threshold forms stacking in one column on mobile",
+      "inline validation (e.g. min_age < max_age) disabling Save until fixed",
+      "a draft-version confirmation after Save"
+    ],
+    "scope_out": [
+      "approving a version from this UI (admin action, out of this story's scope_in)"
+    ],
+    "depends_on": [
+      {
+        "story": "E4-S1",
+        "kind": "contract",
+        "artifact": "policy endpoints",
+        "reason": "the policy editor UI calls these endpoints"
+      }
+    ],
+    "traces": [
+      "FRD-16"
+    ],
+    "acceptance_criteria": [
+      {
+        "id": "E4-S2-AC1",
+        "given": "a POLICY_EDITOR on a 375x812 viewport",
+        "when": "they open the policy editor",
+        "then": "the product forms stack in one column with no horizontal scroll",
+        "traces": [
+          "FRD-16",
+          "FRD-44"
+        ]
+      },
+      {
+        "id": "E4-S2-AC2",
+        "given": "the PERSONAL form",
+        "when": "they enter min_age 70 with max_age 60",
+        "then": "an inline error appears before submit and the Save button is disabled",
+        "traces": [
+          "FRD-16",
+          "FRD-44"
+        ]
+      },
+      {
+        "id": "E4-S2-AC3",
+        "given": "valid changes",
+        "when": "they Save",
+        "then": "the page shows \"Draft v2\" and the new version appears in the list",
+        "traces": [
+          "FRD-16",
+          "FRD-44"
+        ]
+      }
+    ],
+    "group": "D",
+    "cluster": "C8",
+    "invest": {
+      "independent": true
+    }
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "phase": "spec",
+  "source": "specs/brd/brd.md",
+  "confirmed_at": "2026-11-02T00:00:00Z",
+  "milestone": {
+    "name": "M1",
+    "epics": ["E1", "E2", "E3", "E4"],
+    "deferred_epics": ["M2"],
+    "requirements_in_scope": ["FR-1","FR-2","FR-3","FR-4","FR-5","FR-6","FR-14","FR-15","FR-16","FR-19","FR-20","NFR-01","NFR-02","NFR-03","NFR-04","NFR-05","NFR-06","NFR-07","NFR-08"]
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "question": "Which milestone is rendered into stories in this run?",
+      "options": ["M1 only", "M1 + M2"],
+      "proposed_default": "M1 only",
+      "chosen": "M1 only",
+      "rationale": "M2 (disbursement, schedule, repayment, dashboard, EOD job) depends on application/decision contracts M1 publishes; rendered in a later run.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D2",
+      "question": "How is M1 split into epics?",
+      "options": ["4 vertical epics", "3 epics", "Per-FR epics"],
+      "proposed_default": "4 vertical epics",
+      "chosen": "4 vertical epics",
+      "rationale": "E1 Foundation & auth (seed users, roles, health, JSON logs, correlation ID); E2 Customer application (products, apply, documents, submit); E3 Decisioning (scoring stub, underwriting, policy violation, underwriter verify/review/override); E4 Policy admin (editor v2, admin approval, append-only). Each is a vertical slice.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D3",
+      "question": "How are the 8 NFRs (no observable criterion) handled?",
+      "options": ["Cross-cutting guard stories", "Constraints only", "Defer NFR criteria"],
+      "proposed_default": "Cross-cutting guard stories",
+      "chosen": "Cross-cutting guard stories",
+      "rationale": "Author one observable criterion per NFR and render guard/test stories in E1, attached as constraints to stories touching money, logs, routes or migrations.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D4",
+      "question": "Which dependencies are real rather than defensive?",
+      "options": ["Minimal real chain", "Strict linear"],
+      "proposed_default": "Minimal real chain",
+      "chosen": "Minimal real chain",
+      "rationale": "E1 -> E2 -> E3 is real (decisioning needs submitted applications). E4 depends only on E1 and the policy file, so it can run parallel to E2/E3. Scoring stub (FR-3) is independent.",
+      "basis": "human",
+      "load_bearing": true
+    }
+  ]
+}

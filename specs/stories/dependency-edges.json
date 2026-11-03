@@ -1,0 +1,142 @@
+[
+  {
+    "from": "E1-S2",
+    "to": "E1-S1",
+    "kind": "contract",
+    "artifact": "auth principal",
+    "reason": "audit rows need the authenticated actor and role"
+  },
+  {
+    "from": "E2-S1",
+    "to": "E1-S1",
+    "kind": "contract",
+    "artifact": "auth guard",
+    "reason": "the catalog requires a valid token"
+  },
+  {
+    "from": "E2-S1",
+    "to": "E1-S4",
+    "kind": "data",
+    "artifact": "seeded policy version 1",
+    "reason": "the catalog reads the seeded active policy"
+  },
+  {
+    "from": "E2-S2",
+    "to": "E2-S1",
+    "kind": "data",
+    "artifact": "policy thresholds and checklist",
+    "reason": "apply validates amount/tenure against the active policy and builds the document checklist"
+  },
+  {
+    "from": "E2-S2",
+    "to": "E1-S1",
+    "kind": "contract",
+    "artifact": "auth guard",
+    "reason": "apply is a CUSTOMER-only route"
+  },
+  {
+    "from": "E2-S3",
+    "to": "E2-S2",
+    "kind": "data",
+    "artifact": "application and checklist",
+    "reason": "upload and submit act on the created application and its document rows"
+  },
+  {
+    "from": "E2-S4",
+    "to": "E2-S3",
+    "kind": "contract",
+    "artifact": "apply/upload/submit endpoints",
+    "reason": "the apply wizard calls these endpoints"
+  },
+  {
+    "from": "E2-S4",
+    "to": "E3-S1",
+    "kind": "contract",
+    "artifact": "verification-queue endpoint",
+    "reason": "the verification queue UI calls this endpoint"
+  },
+  {
+    "from": "E3-S1",
+    "to": "E2-S3",
+    "kind": "data",
+    "artifact": "uploaded documents",
+    "reason": "the queue lists UPLOADED documents"
+  },
+  {
+    "from": "E3-S1",
+    "to": "E1-S2",
+    "kind": "contract",
+    "artifact": "audit writer",
+    "reason": "verify/reject actions are audited"
+  },
+  {
+    "from": "E3-S3",
+    "to": "E3-S2",
+    "kind": "contract",
+    "artifact": "score function",
+    "reason": "underwriting consumes the deterministic score"
+  },
+  {
+    "from": "E3-S3",
+    "to": "E2-S3",
+    "kind": "data",
+    "artifact": "submitted application",
+    "reason": "underwriting runs on a SUBMITTED application with a pinned policy version"
+  },
+  {
+    "from": "E3-S4",
+    "to": "E3-S3",
+    "kind": "behavior",
+    "artifact": "decision persistence",
+    "reason": "the income violation is persisted through the same decision-recording behavior as other outcomes"
+  },
+  {
+    "from": "E3-S5",
+    "to": "E3-S3",
+    "kind": "data",
+    "artifact": "decisions",
+    "reason": "review and override act on an existing decision row"
+  },
+  {
+    "from": "E3-S5",
+    "to": "E1-S2",
+    "kind": "contract",
+    "artifact": "audit writer",
+    "reason": "review and override actions are audited"
+  },
+  {
+    "from": "E3-S6",
+    "to": "E3-S5",
+    "kind": "contract",
+    "artifact": "review/override endpoints",
+    "reason": "the decision UI calls these endpoints"
+  },
+  {
+    "from": "E4-S1",
+    "to": "E1-S4",
+    "kind": "data",
+    "artifact": "seeded policy version 1",
+    "reason": "creating version 2 bases on the seeded version 1 file"
+  },
+  {
+    "from": "E4-S1",
+    "to": "E1-S2",
+    "kind": "contract",
+    "artifact": "audit writer",
+    "reason": "policy create/approve actions are audited"
+  },
+  {
+    "from": "E4-S1",
+    "to": "E1-S1",
+    "kind": "contract",
+    "artifact": "auth guard",
+    "reason": "only POLICY_EDITOR/ADMIN may call these routes"
+  },
+  {
+    "from": "E4-S2",
+    "to": "E4-S1",
+    "kind": "contract",
+    "artifact": "policy endpoints",
+    "reason": "the policy editor UI calls these endpoints"
+  }
+]
