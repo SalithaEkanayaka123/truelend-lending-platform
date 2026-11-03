@@ -1,0 +1,114 @@
+[
+  {
+    "id": "e1-s1-component",
+    "text": "Authentication and role guard",
+    "traces": [
+      "E1-S1"
+    ]
+  },
+  {
+    "id": "e1-s2-component",
+    "text": "Audit trail",
+    "traces": [
+      "E1-S2"
+    ]
+  },
+  {
+    "id": "e1-s3-component",
+    "text": "JSON logs, correlation IDs, redaction",
+    "traces": [
+      "E1-S3"
+    ]
+  },
+  {
+    "id": "e1-s4-component",
+    "text": "Health, migrations, architecture guards",
+    "traces": [
+      "E1-S4"
+    ]
+  },
+  {
+    "id": "e2-s1-component",
+    "text": "Product catalog from the active policy",
+    "traces": [
+      "E2-S1"
+    ]
+  },
+  {
+    "id": "e2-s2-component",
+    "text": "Apply for a loan",
+    "traces": [
+      "E2-S2"
+    ]
+  },
+  {
+    "id": "e2-s3-component",
+    "text": "Upload documents and submit",
+    "traces": [
+      "E2-S3"
+    ]
+  },
+  {
+    "id": "e2-s4-component",
+    "text": "Apply wizard and verification queue UI",
+    "traces": [
+      "E2-S4"
+    ]
+  },
+  {
+    "id": "e3-s1-component",
+    "text": "Verification queue",
+    "traces": [
+      "E3-S1"
+    ]
+  },
+  {
+    "id": "e3-s2-component",
+    "text": "Credit-scoring stub",
+    "traces": [
+      "E3-S2"
+    ]
+  },
+  {
+    "id": "e3-s3-component",
+    "text": "Underwriting decision with reason codes",
+    "traces": [
+      "E3-S3"
+    ]
+  },
+  {
+    "id": "e3-s4-component",
+    "text": "Minimum-income violation",
+    "traces": [
+      "E3-S4"
+    ]
+  },
+  {
+    "id": "e3-s5-component",
+    "text": "Manual review and override",
+    "traces": [
+      "E3-S5"
+    ]
+  },
+  {
+    "id": "e3-s6-component",
+    "text": "Decision review and override UI",
+    "traces": [
+      "E3-S6"
+    ]
+  },
+  {
+    "id": "e4-s1-component",
+    "text": "Create and approve policy versions",
+    "traces": [
+      "E4-S1"
+    ]
+  },
+  {
+    "id": "e4-s2-component",
+    "text": "Policy editor UI",
+    "traces": [
+      "E4-S2"
+    ]
+  }
+]

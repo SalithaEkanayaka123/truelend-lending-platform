@@ -1,0 +1,102 @@
+[
+  {
+    "id": "FRD-29",
+    "requirement": "FR-1",
+    "text": "GET /api/products with a valid token returns 200 and exactly 3 products (PERSONAL, VEHICLE, EDUCATION), each with policy_version 1; their min_income values are 25000.00, 30000.00 and 20000.00, so no two rule sets are identical."
+  },
+  {
+    "id": "FRD-30",
+    "requirement": "FR-2",
+    "text": "POST /api/applications as customer user 4 (PERSONAL, amount 200000.00, tenure 24 months, age 30, income 60000.00) returns 201 with status DRAFT and required_documents ID_PROOF, ADDRESS_PROOF and SALARY_SLIP, each MISSING; a VEHICLE application lists 4 documents and an EDUCATION one lists 4."
+  },
+  {
+    "id": "FRD-31",
+    "requirement": "FR-3",
+    "text": "Scoring age 40, income 100000.00 and no flags returns 740 on each of 100 repeated calls; age 30 with income 60000.00 returns 680; age 30 with income 30000.00 and prior_default returns 500."
+  },
+  {
+    "id": "FRD-32",
+    "requirement": "FR-4",
+    "text": "Underwriting a submitted PERSONAL application returns AUTO_APPROVE with score 740 and reason_codes [\"SCORE_MEETS_AUTO_APPROVE\"] at policy_version 1; score 680 returns MANUAL_REVIEW with [\"SCORE_IN_REVIEW_BAND\"]; score 500 returns AUTO_REJECT with [\"SCORE_BELOW_MIN\"]."
+  },
+  {
+    "id": "FRD-33",
+    "requirement": "FR-5",
+    "text": "For PERSONAL with min_income 25000.00, income 24999.99 raises PolicyViolationException with code INCOME_BELOW_MIN in the rule engine, and POST /underwrite returns 200 with decision AUTO_REJECT, reason_codes [\"INCOME_BELOW_MIN\"], status REJECTED and a persisted decisions row; income 25000.00 raises nothing."
+  },
+  {
+    "id": "FRD-34",
+    "requirement": "FR-6",
+    "text": "GET /api/verification-queue as underwriter user 3 lists UPLOADED documents oldest first; POST /api/documents/{id}/verify with outcome VERIFIED or REJECTED and a reason of 1 to 500 characters returns 200 and writes audit row DOCUMENT_VERIFIED or DOCUMENT_REJECTED with actor 3; a missing reason returns 422."
+  },
+  {
+    "id": "FRD-35",
+    "requirement": "FR-7",
+    "text": "For an application approved for 100000.00 over 12 months at 12.00% a loan exists with emi 8884.88 and 12 schedule rows (row 1: interest 1000.00, principal 7884.88, closing 92115.12); the principal sums to 100000.00 and total_payable 106618.53 equals the sum of principal and interest."
+  },
+  {
+    "id": "FRD-36",
+    "requirement": "FR-8",
+    "text": "POST /api/applications/1/disbursements with funding_source TREASURY_STUB on an approved application whose documents are all VERIFIED returns 201 with amount 100000.00, loan ACTIVE, application DISBURSED and audit row DISBURSEMENT_RECORDED; with a document not VERIFIED it returns 409 DOCUMENTS_NOT_VERIFIED."
+  },
+  {
+    "id": "FRD-37",
+    "requirement": "FR-9",
+    "text": "After a repayment of 8884.88 posted on 2026-02-15 to the 100000.00 loan, outstanding_principal is 92115.12; with installment 1 unpaid the bucket at as_of 2026-03-20, 2026-04-20, 2026-05-20 and 2026-06-20 is DPD-30, DPD-60, DPD-90 and NPA; 29 days past due is CURRENT, 30 is DPD-30, 60 is DPD-60, 90 is DPD-90 and 120 is NPA."
+  },
+  {
+    "id": "FRD-38",
+    "requirement": "FR-10",
+    "text": "As admin user 1 on the demo seed, GET /api/applications?status=REJECTED&product=PERSONAL returns only application 5; POST /api/applications/{id}/override on an AUTO_REJECT application with reason_code COMPENSATING_FACTORS and a comment returns 200 with status APPROVED and an audit row DECISION_OVERRIDDEN with actor 1."
+  },
+  {
+    "id": "FRD-39",
+    "requirement": "FR-11",
+    "text": "Customer user 5 requesting GET /api/applications/3 receives status REJECTED, decision AUTO_REJECT, score 500 and reason_codes [\"SCORE_BELOW_MIN\"] with its customer-readable message; a DRAFT application without SALARY_SLIP returns missing_documents [\"SALARY_SLIP\"]; customer user 4 requesting application 3 receives 404."
+  },
+  {
+    "id": "FRD-40",
+    "requirement": "FR-12",
+    "text": "GET /api/loans/{id}/schedule returns 12 rows for the 100000.00 loan; after POST /api/loans/{id}/repayments with amount 8884.88 the page shows outstanding principal 92,115.12 and bucket Current without a page reload."
+  },
+  {
+    "id": "FRD-41",
+    "requirement": "FR-13",
+    "text": "On the demo seed, GET /api/applications?status=MANUAL_REVIEW as underwriter user 3 returns exactly application 6."
+  },
+  {
+    "id": "FRD-42",
+    "requirement": "FR-14",
+    "text": "POST /api/applications/2/review as underwriter user 3 with outcome APPROVE and a reason returns 200, status APPROVED and audit row REVIEW_APPROVED with actor 3; with outcome REJECT it returns status REJECTED and audit row REVIEW_REJECTED."
+  },
+  {
+    "id": "FRD-43",
+    "requirement": "FR-15",
+    "text": "POST /api/applications/{id}/override as underwriter user 3 on an AUTO_REJECT application with reason_code DATA_CORRECTION and a comment returns 200, status APPROVED and audit row DECISION_OVERRIDDEN with actor 3; a reason_code outside the policy's override list returns 422."
+  },
+  {
+    "id": "FRD-44",
+    "requirement": "FR-16",
+    "text": "POST /api/policies as policy editor user 2 with PERSONAL min_income 30000.00 returns 201 with version 2, status DRAFT and a new file policy_v0002.json, while policy_v0001.json is byte-identical; GET /api/products shows 25000.00 until admin user 1 approves version 2 and 30000.00 afterwards."
+  },
+  {
+    "id": "FRD-45",
+    "requirement": "FR-17",
+    "text": "On the demo seed at as_of 2026-03-20, GET /api/dashboard/portfolio as admin returns total_overdue 17769.76 and PERSONAL with 4 applications, 1 active loan and outstanding principal 100000.00; at as_of 2026-06-20 the NPA count is 1 and total_overdue is 44424.40; a non-admin token returns 403."
+  },
+  {
+    "id": "FRD-46",
+    "requirement": "FR-18",
+    "text": "POST /api/admin/jobs/end-of-day with as_of 2026-03-20 as admin returns 200 with processed 2 and changed 1 for two active loans, the overdue loan reads DPD-30, an audit row EOD_RUN exists, and repeating the call returns changed 0."
+  },
+  {
+    "id": "FRD-47",
+    "requirement": "FR-19",
+    "text": "A static scan of backend source and database money columns finds 0 floating-point types and 0 REAL money columns, and money values appear in JSON as strings with 2 decimal places."
+  },
+  {
+    "id": "FRD-48",
+    "requirement": "FR-20",
+    "text": "GET /health without a token returns 200 with {\"status\":\"ok\"} in at most 1000 ms after the process reports ready."
+  }
+]

@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "story_id": "E2-S4",
+  "sprint": 1,
+  "title": "Apply wizard and verification queue UI",
+  "readiness": "ready",
+  "requirements": {
+    "ac_ids": [
+      "E2-S4-AC1",
+      "E2-S4-AC2",
+      "E2-S4-AC3"
+    ],
+    "brd_ids": [
+      "FRD-2",
+      "FRD-6",
+      "FRD-34"
+    ],
+    "br_acceptance_ids": [
+      "FRD-34",
+      "FRD-30"
+    ],
+    "scope_out": [
+      "real file upload UI beyond a stub form"
+    ]
+  },
+  "entities": [
+    {
+      "name": "Apply wizard and verification queue UI",
+      "status": "unknown"
+    }
+  ],
+  "approach": {
+    "program_design": "specs/design/program-design.md",
+    "canvas": "specs/design/reasons-canvas.md",
+    "amendment": null
+  },
+  "structure": {
+    "owned_files": [
+      "frontend/src/types/*",
+      "frontend/src/config/messages.ts",
+      "frontend/src/config/tokens.css",
+      "frontend/src/api/httpClient.ts",
+      "frontend/src/api/authContext.ts",
+      "frontend/src/service/products.ts",
+      "frontend/src/service/applications.ts",
+      "frontend/src/service/documents.ts",
+      "frontend/src/service/verification.ts",
+      "frontend/src/ui/apply/*",
+      "frontend/src/ui/verification/*",
+      "frontend/src/ui/components/*"
+    ],
+    "layer": "UI"
+  },
+  "operations": {
+    "pending": true,
+    "files": [],
+    "text": "- pending"
+  },
+  "safeguards": {
+    "ids": [
+      "SG-1",
+      "SG-2",
+      "SG-3",
+      "SG-4",
+      "SG-5",
+      "SG-6",
+      "SG-7",
+      "SG-8",
+      "SG-9",
+      "SG-10",
+      "SG-11",
+      "SG-12"
+    ],
+    "none": false
+  },
+  "tests": {
+    "matrix_ids": [
+      "VM-035",
+      "VM-036",
+      "VM-037"
+    ],
+    "case_ids": [
+      "VM-035",
+      "VM-036",
+      "VM-037"
+    ],
+    "layers": [
+      "e2e"
+    ]
+  },
+  "provenance": {
+    "story_path": "specs/stories/E2-S4.md",
+    "parents": [
+      "E2-S3",
+      "E3-S1"
+    ],
+    "tracker_key": null
+  }
+}

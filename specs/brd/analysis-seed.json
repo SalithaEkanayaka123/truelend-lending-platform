@@ -1,0 +1,385 @@
+{
+  "version": 1,
+  "kind": "lean-analysis-seed",
+  "domain_concepts": [
+    {
+      "name": "Active",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Admin",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Append-Only",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Application",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Applications",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Approve",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Approved",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Audited",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Authentication",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Auto",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Bucket",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Code",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Codes",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Comment",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Computed",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Customer",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Database",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Document",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Documents",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Endpoint",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Enforced",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "File",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Floating-Point",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Generated",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Health",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Income",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Interest",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Least",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Loan",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Logs",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Manual",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Money",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Never",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Open",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Outstanding",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Override",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Policy",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Principal",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Product",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Queue",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Rate",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Reason",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Recalculates",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Reject",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Repayment",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Request",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Returns",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Review",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Rule",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Schedule",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Score",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Startup",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Status",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "System",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Tenure",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Timestamp",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Total",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Underwriter",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "User",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Value",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Version",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Versioned",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    },
+    {
+      "name": "Without",
+      "status": "unknown",
+      "evidence": "requirement-frequency"
+    }
+  ],
+  "open_questions": [],
+  "risks": [],
+  "safeguards": [
+    {
+      "id": "SG-1",
+      "kind": "forbidden_action",
+      "text": "Real bureau or credit-score integration."
+    },
+    {
+      "id": "SG-2",
+      "kind": "forbidden_action",
+      "text": "Real document OCR or extraction; document upload records metadata only and stores no file content."
+    },
+    {
+      "id": "SG-3",
+      "kind": "forbidden_action",
+      "text": "Real disbursement rails (NEFT, RTGS, IMPS); the response is stubbed."
+    },
+    {
+      "id": "SG-4",
+      "kind": "forbidden_action",
+      "text": "Real collections or recovery workflow."
+    },
+    {
+      "id": "SG-5",
+      "kind": "forbidden_action",
+      "text": "Multi-currency and foreign exchange; all amounts are INR."
+    },
+    {
+      "id": "SG-6",
+      "kind": "forbidden_action",
+      "text": "Production deployment, secret management, multi-region operation and distributed locking."
+    },
+    {
+      "id": "SG-7",
+      "kind": "forbidden_action",
+      "text": "Late fees, penal interest, prepayment rebates, foreclosure quotes, and schedule regeneration or restructuring."
+    },
+    {
+      "id": "SG-8",
+      "kind": "forbidden_action",
+      "text": "Co-applicants, editing an application after submission, and withdrawing an application."
+    },
+    {
+      "id": "SG-9",
+      "kind": "forbidden_action",
+      "text": "Token refresh, password reset, and user administration."
+    },
+    {
+      "id": "SG-10",
+      "kind": "forbidden_action",
+      "text": "A fourth product type, editing score weights through the policy editor, and rolling back an approved policy version."
+    },
+    {
+      "id": "SG-11",
+      "kind": "forbidden_action",
+      "text": "Report export, time-series trends and notifications."
+    },
+    {
+      "id": "SG-12",
+      "kind": "forbidden_action",
+      "text": "Any requirement that depends on the optional AI runtime; every FR must be met with that runtime off."
+    }
+  ]
+}

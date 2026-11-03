@@ -1,0 +1,2051 @@
+{
+  "generated_from": [
+    "specs\\design\\data-models.schema.json",
+    "specs\\design\\api-contracts.schema.json"
+  ],
+  "obligations": [
+    {
+      "id": "OBL-Application.aadhaar_masked-pattern",
+      "field": "Application.aadhaar_masked",
+      "rule": "pattern",
+      "value": "^\\*{8}[0-9]{4}$",
+      "suggested_cases": [
+        "a string not matching /^\\*{8}[0-9]{4}$/ — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.aadhaar_masked-required",
+      "field": "Application.aadhaar_masked",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.age_years-minimum",
+      "field": "Application.age_years",
+      "rule": "minimum",
+      "value": 0,
+      "suggested_cases": [
+        "value below 0 — expect rejection",
+        "value exactly 0 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Application.age_years-required",
+      "field": "Application.age_years",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.applicant_user_id-minimum",
+      "field": "Application.applicant_user_id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Application.applicant_user_id-required",
+      "field": "Application.applicant_user_id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.created_at-format",
+      "field": "Application.created_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.created_at-required",
+      "field": "Application.created_at",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.credit_flags-required",
+      "field": "Application.credit_flags",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.id-minimum",
+      "field": "Application.id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Application.id-required",
+      "field": "Application.id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.monthly_income-required",
+      "field": "Application.monthly_income",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.pan_masked-pattern",
+      "field": "Application.pan_masked",
+      "rule": "pattern",
+      "value": "^\\*{6}[0-9]{3}[A-Z]$",
+      "suggested_cases": [
+        "a string not matching /^\\*{6}[0-9]{3}[A-Z]$/ — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.pan_masked-required",
+      "field": "Application.pan_masked",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.product_type-required",
+      "field": "Application.product_type",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.requested_amount-required",
+      "field": "Application.requested_amount",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.required_documents-required",
+      "field": "Application.required_documents",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.status-required",
+      "field": "Application.status",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.submitted_at-format",
+      "field": "Application.submitted_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Application.tenure_months-minimum",
+      "field": "Application.tenure_months",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Application.tenure_months-required",
+      "field": "Application.tenure_months",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ApplicationStatus-enum",
+      "field": "ApplicationStatus",
+      "rule": "enum",
+      "value": [
+        "DRAFT",
+        "SUBMITTED",
+        "MANUAL_REVIEW",
+        "APPROVED",
+        "REJECTED"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditAction-enum",
+      "field": "AuditAction",
+      "rule": "enum",
+      "value": [
+        "POLICY_CREATED",
+        "POLICY_APPROVED",
+        "DOCUMENT_VERIFIED",
+        "DOCUMENT_REJECTED",
+        "REVIEW_APPROVED",
+        "REVIEW_REJECTED",
+        "DECISION_OVERRIDDEN",
+        "DISBURSEMENT_RECORDED",
+        "EOD_RUN"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.action-required",
+      "field": "AuditEntry.action",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.actor_role-required",
+      "field": "AuditEntry.actor_role",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.actor_user_id-minimum",
+      "field": "AuditEntry.actor_user_id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.actor_user_id-required",
+      "field": "AuditEntry.actor_user_id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.comment-maxLength",
+      "field": "AuditEntry.comment",
+      "rule": "maxLength",
+      "value": 500,
+      "suggested_cases": [
+        "length exactly 500 — expect acceptance",
+        "length above 500 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.correlation_id-pattern",
+      "field": "AuditEntry.correlation_id",
+      "rule": "pattern",
+      "value": "^[A-Za-z0-9-]{8,64}$",
+      "suggested_cases": [
+        "a string not matching /^[A-Za-z0-9-]{8,64}$/ — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.correlation_id-required",
+      "field": "AuditEntry.correlation_id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.entity_id-minimum",
+      "field": "AuditEntry.entity_id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.entity_id-required",
+      "field": "AuditEntry.entity_id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.entity_type-minLength",
+      "field": "AuditEntry.entity_type",
+      "rule": "minLength",
+      "value": 1,
+      "suggested_cases": [
+        "length below 1 — expect rejection",
+        "length exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.entity_type-required",
+      "field": "AuditEntry.entity_type",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.id-minimum",
+      "field": "AuditEntry.id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.id-required",
+      "field": "AuditEntry.id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.occurred_at-format",
+      "field": "AuditEntry.occurred_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntry.occurred_at-required",
+      "field": "AuditEntry.occurred_at",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntryPage.items-required",
+      "field": "AuditEntryPage.items",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntryPage.limit-required",
+      "field": "AuditEntryPage.limit",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntryPage.offset-required",
+      "field": "AuditEntryPage.offset",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-AuditEntryPage.total-required",
+      "field": "AuditEntryPage.total",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.aadhaar-pattern",
+      "field": "CreateApplicationRequest.aadhaar",
+      "rule": "pattern",
+      "value": "^[0-9]{12}$",
+      "suggested_cases": [
+        "a string not matching /^[0-9]{12}$/ — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.aadhaar-required",
+      "field": "CreateApplicationRequest.aadhaar",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.age_years-required",
+      "field": "CreateApplicationRequest.age_years",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.credit_flags-required",
+      "field": "CreateApplicationRequest.credit_flags",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.monthly_income-required",
+      "field": "CreateApplicationRequest.monthly_income",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.pan-pattern",
+      "field": "CreateApplicationRequest.pan",
+      "rule": "pattern",
+      "value": "^[A-Z]{5}[0-9]{4}[A-Z]$",
+      "suggested_cases": [
+        "a string not matching /^[A-Z]{5}[0-9]{4}[A-Z]$/ — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.pan-required",
+      "field": "CreateApplicationRequest.pan",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.product_type-required",
+      "field": "CreateApplicationRequest.product_type",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.requested_amount-required",
+      "field": "CreateApplicationRequest.requested_amount",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreateApplicationRequest.tenure_months-required",
+      "field": "CreateApplicationRequest.tenure_months",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreatePolicyRequest.base_version-required",
+      "field": "CreatePolicyRequest.base_version",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreatePolicyRequest.changes-required",
+      "field": "CreatePolicyRequest.changes",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreditFlags.missed_payment_12m-required",
+      "field": "CreditFlags.missed_payment_12m",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreditFlags.prior_default-required",
+      "field": "CreditFlags.prior_default",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CreditFlags.thin_file-required",
+      "field": "CreditFlags.thin_file",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CurrentUser.email-format",
+      "field": "CurrentUser.email",
+      "rule": "format",
+      "value": "email",
+      "suggested_cases": [
+        "a malformed email value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CurrentUser.email-required",
+      "field": "CurrentUser.email",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CurrentUser.role-required",
+      "field": "CurrentUser.role",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-CurrentUser.user_id-required",
+      "field": "CurrentUser.user_id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Decision.decided_at-format",
+      "field": "Decision.decided_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Decision.decided_at-required",
+      "field": "Decision.decided_at",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Decision.decision-required",
+      "field": "Decision.decision",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Decision.policy_version-minimum",
+      "field": "Decision.policy_version",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Decision.policy_version-required",
+      "field": "Decision.policy_version",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Decision.reason_codes-required",
+      "field": "Decision.reason_codes",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Decision.score-maximum",
+      "field": "Decision.score",
+      "rule": "maximum",
+      "value": 900,
+      "suggested_cases": [
+        "value exactly 900 — expect acceptance",
+        "value above 900 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Decision.score-minimum",
+      "field": "Decision.score",
+      "rule": "minimum",
+      "value": 300,
+      "suggested_cases": [
+        "value below 300 — expect rejection",
+        "value exactly 300 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Decision.score-required",
+      "field": "Decision.score",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-DecisionType-enum",
+      "field": "DecisionType",
+      "rule": "enum",
+      "value": [
+        "AUTO_APPROVE",
+        "AUTO_REJECT",
+        "MANUAL_REVIEW"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Document.application_id-minimum",
+      "field": "Document.application_id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Document.application_id-required",
+      "field": "Document.application_id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Document.id-minimum",
+      "field": "Document.id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Document.id-required",
+      "field": "Document.id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Document.reason-maxLength",
+      "field": "Document.reason",
+      "rule": "maxLength",
+      "value": 500,
+      "suggested_cases": [
+        "length exactly 500 — expect acceptance",
+        "length above 500 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Document.reason-minLength",
+      "field": "Document.reason",
+      "rule": "minLength",
+      "value": 1,
+      "suggested_cases": [
+        "length below 1 — expect rejection",
+        "length exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Document.status-required",
+      "field": "Document.status",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Document.type-required",
+      "field": "Document.type",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Document.uploaded_at-format",
+      "field": "Document.uploaded_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Document.verified_at-format",
+      "field": "Document.verified_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-DocumentChecklistItem.reason-maxLength",
+      "field": "DocumentChecklistItem.reason",
+      "rule": "maxLength",
+      "value": 500,
+      "suggested_cases": [
+        "length exactly 500 — expect acceptance",
+        "length above 500 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-DocumentChecklistItem.status-required",
+      "field": "DocumentChecklistItem.status",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-DocumentChecklistItem.type-required",
+      "field": "DocumentChecklistItem.type",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-DocumentStatus-enum",
+      "field": "DocumentStatus",
+      "rule": "enum",
+      "value": [
+        "MISSING",
+        "UPLOADED",
+        "VERIFIED",
+        "REJECTED"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-DocumentType-enum",
+      "field": "DocumentType",
+      "rule": "enum",
+      "value": [
+        "ID_PROOF",
+        "ADDRESS_PROOF",
+        "SALARY_SLIP",
+        "VEHICLE_QUOTATION",
+        "ADMISSION_LETTER",
+        "FEE_STRUCTURE"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ErrorEnvelope.error-required",
+      "field": "ErrorEnvelope.error",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ErrorEnvelope.error.code-required",
+      "field": "ErrorEnvelope.error.code",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ErrorEnvelope.error.correlation_id-required",
+      "field": "ErrorEnvelope.error.correlation_id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ErrorEnvelope.error.message-required",
+      "field": "ErrorEnvelope.error.message",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-LoginRequest.email-format",
+      "field": "LoginRequest.email",
+      "rule": "format",
+      "value": "email",
+      "suggested_cases": [
+        "a malformed email value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-LoginRequest.email-required",
+      "field": "LoginRequest.email",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-LoginRequest.password-required",
+      "field": "LoginRequest.password",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-LoginResponse.access_token-required",
+      "field": "LoginResponse.access_token",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-LoginResponse.expires_in-enum",
+      "field": "LoginResponse.expires_in",
+      "rule": "enum",
+      "value": [
+        1800
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-LoginResponse.expires_in-required",
+      "field": "LoginResponse.expires_in",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-LoginResponse.role-required",
+      "field": "LoginResponse.role",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-LoginResponse.token_type-enum",
+      "field": "LoginResponse.token_type",
+      "rule": "enum",
+      "value": [
+        "bearer"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-LoginResponse.token_type-required",
+      "field": "LoginResponse.token_type",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Money-pattern",
+      "field": "Money",
+      "rule": "pattern",
+      "value": "^[0-9]+\\.[0-9]{2}$",
+      "suggested_cases": [
+        "a string not matching /^[0-9]+\\.[0-9]{2}$/ — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-OverrideReasonCode-enum",
+      "field": "OverrideReasonCode",
+      "rule": "enum",
+      "value": [
+        "COMPENSATING_FACTORS",
+        "DATA_CORRECTION",
+        "SENIOR_APPROVAL"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-OverrideRequest.comment-maxLength",
+      "field": "OverrideRequest.comment",
+      "rule": "maxLength",
+      "value": 500,
+      "suggested_cases": [
+        "length exactly 500 — expect acceptance",
+        "length above 500 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-OverrideRequest.comment-minLength",
+      "field": "OverrideRequest.comment",
+      "rule": "minLength",
+      "value": 1,
+      "suggested_cases": [
+        "length below 1 — expect rejection",
+        "length exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-OverrideRequest.comment-required",
+      "field": "OverrideRequest.comment",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-OverrideRequest.reason_code-required",
+      "field": "OverrideRequest.reason_code",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyDetail.override_reason_codes-required",
+      "field": "PolicyDetail.override_reason_codes",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyDetail.products-required",
+      "field": "PolicyDetail.products",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyDetail.products.EDUCATION-required",
+      "field": "PolicyDetail.products.EDUCATION",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyDetail.products.PERSONAL-required",
+      "field": "PolicyDetail.products.PERSONAL",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyDetail.products.VEHICLE-required",
+      "field": "PolicyDetail.products.VEHICLE",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyDetail.reason_codes-required",
+      "field": "PolicyDetail.reason_codes",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyDetail.status-enum",
+      "field": "PolicyDetail.status",
+      "rule": "enum",
+      "value": [
+        "DRAFT",
+        "APPROVED"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyDetail.status-required",
+      "field": "PolicyDetail.status",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyDetail.version-required",
+      "field": "PolicyDetail.version",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyFile.override_reason_codes-required",
+      "field": "PolicyFile.override_reason_codes",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyFile.products-required",
+      "field": "PolicyFile.products",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyFile.products.EDUCATION-required",
+      "field": "PolicyFile.products.EDUCATION",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyFile.products.PERSONAL-required",
+      "field": "PolicyFile.products.PERSONAL",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyFile.products.VEHICLE-required",
+      "field": "PolicyFile.products.VEHICLE",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyFile.reason_codes-required",
+      "field": "PolicyFile.reason_codes",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyFile.version-minimum",
+      "field": "PolicyFile.version",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-PolicyFile.version-required",
+      "field": "PolicyFile.version",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyStatus-enum",
+      "field": "PolicyStatus",
+      "rule": "enum",
+      "value": [
+        "DRAFT",
+        "APPROVED"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.approved_at-format",
+      "field": "PolicyVersion.approved_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.base_version-minimum",
+      "field": "PolicyVersion.base_version",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.created_at-format",
+      "field": "PolicyVersion.created_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.created_at-required",
+      "field": "PolicyVersion.created_at",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.created_by-minimum",
+      "field": "PolicyVersion.created_by",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.created_by-required",
+      "field": "PolicyVersion.created_by",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.sha256-pattern",
+      "field": "PolicyVersion.sha256",
+      "rule": "pattern",
+      "value": "^[a-f0-9]{64}$",
+      "suggested_cases": [
+        "a string not matching /^[a-f0-9]{64}$/ — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.sha256-required",
+      "field": "PolicyVersion.sha256",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.status-enum",
+      "field": "PolicyVersion.status",
+      "rule": "enum",
+      "value": [
+        "DRAFT",
+        "APPROVED"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.status-required",
+      "field": "PolicyVersion.status",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.version-minimum",
+      "field": "PolicyVersion.version",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersion.version-required",
+      "field": "PolicyVersion.version",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersionPage.items-required",
+      "field": "PolicyVersionPage.items",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersionPage.limit-required",
+      "field": "PolicyVersionPage.limit",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersionPage.offset-required",
+      "field": "PolicyVersionPage.offset",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-PolicyVersionPage.total-required",
+      "field": "PolicyVersionPage.total",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.annual_rate_pct-pattern",
+      "field": "ProductRule.annual_rate_pct",
+      "rule": "pattern",
+      "value": "^[0-9]+\\.[0-9]{2}$",
+      "suggested_cases": [
+        "a string not matching /^[0-9]+\\.[0-9]{2}$/ — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.annual_rate_pct-required",
+      "field": "ProductRule.annual_rate_pct",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.auto_approve_min_score-maximum",
+      "field": "ProductRule.auto_approve_min_score",
+      "rule": "maximum",
+      "value": 900,
+      "suggested_cases": [
+        "value exactly 900 — expect acceptance",
+        "value above 900 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.auto_approve_min_score-minimum",
+      "field": "ProductRule.auto_approve_min_score",
+      "rule": "minimum",
+      "value": 300,
+      "suggested_cases": [
+        "value below 300 — expect rejection",
+        "value exactly 300 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.auto_reject_below_score-maximum",
+      "field": "ProductRule.auto_reject_below_score",
+      "rule": "maximum",
+      "value": 900,
+      "suggested_cases": [
+        "value exactly 900 — expect acceptance",
+        "value above 900 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.auto_reject_below_score-minimum",
+      "field": "ProductRule.auto_reject_below_score",
+      "rule": "minimum",
+      "value": 300,
+      "suggested_cases": [
+        "value below 300 — expect rejection",
+        "value exactly 300 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.max_age-minimum",
+      "field": "ProductRule.max_age",
+      "rule": "minimum",
+      "value": 0,
+      "suggested_cases": [
+        "value below 0 — expect rejection",
+        "value exactly 0 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.max_age-required",
+      "field": "ProductRule.max_age",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.max_amount-required",
+      "field": "ProductRule.max_amount",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.max_tenure_months-minimum",
+      "field": "ProductRule.max_tenure_months",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.max_tenure_months-required",
+      "field": "ProductRule.max_tenure_months",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.min_age-minimum",
+      "field": "ProductRule.min_age",
+      "rule": "minimum",
+      "value": 0,
+      "suggested_cases": [
+        "value below 0 — expect rejection",
+        "value exactly 0 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.min_age-required",
+      "field": "ProductRule.min_age",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.min_amount-required",
+      "field": "ProductRule.min_amount",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.min_income-required",
+      "field": "ProductRule.min_income",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.min_tenure_months-minimum",
+      "field": "ProductRule.min_tenure_months",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.min_tenure_months-required",
+      "field": "ProductRule.min_tenure_months",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.policy_version-minimum",
+      "field": "ProductRule.policy_version",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.policy_version-required",
+      "field": "ProductRule.policy_version",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.product_type-required",
+      "field": "ProductRule.product_type",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductRule.required_documents-required",
+      "field": "ProductRule.required_documents",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ProductType-enum",
+      "field": "ProductType",
+      "rule": "enum",
+      "value": [
+        "PERSONAL",
+        "VEHICLE",
+        "EDUCATION"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ReasonCode-enum",
+      "field": "ReasonCode",
+      "rule": "enum",
+      "value": [
+        "INCOME_BELOW_MIN",
+        "AGE_OUT_OF_RANGE",
+        "SCORE_BELOW_MIN",
+        "SCORE_MEETS_AUTO_APPROVE",
+        "SCORE_IN_REVIEW_BAND"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.comment-maxLength",
+      "field": "Resolution.comment",
+      "rule": "maxLength",
+      "value": 500,
+      "suggested_cases": [
+        "length exactly 500 — expect acceptance",
+        "length above 500 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.comment-minLength",
+      "field": "Resolution.comment",
+      "rule": "minLength",
+      "value": 1,
+      "suggested_cases": [
+        "length below 1 — expect rejection",
+        "length exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.comment-required",
+      "field": "Resolution.comment",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.kind-enum",
+      "field": "Resolution.kind",
+      "rule": "enum",
+      "value": [
+        "MANUAL_REVIEW",
+        "OVERRIDE"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.kind-required",
+      "field": "Resolution.kind",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.outcome-enum",
+      "field": "Resolution.outcome",
+      "rule": "enum",
+      "value": [
+        "APPROVED",
+        "REJECTED"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.outcome-required",
+      "field": "Resolution.outcome",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.resolved_at-format",
+      "field": "Resolution.resolved_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.resolved_at-required",
+      "field": "Resolution.resolved_at",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.resolved_by-minimum",
+      "field": "Resolution.resolved_by",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-Resolution.resolved_by-required",
+      "field": "Resolution.resolved_by",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ResolutionKind-enum",
+      "field": "ResolutionKind",
+      "rule": "enum",
+      "value": [
+        "MANUAL_REVIEW",
+        "OVERRIDE"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ResolutionOutcome-enum",
+      "field": "ResolutionOutcome",
+      "rule": "enum",
+      "value": [
+        "APPROVED",
+        "REJECTED"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ReviewRequest.outcome-enum",
+      "field": "ReviewRequest.outcome",
+      "rule": "enum",
+      "value": [
+        "APPROVE",
+        "REJECT"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ReviewRequest.outcome-required",
+      "field": "ReviewRequest.outcome",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ReviewRequest.reason-maxLength",
+      "field": "ReviewRequest.reason",
+      "rule": "maxLength",
+      "value": 500,
+      "suggested_cases": [
+        "length exactly 500 — expect acceptance",
+        "length above 500 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-ReviewRequest.reason-minLength",
+      "field": "ReviewRequest.reason",
+      "rule": "minLength",
+      "value": 1,
+      "suggested_cases": [
+        "length below 1 — expect rejection",
+        "length exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-ReviewRequest.reason-required",
+      "field": "ReviewRequest.reason",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-Role-enum",
+      "field": "Role",
+      "rule": "enum",
+      "value": [
+        "CUSTOMER",
+        "UNDERWRITER",
+        "POLICY_EDITOR",
+        "ADMIN"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-UnderwriteResponse.decision-required",
+      "field": "UnderwriteResponse.decision",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-UnderwriteResponse.policy_version-required",
+      "field": "UnderwriteResponse.policy_version",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-UnderwriteResponse.reason_codes-required",
+      "field": "UnderwriteResponse.reason_codes",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-UnderwriteResponse.score-required",
+      "field": "UnderwriteResponse.score",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-UnderwriteResponse.status-required",
+      "field": "UnderwriteResponse.status",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-UploadDocumentRequest.filename-minLength",
+      "field": "UploadDocumentRequest.filename",
+      "rule": "minLength",
+      "value": 1,
+      "suggested_cases": [
+        "length below 1 — expect rejection",
+        "length exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-UploadDocumentRequest.filename-required",
+      "field": "UploadDocumentRequest.filename",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-UploadDocumentRequest.type-required",
+      "field": "UploadDocumentRequest.type",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-User.active-required",
+      "field": "User.active",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-User.display_name-minLength",
+      "field": "User.display_name",
+      "rule": "minLength",
+      "value": 1,
+      "suggested_cases": [
+        "length below 1 — expect rejection",
+        "length exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-User.display_name-required",
+      "field": "User.display_name",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-User.email-format",
+      "field": "User.email",
+      "rule": "format",
+      "value": "email",
+      "suggested_cases": [
+        "a malformed email value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-User.email-required",
+      "field": "User.email",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-User.id-minimum",
+      "field": "User.id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-User.id-required",
+      "field": "User.id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-User.role-required",
+      "field": "User.role",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueueItem.application_id-minimum",
+      "field": "VerificationQueueItem.application_id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueueItem.application_id-required",
+      "field": "VerificationQueueItem.application_id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueueItem.document_id-minimum",
+      "field": "VerificationQueueItem.document_id",
+      "rule": "minimum",
+      "value": 1,
+      "suggested_cases": [
+        "value below 1 — expect rejection",
+        "value exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueueItem.document_id-required",
+      "field": "VerificationQueueItem.document_id",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueueItem.type-required",
+      "field": "VerificationQueueItem.type",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueueItem.uploaded_at-format",
+      "field": "VerificationQueueItem.uploaded_at",
+      "rule": "format",
+      "value": "date-time",
+      "suggested_cases": [
+        "a malformed date-time value — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueueItem.uploaded_at-required",
+      "field": "VerificationQueueItem.uploaded_at",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueuePage.items-required",
+      "field": "VerificationQueuePage.items",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueuePage.limit-required",
+      "field": "VerificationQueuePage.limit",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueuePage.offset-required",
+      "field": "VerificationQueuePage.offset",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerificationQueuePage.total-required",
+      "field": "VerificationQueuePage.total",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerifyDocumentRequest.outcome-enum",
+      "field": "VerifyDocumentRequest.outcome",
+      "rule": "enum",
+      "value": [
+        "VERIFIED",
+        "REJECTED"
+      ],
+      "suggested_cases": [
+        "a value outside the allowed set — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerifyDocumentRequest.outcome-required",
+      "field": "VerifyDocumentRequest.outcome",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerifyDocumentRequest.reason-maxLength",
+      "field": "VerifyDocumentRequest.reason",
+      "rule": "maxLength",
+      "value": 500,
+      "suggested_cases": [
+        "length exactly 500 — expect acceptance",
+        "length above 500 — expect rejection"
+      ]
+    },
+    {
+      "id": "OBL-VerifyDocumentRequest.reason-minLength",
+      "field": "VerifyDocumentRequest.reason",
+      "rule": "minLength",
+      "value": 1,
+      "suggested_cases": [
+        "length below 1 — expect rejection",
+        "length exactly 1 — expect acceptance"
+      ]
+    },
+    {
+      "id": "OBL-VerifyDocumentRequest.reason-required",
+      "field": "VerifyDocumentRequest.reason",
+      "rule": "required",
+      "value": true,
+      "suggested_cases": [
+        "omit the field — expect rejection"
+      ]
+    }
+  ]
+}

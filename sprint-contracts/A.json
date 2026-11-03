@@ -1,0 +1,175 @@
+{
+  "group": "A",
+  "stories": [
+    "E1-S1",
+    "E1-S3",
+    "E1-S4",
+    "E3-S2"
+  ],
+  "features": [
+    "F001",
+    "F002",
+    "F003",
+    "F004",
+    "F005",
+    "F010",
+    "F011",
+    "F012",
+    "F013",
+    "F014",
+    "F015",
+    "F016",
+    "F017",
+    "F018",
+    "F019",
+    "F043",
+    "F044",
+    "F045",
+    "F046",
+    "F047"
+  ],
+  "contract": {
+    "api_checks": [
+      {
+        "id": "QA-VM-001",
+        "matrix_ids": [
+          "VM-001"
+        ],
+        "method": "POST",
+        "path": "/api/auth/login",
+        "expected_status": 200,
+        "description": "POST /api/auth/login seeded customer1; expect 200, expires_in 1800, role CUSTOMER"
+      },
+      {
+        "id": "QA-VM-002",
+        "matrix_ids": [
+          "VM-002"
+        ],
+        "method": "POST",
+        "path": "/api/auth/login",
+        "expected_status": 200,
+        "description": "POST /api/auth/login wrong password for known and unknown email; expect 401 UNAUTHENTICATED, identical bodies, no token"
+      },
+      {
+        "id": "QA-VM-003",
+        "matrix_ids": [
+          "VM-003"
+        ],
+        "method": "GET",
+        "path": "/api/auth/me",
+        "expected_status": 200,
+        "description": "GET /api/auth/me with no header and with a 1801s-old token; expect 401 each"
+      },
+      {
+        "id": "QA-VM-004",
+        "matrix_ids": [
+          "VM-004"
+        ],
+        "method": "GET",
+        "path": "/api/audit",
+        "expected_status": 200,
+        "description": "GET /api/audit with CUSTOMER token; expect 403 FORBIDDEN"
+      },
+      {
+        "id": "QA-VM-005",
+        "matrix_ids": [
+          "VM-005"
+        ],
+        "method": "GET",
+        "path": "/openapi.json",
+        "expected_status": 200,
+        "description": "GET /openapi.json -> 200; enumerate the app route table; every route but POST /api/auth/login and GET /health has the auth dependency"
+      },
+      {
+        "id": "QA-VM-012",
+        "matrix_ids": [
+          "VM-012"
+        ],
+        "method": "POST",
+        "path": "/api/applications",
+        "expected_status": 200,
+        "description": "POST /api/applications with PAN ABCDE1234F and Aadhaar 1234 5678 9012 (success and a 422 error path); scan captured logs for ABCDE1234F, 123456789012, 1234 5678 9012; expect none"
+      },
+      {
+        "id": "QA-VM-013",
+        "matrix_ids": [
+          "VM-013"
+        ],
+        "method": "POST",
+        "path": "/api/applications/{id}/documents",
+        "expected_status": 200,
+        "description": "POST /api/applications/{id}/documents {type, filename salary_slip_jan.pdf}; capture logs; expect the document id present and the filename absent"
+      },
+      {
+        "id": "QA-VM-014",
+        "matrix_ids": [
+          "VM-014"
+        ],
+        "method": "GET",
+        "path": "/api/_test/boom",
+        "expected_status": 500,
+        "description": "GET /api/_test/boom -> 500 (test-only route raising an unhandled exception); expect error envelope with no stack trace, and a JSON log line holding the redacted trace"
+      },
+      {
+        "id": "QA-VM-015",
+        "matrix_ids": [
+          "VM-015"
+        ],
+        "method": "GET",
+        "path": "/health",
+        "expected_status": 200,
+        "description": "GET /health with no token; expect 200 {\"status\":\"ok\"} in at most 1000 ms"
+      },
+      {
+        "id": "QA-VM-043",
+        "matrix_ids": [
+          "VM-043"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/underwrite",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/underwrite -> 200 for age 40, income 100000.00, no flags; expect score 740 in the decision"
+      },
+      {
+        "id": "QA-VM-044",
+        "matrix_ids": [
+          "VM-044"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/underwrite",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/underwrite -> 200 for age 30/60000.00/no flags (score 680); repeat for age 30/30000.00/prior_default (score 500)"
+      },
+      {
+        "id": "QA-VM-045",
+        "matrix_ids": [
+          "VM-045"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/underwrite",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/underwrite -> 200; repeat the scoring on identical inputs 100 times (via fresh applications); expect one distinct score"
+      },
+      {
+        "id": "QA-VM-046",
+        "matrix_ids": [
+          "VM-046"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/underwrite",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/underwrite -> 200 from the 680 baseline, varying one input each; expect 700, 690, 620, 640, 530"
+      },
+      {
+        "id": "QA-VM-047",
+        "matrix_ids": [
+          "VM-047"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/underwrite",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/underwrite -> 200 for age 18/0.00/all flags (350) and age 40/150000.00 and 500000.00 (790)"
+      }
+    ]
+  }
+}

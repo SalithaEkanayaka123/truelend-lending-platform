@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "phase": "design",
+  "source": "specs/stories/stories.json",
+  "confirmed_at": "2026-11-03T00:00:00Z",
+  "stack": {
+    "backend": "Python 3.12 / FastAPI / uv / stdlib sqlite3 (raw parameterized SQL) / pytest / ruff / mypy",
+    "frontend": "React 18 / TypeScript 5 / Vite / React Router / TanStack Query / CSS modules with token custom properties / Vitest / Playwright",
+    "datastores": ["SQLite (primary)"],
+    "runtime": "Docker Compose via init.sh, with a no-Docker uv + npm dev fallback",
+    "ai": "Optional backend-only Anthropic gateway, not built in M1; the domain runs fully with it off"
+  },
+  "modularity": {
+    "core": ["underwriting rules and decisioning", "policy versioning", "audit"],
+    "supporting": ["application intake and documents", "auth and roles", "scoring stub"],
+    "generic": ["health", "JSON logging and correlation ID", "migration runner"],
+    "volatility": {
+      "policy contents": "high",
+      "decision workflow": "medium",
+      "auth mechanism": "low"
+    },
+    "coupling_risks": [
+      "auth guard, audit writer and score function consumed across E1 to E4",
+      "money handled across DB, API and UI",
+      "policy file hash and DB row must agree"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "D-A",
+      "question": "How does the Repository layer access SQLite?",
+      "options": ["Stdlib sqlite3 + raw SQL", "SQLAlchemy Core + custom runner", "SQLAlchemy ORM + Alembic"],
+      "proposed_default": "Stdlib sqlite3 + raw SQL",
+      "chosen": "Stdlib sqlite3 with parameterized SQL; numbered SQL migrations with SHA-256 checks; DB triggers abort UPDATE/DELETE on approved policies and schedules.",
+      "rules_out": "ORMs and Alembic autogenerate or revisable migrations; any query builder that hides the SQL under the append-only triggers.",
+      "rationale": "FA-F0.5 mandates checksummed SQL files; NFR-02 needs triggers; explicit SQL keeps money out of float.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D-B",
+      "question": "Which frontend application stack?",
+      "options": ["Vite + React Router + TanStack Query + CSS modules", "Vite + React Router + plain fetch hooks + CSS modules", "Vite + Tailwind + TanStack Query"],
+      "proposed_default": "Vite + React Router + TanStack Query + CSS modules",
+      "chosen": "Vite SPA, React Router role-based routes, TanStack Query for server state, CSS modules over :root token custom properties, hand-built SVG charts, one component per file.",
+      "rules_out": "Tailwind utility classes, Redux or global client stores for server data, and any chart library (ui_spec section 8).",
+      "rationale": "Matches the UI spec token-only and own-SVG-chart rules while keeping server state cached and retried.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D-C",
+      "question": "Where are the cross-epic interface contracts (auth principal, audit writer, score function) defined?",
+      "options": ["Types-layer Protocols, built in E1", "Concrete modules only", "Defer to a /spec amendment"],
+      "proposed_default": "Types-layer Protocols, built in E1",
+      "chosen": "AuthPrincipal, AuditWriter and ScoreFunction are typed Protocols in the Types layer; E1 and E3 supply implementations and downstream code depends only on the Protocol.",
+      "rules_out": "Services importing API-layer guards or concrete audit and score modules; adding interface stories before design.",
+      "rationale": "Keeps the one-way layer rule and lets C3 and C4 start without waiting on E1 internals.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D-D",
+      "question": "How is the single-command local run delivered?",
+      "options": ["init.sh + Docker Compose", "init.sh only", "Docker Compose only"],
+      "proposed_default": "init.sh + Docker Compose",
+      "chosen": "init.sh builds and starts backend and frontend through Docker Compose; migrations and seeds run before the process reports ready; a no-Docker uv + npm path remains for development.",
+      "rules_out": "Kubernetes, hosted deployment, and any manual multi-step bootstrap for v1.",
+      "rationale": "Brief section 8.1 asks for one command; Compose is reproducible, the fallback keeps the inner loop fast.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D-E",
+      "question": "How is the code organised against the layer hierarchy?",
+      "options": ["One package per layer on both sides", "Package per feature"],
+      "proposed_default": "One package per layer on both sides",
+      "chosen": "backend/src/truelend/{types,config,repository,service,api} and frontend/src/{types,config,service,api,ui}, with features as modules inside each layer; layering is enforced by an automated test (NFR-08).",
+      "rules_out": "Feature-first vertical packages that blur the layer gate, and any import from a higher layer.",
+      "rationale": "Architecture.md and the pre-commit layer gate assume a root/layer layout.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D-F",
+      "question": "How do money values flow from database to screen?",
+      "options": ["Integer paise in SQLite, Decimal in code, 2-decimal strings on the wire", "Text in SQLite", "Floats"],
+      "proposed_default": "Integer paise in SQLite, Decimal in code, 2-decimal strings on the wire",
+      "chosen": "Integer paise stored, Decimal in the Service layer, JSON strings with exactly 2 decimals, UI formats strings with no Number arithmetic; a static scan fails the build on float in money code.",
+      "rules_out": "REAL columns, float or Number arithmetic on money anywhere, and rounding outside one shared Decimal helper.",
+      "rationale": "NFR-01 and FA-F0.1; integer paise makes the append-only schedule sums exact.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D-G",
+      "question": "How is authentication and authorization enforced?",
+      "options": ["Bearer JWT HS256 with router-level role guards", "Server-side sessions", "External identity provider"],
+      "proposed_default": "Bearer JWT HS256 with router-level role guards",
+      "chosen": "Bearer JWT HS256, 1800 s lifetime, secret from TRUELEND_JWT_SECRET, salted password hashes, router-level dependency enforcing role at the API layer (FA-F0.2).",
+      "rules_out": "Server-side session stores, an external identity provider, and role checks inside services or the UI alone.",
+      "rationale": "NFR-04 requires the boundary at the controller layer; settled in the F0 feature spec.",
+      "basis": "human",
+      "load_bearing": true
+    },
+    {
+      "id": "D-H",
+      "question": "How does the optional AI runtime relate to the domain?",
+      "options": ["Out of M1, domain independent", "Build the gateway now"],
+      "proposed_default": "Out of M1, domain independent",
+      "chosen": "No AI code in M1. A later gateway is backend-only behind a service interface; it proposes and the domain decides; every flow works with it disabled.",
+      "rules_out": "AI calls from the UI, AI output deciding an application, and any domain import of an Anthropic SDK.",
+      "rationale": "Project rule: AI proposes, the domain decides; M1 scope has no AI requirement.",
+      "basis": "default-accepted",
+      "load_bearing": false
+    }
+  ]
+}

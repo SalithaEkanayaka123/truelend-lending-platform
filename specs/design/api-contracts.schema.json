@@ -1,0 +1,608 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TrueLend API — M1 (E1-E4)",
+    "version": "1.0.0",
+    "description": "Loan origination and underwriting API: auth, audit, product catalog, policy versions, application intake/documents, verification queue, underwriting, review and override. Repayment/disbursement/admin-dashboard endpoints are M2 and are not in this contract."
+  },
+  "servers": [{ "url": "/api" }],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "operationId": "login",
+        "summary": "Authenticate and obtain a bearer token",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "Authenticated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthenticated" }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "getCurrentUser",
+        "summary": "Current authenticated principal",
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CurrentUser" } } } },
+          "401": { "$ref": "#/components/responses/Unauthenticated" }
+        }
+      }
+    },
+    "/audit": {
+      "get": {
+        "operationId": "listAudit",
+        "summary": "List audit log entries (ADMIN only)",
+        "parameters": [
+          { "name": "entity_type", "in": "query", "schema": { "type": "string" } },
+          { "name": "entity_id", "in": "query", "schema": { "type": "integer" } },
+          { "name": "action", "in": "query", "schema": { "$ref": "#/components/schemas/AuditAction" } },
+          { "$ref": "#/components/parameters/Limit" },
+          { "$ref": "#/components/parameters/Offset" }
+        ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AuditEntryPage" } } } },
+          "401": { "$ref": "#/components/responses/Unauthenticated" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "operationId": "listProducts",
+        "summary": "Active policy's product catalog",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/ProductRule" }, "minItems": 3, "maxItems": 3 } } }
+          },
+          "401": { "$ref": "#/components/responses/Unauthenticated" }
+        }
+      }
+    },
+    "/policies": {
+      "get": {
+        "operationId": "listPolicies",
+        "summary": "List policy versions (POLICY_EDITOR, ADMIN)",
+        "parameters": [ { "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Offset" } ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PolicyVersionPage" } } } },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      },
+      "post": {
+        "operationId": "createPolicy",
+        "summary": "Create a DRAFT policy version (POLICY_EDITOR, ADMIN)",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreatePolicyRequest" } } }
+        },
+        "responses": {
+          "201": { "description": "Created", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PolicyVersion" } } } },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/policies/{version}": {
+      "get": {
+        "operationId": "getPolicy",
+        "summary": "Full policy version content (POLICY_EDITOR, ADMIN)",
+        "parameters": [ { "$ref": "#/components/parameters/PolicyVersionPath" } ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PolicyDetail" } } } },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/policies/{version}/approve": {
+      "post": {
+        "operationId": "approvePolicy",
+        "summary": "Approve a DRAFT version, activating it (ADMIN only)",
+        "parameters": [ { "$ref": "#/components/parameters/PolicyVersionPath" } ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PolicyVersion" } } } },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/applications": {
+      "post": {
+        "operationId": "createApplication",
+        "summary": "Apply for a loan (CUSTOMER only)",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateApplicationRequest" } } }
+        },
+        "responses": {
+          "201": { "description": "Created", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Application" } } } },
+          "401": { "$ref": "#/components/responses/Unauthenticated" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/applications/{id}": {
+      "get": {
+        "operationId": "getApplication",
+        "summary": "Get an application (owner, UNDERWRITER, ADMIN)",
+        "parameters": [ { "$ref": "#/components/parameters/ApplicationIdPath" } ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Application" } } } },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/applications/{id}/documents": {
+      "post": {
+        "operationId": "uploadDocument",
+        "summary": "Record document metadata (owner only; no file content)",
+        "parameters": [ { "$ref": "#/components/parameters/ApplicationIdPath" } ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UploadDocumentRequest" } } }
+        },
+        "responses": {
+          "201": { "description": "Created", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Document" } } } },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": {
+            "description": "Document type not in this application's checklist",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" }, "example": { "error": { "code": "DOCUMENT_TYPE_NOT_REQUIRED", "message": "VEHICLE_QUOTATION is not required for this product.", "correlation_id": "..." } } } }
+          }
+        }
+      }
+    },
+    "/applications/{id}/submit": {
+      "post": {
+        "operationId": "submitApplication",
+        "summary": "Submit the application for underwriting (owner only)",
+        "parameters": [ { "$ref": "#/components/parameters/ApplicationIdPath" } ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Application" } } } },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": {
+            "description": "MISSING_DOCUMENTS or ALREADY_SUBMITTED",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" }, "example": { "error": { "code": "MISSING_DOCUMENTS", "message": "Upload the documents marked Missing, then submit again.", "correlation_id": "..." } } } }
+          }
+        }
+      }
+    },
+    "/applications/{id}/underwrite": {
+      "post": {
+        "operationId": "underwriteApplication",
+        "summary": "Run the deterministic underwriting decision (owner, UNDERWRITER, ADMIN)",
+        "parameters": [ { "$ref": "#/components/parameters/ApplicationIdPath" } ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UnderwriteResponse" } } } },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": {
+            "description": "NOT_SUBMITTED or ALREADY_DECIDED",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } }
+          }
+        }
+      }
+    },
+    "/applications/{id}/review": {
+      "post": {
+        "operationId": "reviewApplication",
+        "summary": "Resolve a MANUAL_REVIEW application (UNDERWRITER only)",
+        "parameters": [ { "$ref": "#/components/parameters/ApplicationIdPath" } ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ReviewRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Application" } } } },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": {
+            "description": "NOT_IN_REVIEW",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } }
+          },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/applications/{id}/override": {
+      "post": {
+        "operationId": "overrideApplication",
+        "summary": "Override an AUTO_REJECT decision (UNDERWRITER, ADMIN)",
+        "parameters": [ { "$ref": "#/components/parameters/ApplicationIdPath" } ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/OverrideRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Application" } } } },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": {
+            "description": "NOT_OVERRIDABLE",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } }
+          },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/verification-queue": {
+      "get": {
+        "operationId": "listVerificationQueue",
+        "summary": "UPLOADED documents awaiting verification (UNDERWRITER only)",
+        "parameters": [ { "$ref": "#/components/parameters/Limit" }, { "$ref": "#/components/parameters/Offset" } ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/VerificationQueuePage" } } } },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/documents/{id}/verify": {
+      "post": {
+        "operationId": "verifyDocument",
+        "summary": "Mark a document VERIFIED or REJECTED (UNDERWRITER only)",
+        "parameters": [ { "$ref": "#/components/parameters/DocumentIdPath" } ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/VerifyDocumentRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Document" } } } },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": {
+            "description": "ALREADY_VERIFIED",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } }
+          },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "healthCheck",
+        "summary": "Public readiness probe",
+        "security": [],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "type": "object", "required": ["status"], "properties": { "status": { "type": "string", "enum": ["ok"] } } } } } }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    },
+    "parameters": {
+      "Limit": { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20, "maximum": 100, "minimum": 1 } },
+      "Offset": { "name": "offset", "in": "query", "schema": { "type": "integer", "default": 0, "minimum": 0 } },
+      "ApplicationIdPath": { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } },
+      "DocumentIdPath": { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } },
+      "PolicyVersionPath": { "name": "version", "in": "path", "required": true, "schema": { "type": "integer" } }
+    },
+    "responses": {
+      "Unauthenticated": { "description": "Missing or expired token", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" }, "example": { "error": { "code": "UNAUTHENTICATED", "message": "Authentication required.", "correlation_id": "..." } } } } },
+      "Forbidden": { "description": "Authenticated but not permitted", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" }, "example": { "error": { "code": "FORBIDDEN", "message": "You do not have access to this resource.", "correlation_id": "..." } } } } },
+      "NotFound": { "description": "Not found, or not owned by the caller", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "ValidationError": { "description": "Request failed validation", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } }
+    },
+    "schemas": {
+      "Money": { "type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$" },
+      "Role": { "type": "string", "enum": ["CUSTOMER", "UNDERWRITER", "POLICY_EDITOR", "ADMIN"] },
+      "ProductType": { "type": "string", "enum": ["PERSONAL", "VEHICLE", "EDUCATION"] },
+      "DocumentType": { "type": "string", "enum": ["ID_PROOF", "ADDRESS_PROOF", "SALARY_SLIP", "VEHICLE_QUOTATION", "ADMISSION_LETTER", "FEE_STRUCTURE"] },
+      "ApplicationStatus": { "type": "string", "enum": ["DRAFT", "SUBMITTED", "MANUAL_REVIEW", "APPROVED", "REJECTED"] },
+      "DocumentStatus": { "type": "string", "enum": ["MISSING", "UPLOADED", "VERIFIED", "REJECTED"] },
+      "DecisionType": { "type": "string", "enum": ["AUTO_APPROVE", "AUTO_REJECT", "MANUAL_REVIEW"] },
+      "AuditAction": { "type": "string", "enum": ["POLICY_CREATED", "POLICY_APPROVED", "DOCUMENT_VERIFIED", "DOCUMENT_REJECTED", "REVIEW_APPROVED", "REVIEW_REJECTED", "DECISION_OVERRIDDEN", "DISBURSEMENT_RECORDED", "EOD_RUN"] },
+      "ReasonCode": { "type": "string", "enum": ["INCOME_BELOW_MIN", "AGE_OUT_OF_RANGE", "SCORE_BELOW_MIN", "SCORE_MEETS_AUTO_APPROVE", "SCORE_IN_REVIEW_BAND"] },
+      "OverrideReasonCode": { "type": "string", "enum": ["COMPENSATING_FACTORS", "DATA_CORRECTION", "SENIOR_APPROVAL"] },
+      "ErrorEnvelope": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message", "correlation_id"],
+            "properties": {
+              "code": { "type": "string" },
+              "message": { "type": "string" },
+              "correlation_id": { "type": "string" }
+            }
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": { "email": { "type": "string", "format": "email" }, "password": { "type": "string" } }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "required": ["access_token", "token_type", "expires_in", "role"],
+        "properties": {
+          "access_token": { "type": "string" },
+          "token_type": { "type": "string", "enum": ["bearer"] },
+          "expires_in": { "type": "integer", "enum": [1800] },
+          "role": { "$ref": "#/components/schemas/Role" }
+        }
+      },
+      "CurrentUser": {
+        "type": "object",
+        "required": ["user_id", "email", "role"],
+        "properties": {
+          "user_id": { "type": "integer" },
+          "email": { "type": "string", "format": "email" },
+          "role": { "$ref": "#/components/schemas/Role" }
+        }
+      },
+      "CreditFlags": {
+        "type": "object",
+        "required": ["prior_default", "missed_payment_12m", "thin_file"],
+        "properties": {
+          "prior_default": { "type": "boolean" },
+          "missed_payment_12m": { "type": "boolean" },
+          "thin_file": { "type": "boolean" }
+        }
+      },
+      "AuditEntry": {
+        "type": "object",
+        "required": ["id", "occurred_at", "actor_user_id", "actor_role", "action", "entity_type", "entity_id", "correlation_id"],
+        "properties": {
+          "id": { "type": "integer" },
+          "occurred_at": { "type": "string", "format": "date-time" },
+          "actor_user_id": { "type": "integer" },
+          "actor_role": { "$ref": "#/components/schemas/Role" },
+          "action": { "$ref": "#/components/schemas/AuditAction" },
+          "entity_type": { "type": "string" },
+          "entity_id": { "type": "integer" },
+          "correlation_id": { "type": "string" },
+          "reason_code": { "type": "string", "nullable": true },
+          "comment": { "type": "string", "nullable": true, "maxLength": 500 },
+          "before": { "type": "object", "nullable": true },
+          "after": { "type": "object", "nullable": true }
+        }
+      },
+      "AuditEntryPage": {
+        "type": "object",
+        "required": ["items", "total", "limit", "offset"],
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/AuditEntry" } },
+          "total": { "type": "integer" },
+          "limit": { "type": "integer" },
+          "offset": { "type": "integer" }
+        }
+      },
+      "ProductRule": {
+        "type": "object",
+        "required": ["product_type", "policy_version", "min_age", "max_age", "min_income", "min_tenure_months", "max_tenure_months", "min_amount", "max_amount", "annual_rate_pct", "required_documents"],
+        "properties": {
+          "product_type": { "$ref": "#/components/schemas/ProductType" },
+          "policy_version": { "type": "integer" },
+          "min_age": { "type": "integer" },
+          "max_age": { "type": "integer" },
+          "min_income": { "$ref": "#/components/schemas/Money" },
+          "min_tenure_months": { "type": "integer" },
+          "max_tenure_months": { "type": "integer" },
+          "min_amount": { "$ref": "#/components/schemas/Money" },
+          "max_amount": { "$ref": "#/components/schemas/Money" },
+          "annual_rate_pct": { "type": "string" },
+          "auto_reject_below_score": { "type": "integer" },
+          "auto_approve_min_score": { "type": "integer" },
+          "required_documents": { "type": "array", "items": { "$ref": "#/components/schemas/DocumentType" } }
+        }
+      },
+      "PolicyVersion": {
+        "type": "object",
+        "required": ["version", "status", "sha256", "created_by", "created_at"],
+        "properties": {
+          "version": { "type": "integer" },
+          "status": { "type": "string", "enum": ["DRAFT", "APPROVED"] },
+          "sha256": { "type": "string" },
+          "base_version": { "type": "integer", "nullable": true },
+          "created_by": { "type": "integer" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "approved_by": { "type": "integer", "nullable": true },
+          "approved_at": { "type": "string", "format": "date-time", "nullable": true }
+        }
+      },
+      "PolicyVersionPage": {
+        "type": "object",
+        "required": ["items", "total", "limit", "offset"],
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/PolicyVersion" } },
+          "total": { "type": "integer" },
+          "limit": { "type": "integer" },
+          "offset": { "type": "integer" }
+        }
+      },
+      "PolicyDetail": {
+        "type": "object",
+        "required": ["version", "status", "products", "reason_codes", "override_reason_codes"],
+        "properties": {
+          "version": { "type": "integer" },
+          "status": { "type": "string", "enum": ["DRAFT", "APPROVED"] },
+          "products": {
+            "type": "object",
+            "required": ["PERSONAL", "VEHICLE", "EDUCATION"],
+            "properties": {
+              "PERSONAL": { "$ref": "#/components/schemas/ProductRule" },
+              "VEHICLE": { "$ref": "#/components/schemas/ProductRule" },
+              "EDUCATION": { "$ref": "#/components/schemas/ProductRule" }
+            }
+          },
+          "reason_codes": { "type": "object", "additionalProperties": { "type": "string" } },
+          "override_reason_codes": { "type": "array", "items": { "$ref": "#/components/schemas/OverrideReasonCode" } }
+        }
+      },
+      "CreatePolicyRequest": {
+        "type": "object",
+        "required": ["base_version", "changes"],
+        "properties": {
+          "base_version": { "type": "integer" },
+          "changes": {
+            "type": "object",
+            "properties": {
+              "PERSONAL": { "type": "object" },
+              "VEHICLE": { "type": "object" },
+              "EDUCATION": { "type": "object" }
+            },
+            "description": "Partial ProductRule overrides per product, applied onto base_version."
+          }
+        }
+      },
+      "CreateApplicationRequest": {
+        "type": "object",
+        "required": ["product_type", "requested_amount", "tenure_months", "age_years", "monthly_income", "credit_flags", "pan", "aadhaar"],
+        "properties": {
+          "product_type": { "$ref": "#/components/schemas/ProductType" },
+          "requested_amount": { "$ref": "#/components/schemas/Money" },
+          "tenure_months": { "type": "integer" },
+          "age_years": { "type": "integer" },
+          "monthly_income": { "$ref": "#/components/schemas/Money" },
+          "credit_flags": { "$ref": "#/components/schemas/CreditFlags" },
+          "pan": { "type": "string", "pattern": "^[A-Z]{5}[0-9]{4}[A-Z]$" },
+          "aadhaar": { "type": "string", "pattern": "^[0-9]{12}$" }
+        }
+      },
+      "DocumentChecklistItem": {
+        "type": "object",
+        "required": ["type", "status"],
+        "properties": {
+          "document_id": { "type": "integer", "nullable": true },
+          "type": { "$ref": "#/components/schemas/DocumentType" },
+          "status": { "$ref": "#/components/schemas/DocumentStatus" },
+          "filename": { "type": "string", "nullable": true },
+          "reason": { "type": "string", "nullable": true, "maxLength": 500 }
+        }
+      },
+      "Decision": {
+        "type": "object",
+        "required": ["decision", "score", "reason_codes", "policy_version", "decided_at"],
+        "properties": {
+          "decision": { "$ref": "#/components/schemas/DecisionType" },
+          "score": { "type": "integer", "minimum": 300, "maximum": 900 },
+          "reason_codes": { "type": "array", "items": { "$ref": "#/components/schemas/ReasonCode" } },
+          "policy_version": { "type": "integer" },
+          "decided_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Resolution": {
+        "type": "object",
+        "required": ["kind", "outcome", "comment", "resolved_by", "resolved_at"],
+        "properties": {
+          "kind": { "type": "string", "enum": ["MANUAL_REVIEW", "OVERRIDE"] },
+          "outcome": { "type": "string", "enum": ["APPROVED", "REJECTED"] },
+          "reason_code": { "$ref": "#/components/schemas/OverrideReasonCode", "nullable": true },
+          "comment": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "resolved_by": { "type": "integer" },
+          "resolved_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Application": {
+        "type": "object",
+        "required": ["id", "applicant_user_id", "product_type", "requested_amount", "tenure_months", "age_years", "monthly_income", "credit_flags", "pan_masked", "aadhaar_masked", "status", "required_documents", "created_at"],
+        "properties": {
+          "id": { "type": "integer" },
+          "applicant_user_id": { "type": "integer" },
+          "product_type": { "$ref": "#/components/schemas/ProductType" },
+          "requested_amount": { "$ref": "#/components/schemas/Money" },
+          "tenure_months": { "type": "integer" },
+          "age_years": { "type": "integer" },
+          "monthly_income": { "$ref": "#/components/schemas/Money" },
+          "credit_flags": { "$ref": "#/components/schemas/CreditFlags" },
+          "pan_masked": { "type": "string", "pattern": "^\\*{6}[0-9]{3}[A-Z]$" },
+          "aadhaar_masked": { "type": "string", "pattern": "^\\*{8}[0-9]{4}$" },
+          "status": { "$ref": "#/components/schemas/ApplicationStatus" },
+          "policy_version": { "type": "integer", "nullable": true },
+          "required_documents": { "type": "array", "items": { "$ref": "#/components/schemas/DocumentChecklistItem" } },
+          "decision": { "$ref": "#/components/schemas/Decision", "nullable": true },
+          "resolution": { "$ref": "#/components/schemas/Resolution", "nullable": true },
+          "created_at": { "type": "string", "format": "date-time" },
+          "submitted_at": { "type": "string", "format": "date-time", "nullable": true }
+        }
+      },
+      "UploadDocumentRequest": {
+        "type": "object",
+        "required": ["type", "filename"],
+        "properties": {
+          "type": { "$ref": "#/components/schemas/DocumentType" },
+          "filename": { "type": "string", "minLength": 1 }
+        }
+      },
+      "Document": {
+        "type": "object",
+        "required": ["id", "application_id", "type", "status"],
+        "properties": {
+          "id": { "type": "integer" },
+          "application_id": { "type": "integer" },
+          "type": { "$ref": "#/components/schemas/DocumentType" },
+          "status": { "$ref": "#/components/schemas/DocumentStatus" },
+          "filename": { "type": "string", "nullable": true },
+          "reason": { "type": "string", "nullable": true, "minLength": 1, "maxLength": 500 },
+          "uploaded_at": { "type": "string", "format": "date-time", "nullable": true },
+          "verified_by": { "type": "integer", "nullable": true },
+          "verified_at": { "type": "string", "format": "date-time", "nullable": true }
+        }
+      },
+      "VerificationQueueItem": {
+        "type": "object",
+        "required": ["document_id", "application_id", "type", "uploaded_at"],
+        "properties": {
+          "document_id": { "type": "integer" },
+          "application_id": { "type": "integer" },
+          "type": { "$ref": "#/components/schemas/DocumentType" },
+          "uploaded_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "VerificationQueuePage": {
+        "type": "object",
+        "required": ["items", "total", "limit", "offset"],
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/VerificationQueueItem" } },
+          "total": { "type": "integer" },
+          "limit": { "type": "integer" },
+          "offset": { "type": "integer" }
+        }
+      },
+      "VerifyDocumentRequest": {
+        "type": "object",
+        "required": ["outcome", "reason"],
+        "properties": {
+          "outcome": { "type": "string", "enum": ["VERIFIED", "REJECTED"] },
+          "reason": { "type": "string", "minLength": 1, "maxLength": 500 }
+        }
+      },
+      "UnderwriteResponse": {
+        "type": "object",
+        "required": ["decision", "score", "reason_codes", "policy_version", "status"],
+        "properties": {
+          "decision": { "$ref": "#/components/schemas/DecisionType" },
+          "score": { "type": "integer" },
+          "reason_codes": { "type": "array", "items": { "$ref": "#/components/schemas/ReasonCode" } },
+          "policy_version": { "type": "integer" },
+          "status": { "$ref": "#/components/schemas/ApplicationStatus" }
+        }
+      },
+      "ReviewRequest": {
+        "type": "object",
+        "required": ["outcome", "reason"],
+        "properties": {
+          "outcome": { "type": "string", "enum": ["APPROVE", "REJECT"] },
+          "reason": { "type": "string", "minLength": 1, "maxLength": 500 }
+        }
+      },
+      "OverrideRequest": {
+        "type": "object",
+        "required": ["reason_code", "comment"],
+        "properties": {
+          "reason_code": { "$ref": "#/components/schemas/OverrideReasonCode" },
+          "comment": { "type": "string", "minLength": 1, "maxLength": 500 }
+        }
+      }
+    }
+  }
+}

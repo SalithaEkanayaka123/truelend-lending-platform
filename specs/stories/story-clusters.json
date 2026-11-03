@@ -1,0 +1,455 @@
+{
+  "cluster_count": 8,
+  "max_points_per_cluster": 21,
+  "min_points_per_cluster": 5,
+  "clusters": [
+    {
+      "id": "C1",
+      "stories": [
+        "E1-S1",
+        "E1-S2"
+      ],
+      "story_points": 8,
+      "layers": [
+        "API",
+        "Repository"
+      ],
+      "epics": [
+        "E1"
+      ],
+      "waves": [
+        "A",
+        "B"
+      ],
+      "internal_edges": 1,
+      "external_edges": 6,
+      "coordination_cost": 3,
+      "independently_startable": true,
+      "oversized": false
+    },
+    {
+      "id": "C2",
+      "stories": [
+        "E1-S3"
+      ],
+      "story_points": 5,
+      "layers": [
+        "Config"
+      ],
+      "epics": [
+        "E1"
+      ],
+      "waves": [
+        "A"
+      ],
+      "internal_edges": 0,
+      "external_edges": 0,
+      "coordination_cost": 0,
+      "independently_startable": true,
+      "oversized": false
+    },
+    {
+      "id": "C3",
+      "stories": [
+        "E1-S4",
+        "E2-S1",
+        "E2-S2",
+        "E4-S1"
+      ],
+      "story_points": 21,
+      "layers": [
+        "API",
+        "Config",
+        "Service"
+      ],
+      "epics": [
+        "E1",
+        "E2",
+        "E4"
+      ],
+      "waves": [
+        "A",
+        "B",
+        "C"
+      ],
+      "internal_edges": 3,
+      "external_edges": 6,
+      "coordination_cost": 1.5,
+      "independently_startable": true,
+      "oversized": false
+    },
+    {
+      "id": "C4",
+      "stories": [
+        "E2-S3",
+        "E3-S1",
+        "E3-S3",
+        "E3-S4",
+        "E3-S5"
+      ],
+      "story_points": 20,
+      "layers": [
+        "Service"
+      ],
+      "epics": [
+        "E2",
+        "E3"
+      ],
+      "waves": [
+        "D",
+        "E",
+        "F"
+      ],
+      "internal_edges": 4,
+      "external_edges": 7,
+      "coordination_cost": 1.4,
+      "independently_startable": false,
+      "oversized": false
+    },
+    {
+      "id": "C5",
+      "stories": [
+        "E2-S4"
+      ],
+      "story_points": 5,
+      "layers": [
+        "UI"
+      ],
+      "epics": [
+        "E2"
+      ],
+      "waves": [
+        "F"
+      ],
+      "internal_edges": 0,
+      "external_edges": 2,
+      "coordination_cost": 2,
+      "independently_startable": true,
+      "oversized": false
+    },
+    {
+      "id": "C6",
+      "stories": [
+        "E3-S2"
+      ],
+      "story_points": 3,
+      "layers": [
+        "Service"
+      ],
+      "epics": [
+        "E3"
+      ],
+      "waves": [
+        "A"
+      ],
+      "internal_edges": 0,
+      "external_edges": 1,
+      "coordination_cost": 1,
+      "independently_startable": true,
+      "oversized": false
+    },
+    {
+      "id": "C7",
+      "stories": [
+        "E3-S6"
+      ],
+      "story_points": 5,
+      "layers": [
+        "UI"
+      ],
+      "epics": [
+        "E3"
+      ],
+      "waves": [
+        "G"
+      ],
+      "internal_edges": 0,
+      "external_edges": 1,
+      "coordination_cost": 1,
+      "independently_startable": true,
+      "oversized": false
+    },
+    {
+      "id": "C8",
+      "stories": [
+        "E4-S2"
+      ],
+      "story_points": 5,
+      "layers": [
+        "UI"
+      ],
+      "epics": [
+        "E4"
+      ],
+      "waves": [
+        "D"
+      ],
+      "internal_edges": 0,
+      "external_edges": 1,
+      "coordination_cost": 1,
+      "independently_startable": true,
+      "oversized": false
+    }
+  ],
+  "interface_contracts": [
+    {
+      "id": "IC-1",
+      "artifact": "auth guard",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C3",
+      "edge": {
+        "from": "E2-S1",
+        "to": "E1-S1"
+      },
+      "contract_story": null,
+      "reason": "the catalog requires a valid token"
+    },
+    {
+      "id": "IC-2",
+      "artifact": "auth guard",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C3",
+      "edge": {
+        "from": "E2-S2",
+        "to": "E1-S1"
+      },
+      "contract_story": null,
+      "reason": "apply is a CUSTOMER-only route"
+    },
+    {
+      "id": "IC-3",
+      "artifact": "apply/upload/submit endpoints",
+      "kind": "contract",
+      "producer_cluster": "C4",
+      "consumer_cluster": "C5",
+      "edge": {
+        "from": "E2-S4",
+        "to": "E2-S3"
+      },
+      "contract_story": "E1-S4",
+      "reason": "the apply wizard calls these endpoints"
+    },
+    {
+      "id": "IC-4",
+      "artifact": "verification-queue endpoint",
+      "kind": "contract",
+      "producer_cluster": "C4",
+      "consumer_cluster": "C5",
+      "edge": {
+        "from": "E2-S4",
+        "to": "E3-S1"
+      },
+      "contract_story": "E1-S4",
+      "reason": "the verification queue UI calls this endpoint"
+    },
+    {
+      "id": "IC-5",
+      "artifact": "audit writer",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C4",
+      "edge": {
+        "from": "E3-S1",
+        "to": "E1-S2"
+      },
+      "contract_story": null,
+      "reason": "verify/reject actions are audited"
+    },
+    {
+      "id": "IC-6",
+      "artifact": "score function",
+      "kind": "contract",
+      "producer_cluster": "C6",
+      "consumer_cluster": "C4",
+      "edge": {
+        "from": "E3-S3",
+        "to": "E3-S2"
+      },
+      "contract_story": null,
+      "reason": "underwriting consumes the deterministic score"
+    },
+    {
+      "id": "IC-7",
+      "artifact": "audit writer",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C4",
+      "edge": {
+        "from": "E3-S5",
+        "to": "E1-S2"
+      },
+      "contract_story": null,
+      "reason": "review and override actions are audited"
+    },
+    {
+      "id": "IC-8",
+      "artifact": "review/override endpoints",
+      "kind": "contract",
+      "producer_cluster": "C4",
+      "consumer_cluster": "C7",
+      "edge": {
+        "from": "E3-S6",
+        "to": "E3-S5"
+      },
+      "contract_story": "E1-S4",
+      "reason": "the decision UI calls these endpoints"
+    },
+    {
+      "id": "IC-9",
+      "artifact": "auth guard",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C3",
+      "edge": {
+        "from": "E4-S1",
+        "to": "E1-S1"
+      },
+      "contract_story": null,
+      "reason": "only POLICY_EDITOR/ADMIN may call these routes"
+    },
+    {
+      "id": "IC-10",
+      "artifact": "audit writer",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C3",
+      "edge": {
+        "from": "E4-S1",
+        "to": "E1-S2"
+      },
+      "contract_story": null,
+      "reason": "policy create/approve actions are audited"
+    },
+    {
+      "id": "IC-11",
+      "artifact": "policy endpoints",
+      "kind": "contract",
+      "producer_cluster": "C3",
+      "consumer_cluster": "C8",
+      "edge": {
+        "from": "E4-S2",
+        "to": "E4-S1"
+      },
+      "contract_story": "E1-S4",
+      "reason": "the policy editor UI calls these endpoints"
+    }
+  ],
+  "unresolved_contracts": [
+    {
+      "id": "IC-1",
+      "artifact": "auth guard",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C3",
+      "edge": {
+        "from": "E2-S1",
+        "to": "E1-S1"
+      },
+      "contract_story": null,
+      "reason": "the catalog requires a valid token"
+    },
+    {
+      "id": "IC-2",
+      "artifact": "auth guard",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C3",
+      "edge": {
+        "from": "E2-S2",
+        "to": "E1-S1"
+      },
+      "contract_story": null,
+      "reason": "apply is a CUSTOMER-only route"
+    },
+    {
+      "id": "IC-5",
+      "artifact": "audit writer",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C4",
+      "edge": {
+        "from": "E3-S1",
+        "to": "E1-S2"
+      },
+      "contract_story": null,
+      "reason": "verify/reject actions are audited"
+    },
+    {
+      "id": "IC-6",
+      "artifact": "score function",
+      "kind": "contract",
+      "producer_cluster": "C6",
+      "consumer_cluster": "C4",
+      "edge": {
+        "from": "E3-S3",
+        "to": "E3-S2"
+      },
+      "contract_story": null,
+      "reason": "underwriting consumes the deterministic score"
+    },
+    {
+      "id": "IC-7",
+      "artifact": "audit writer",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C4",
+      "edge": {
+        "from": "E3-S5",
+        "to": "E1-S2"
+      },
+      "contract_story": null,
+      "reason": "review and override actions are audited"
+    },
+    {
+      "id": "IC-9",
+      "artifact": "auth guard",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C3",
+      "edge": {
+        "from": "E4-S1",
+        "to": "E1-S1"
+      },
+      "contract_story": null,
+      "reason": "only POLICY_EDITOR/ADMIN may call these routes"
+    },
+    {
+      "id": "IC-10",
+      "artifact": "audit writer",
+      "kind": "contract",
+      "producer_cluster": "C1",
+      "consumer_cluster": "C3",
+      "edge": {
+        "from": "E4-S1",
+        "to": "E1-S2"
+      },
+      "contract_story": null,
+      "reason": "policy create/approve actions are audited"
+    }
+  ],
+  "blocking_dependencies": [
+    {
+      "id": "BD-1",
+      "kind": "data",
+      "producer_cluster": "C3",
+      "blocked_cluster": "C4",
+      "edge": {
+        "from": "E2-S3",
+        "to": "E2-S2"
+      },
+      "reason": "upload and submit act on the created application and its document rows"
+    }
+  ],
+  "warnings": [
+    "interface contract IC-1 (auth guard) has no interface-layer story to publish it, so C3 cannot start before C1 ships E1-S1. Add a Types/Config story for the artifact.",
+    "interface contract IC-2 (auth guard) has no interface-layer story to publish it, so C3 cannot start before C1 ships E1-S1. Add a Types/Config story for the artifact.",
+    "interface contract IC-5 (audit writer) has no interface-layer story to publish it, so C4 cannot start before C1 ships E1-S2. Add a Types/Config story for the artifact.",
+    "interface contract IC-6 (score function) has no interface-layer story to publish it, so C4 cannot start before C6 ships E3-S2. Add a Types/Config story for the artifact.",
+    "interface contract IC-7 (audit writer) has no interface-layer story to publish it, so C4 cannot start before C1 ships E1-S2. Add a Types/Config story for the artifact.",
+    "interface contract IC-9 (auth guard) has no interface-layer story to publish it, so C3 cannot start before C1 ships E1-S1. Add a Types/Config story for the artifact.",
+    "interface contract IC-10 (audit writer) has no interface-layer story to publish it, so C3 cannot start before C1 ships E1-S2. Add a Types/Config story for the artifact.",
+    "contract edge E1-S1 → E1-S2 is not a cluster cut: hard edges still join them in C1 — do not sell this as independently startable parallelism"
+  ]
+}

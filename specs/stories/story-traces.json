@@ -1,0 +1,249 @@
+[
+  {
+    "id": "E1-S1",
+    "text": "Authentication and role guard",
+    "traces": [
+      "FRD-24"
+    ],
+    "acs": [
+      "E1-S1-AC1",
+      "E1-S1-AC2",
+      "E1-S1-AC3",
+      "E1-S1-AC4",
+      "E1-S1-AC5"
+    ]
+  },
+  {
+    "id": "E1-S2",
+    "text": "Audit trail",
+    "traces": [
+      "FRD-22",
+      "FRD-24"
+    ],
+    "acs": [
+      "E1-S2-AC1",
+      "E1-S2-AC2",
+      "E1-S2-AC3",
+      "E1-S2-AC4"
+    ]
+  },
+  {
+    "id": "E1-S3",
+    "text": "JSON logs, correlation IDs, and redaction",
+    "traces": [
+      "FRD-23",
+      "FRD-26"
+    ],
+    "acs": [
+      "E1-S3-AC1",
+      "E1-S3-AC2",
+      "E1-S3-AC3",
+      "E1-S3-AC4",
+      "E1-S3-AC5"
+    ]
+  },
+  {
+    "id": "E1-S4",
+    "text": "Health, migrations, and architecture guards",
+    "traces": [
+      "FRD-19",
+      "FRD-20",
+      "FRD-21",
+      "FRD-25",
+      "FRD-27",
+      "FRD-28"
+    ],
+    "acs": [
+      "E1-S4-AC1",
+      "E1-S4-AC2",
+      "E1-S4-AC3",
+      "E1-S4-AC4",
+      "E1-S4-AC5"
+    ]
+  },
+  {
+    "id": "E2-S1",
+    "text": "Product catalog from the active policy",
+    "traces": [
+      "FRD-1",
+      "FRD-24",
+      "FRD-25",
+      "FRD-29"
+    ],
+    "acs": [
+      "E2-S1-AC1",
+      "E2-S1-AC2",
+      "E2-S1-AC3",
+      "E2-S1-AC4",
+      "E2-S1-AC5"
+    ]
+  },
+  {
+    "id": "E2-S2",
+    "text": "Apply for a loan",
+    "traces": [
+      "FRD-2",
+      "FRD-23",
+      "FRD-30"
+    ],
+    "acs": [
+      "E2-S2-AC1",
+      "E2-S2-AC2",
+      "E2-S2-AC3",
+      "E2-S2-AC4",
+      "E2-S2-AC5"
+    ]
+  },
+  {
+    "id": "E2-S3",
+    "text": "Upload documents and submit",
+    "traces": [
+      "FRD-2",
+      "FRD-30"
+    ],
+    "acs": [
+      "E2-S3-AC1",
+      "E2-S3-AC2",
+      "E2-S3-AC3",
+      "E2-S3-AC4",
+      "E2-S3-AC5"
+    ]
+  },
+  {
+    "id": "E2-S4",
+    "text": "Apply wizard and verification queue UI",
+    "traces": [
+      "FRD-2",
+      "FRD-6",
+      "FRD-34"
+    ],
+    "acs": [
+      "E2-S4-AC1",
+      "E2-S4-AC2",
+      "E2-S4-AC3"
+    ]
+  },
+  {
+    "id": "E3-S1",
+    "text": "Verification queue",
+    "traces": [
+      "FRD-6",
+      "FRD-24",
+      "FRD-34"
+    ],
+    "acs": [
+      "E3-S1-AC1",
+      "E3-S1-AC2",
+      "E3-S1-AC3",
+      "E3-S1-AC4",
+      "E3-S1-AC5"
+    ]
+  },
+  {
+    "id": "E3-S2",
+    "text": "Credit-scoring stub",
+    "traces": [
+      "FRD-3",
+      "FRD-31"
+    ],
+    "acs": [
+      "E3-S2-AC1",
+      "E3-S2-AC2",
+      "E3-S2-AC3",
+      "E3-S2-AC4",
+      "E3-S2-AC5"
+    ]
+  },
+  {
+    "id": "E3-S3",
+    "text": "Underwriting decision with reason codes",
+    "traces": [
+      "FRD-4",
+      "FRD-16",
+      "FRD-32"
+    ],
+    "acs": [
+      "E3-S3-AC1",
+      "E3-S3-AC2",
+      "E3-S3-AC3",
+      "E3-S3-AC4",
+      "E3-S3-AC5",
+      "E3-S3-AC6"
+    ]
+  },
+  {
+    "id": "E3-S4",
+    "text": "Minimum-income violation",
+    "traces": [
+      "FRD-5",
+      "FRD-33"
+    ],
+    "acs": [
+      "E3-S4-AC1",
+      "E3-S4-AC2",
+      "E3-S4-AC3"
+    ]
+  },
+  {
+    "id": "E3-S5",
+    "text": "Manual review and override",
+    "traces": [
+      "FRD-14",
+      "FRD-15",
+      "FRD-24",
+      "FRD-42",
+      "FRD-43"
+    ],
+    "acs": [
+      "E3-S5-AC1",
+      "E3-S5-AC2",
+      "E3-S5-AC3",
+      "E3-S5-AC4",
+      "E3-S5-AC5"
+    ]
+  },
+  {
+    "id": "E3-S6",
+    "text": "Decision review and override UI",
+    "traces": [
+      "FRD-14",
+      "FRD-15"
+    ],
+    "acs": [
+      "E3-S6-AC1",
+      "E3-S6-AC2",
+      "E3-S6-AC3"
+    ]
+  },
+  {
+    "id": "E4-S1",
+    "text": "Create and approve policy versions",
+    "traces": [
+      "FRD-16",
+      "FRD-22",
+      "FRD-25",
+      "FRD-28",
+      "FRD-44"
+    ],
+    "acs": [
+      "E4-S1-AC1",
+      "E4-S1-AC2",
+      "E4-S1-AC3",
+      "E4-S1-AC4",
+      "E4-S1-AC5",
+      "E4-S1-AC6"
+    ]
+  },
+  {
+    "id": "E4-S2",
+    "text": "Policy editor UI",
+    "traces": [
+      "FRD-16"
+    ],
+    "acs": [
+      "E4-S2-AC1",
+      "E4-S2-AC2",
+      "E4-S2-AC3"
+    ]
+  }
+]

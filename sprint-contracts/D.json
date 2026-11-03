@@ -1,0 +1,122 @@
+{
+  "group": "D",
+  "stories": [
+    "E2-S3",
+    "E4-S2"
+  ],
+  "features": [
+    "F030",
+    "F031",
+    "F032",
+    "F033",
+    "F034",
+    "F071",
+    "F072",
+    "F073"
+  ],
+  "contract": {
+    "api_checks": [
+      {
+        "id": "QA-VM-030",
+        "matrix_ids": [
+          "VM-030"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/documents",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/documents {type ID_PROOF, filename id_front.png}; expect 201 UPLOADED, no content stored"
+      },
+      {
+        "id": "QA-VM-031",
+        "matrix_ids": [
+          "VM-031"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/documents",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/documents type VEHICLE_QUOTATION on PERSONAL; expect 422 DOCUMENT_TYPE_NOT_REQUIRED"
+      },
+      {
+        "id": "QA-VM-032",
+        "matrix_ids": [
+          "VM-032"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/submit",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/submit with SALARY_SLIP MISSING; expect 409 MISSING_DOCUMENTS missing [SALARY_SLIP], status DRAFT"
+      },
+      {
+        "id": "QA-VM-033",
+        "matrix_ids": [
+          "VM-033"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/submit",
+        "expected_status": 200,
+        "description": "POST /api/applications/1/submit -> 200 after all 3 documents are UPLOADED; expect SUBMITTED, policy_version 1, submitted_at set"
+      },
+      {
+        "id": "QA-VM-034",
+        "matrix_ids": [
+          "VM-034"
+        ],
+        "method": "POST",
+        "path": "/api/applications/1/submit",
+        "expected_status": 409,
+        "description": "POST /api/applications/1/submit -> 409 on an already SUBMITTED application; expect ALREADY_SUBMITTED"
+      }
+    ],
+    "playwright_checks": [
+      {
+        "id": "QA-VM-071",
+        "matrix_ids": [
+          "VM-071"
+        ],
+        "description": "Playwright 375x812 as POLICY_EDITOR open policy editor; assert single-column stacked forms, no horizontal scroll",
+        "url": "/",
+        "steps": [
+          {
+            "action": "interact",
+            "assertion": "Playwright 375x812 as POLICY_EDITOR open policy editor; assert single-column stacked forms, no horizontal scroll"
+          }
+        ]
+      },
+      {
+        "id": "QA-VM-072",
+        "matrix_ids": [
+          "VM-072"
+        ],
+        "description": "Playwright: PERSONAL form min_age 70, max_age 60; assert inline error and Save disabled",
+        "url": "/",
+        "steps": [
+          {
+            "action": "interact",
+            "assertion": "Playwright: PERSONAL form min_age 70, max_age 60; assert inline error and Save disabled"
+          }
+        ]
+      },
+      {
+        "id": "QA-VM-073",
+        "matrix_ids": [
+          "VM-073"
+        ],
+        "description": "Playwright: enter valid changes, Save; assert 'Draft v2' shown and v2 in list",
+        "url": "/",
+        "steps": [
+          {
+            "action": "interact",
+            "assertion": "Playwright: enter valid changes, Save; assert 'Draft v2' shown and v2 in list"
+          }
+        ]
+      }
+    ],
+    "accessibility_checks": {
+      "required": true,
+      "block_impacts": [
+        "serious",
+        "critical"
+      ]
+    }
+  }
+}

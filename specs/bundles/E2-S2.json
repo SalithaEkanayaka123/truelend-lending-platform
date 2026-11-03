@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "story_id": "E2-S2",
+  "sprint": 1,
+  "title": "Apply for a loan",
+  "readiness": "ready",
+  "requirements": {
+    "ac_ids": [
+      "E2-S2-AC1",
+      "E2-S2-AC2",
+      "E2-S2-AC3",
+      "E2-S2-AC4",
+      "E2-S2-AC5"
+    ],
+    "brd_ids": [
+      "FRD-2",
+      "FRD-23",
+      "FRD-30"
+    ],
+    "br_acceptance_ids": [
+      "FRD-30"
+    ],
+    "scope_out": [
+      "co-applicants; editing an application after submission; withdrawing an application"
+    ]
+  },
+  "entities": [
+    {
+      "name": "Apply for a loan",
+      "status": "unknown"
+    }
+  ],
+  "approach": {
+    "program_design": "specs/design/program-design.md",
+    "canvas": "specs/design/reasons-canvas.md",
+    "amendment": null
+  },
+  "structure": {
+    "owned_files": [
+      "backend/src/truelend/repository/applications_repo.py",
+      "backend/src/truelend/repository/documents_repo.py",
+      "backend/src/truelend/service/application_service.py",
+      "backend/src/truelend/api/applications_router.py",
+      "backend/migrations/0003_applications_and_documents.sql"
+    ],
+    "layer": "API"
+  },
+  "operations": {
+    "pending": true,
+    "files": [],
+    "text": "- pending"
+  },
+  "safeguards": {
+    "ids": [
+      "SG-8"
+    ],
+    "none": false
+  },
+  "tests": {
+    "matrix_ids": [
+      "VM-025",
+      "VM-026",
+      "VM-027",
+      "VM-028",
+      "VM-029"
+    ],
+    "case_ids": [
+      "VM-025",
+      "VM-026",
+      "VM-027",
+      "VM-028",
+      "VM-029"
+    ],
+    "layers": [
+      "api",
+      "unit"
+    ]
+  },
+  "provenance": {
+    "story_path": "specs/stories/E2-S2.md",
+    "parents": [
+      "E2-S1",
+      "E1-S1"
+    ],
+    "tracker_key": null
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "story_id": "E3-S6",
+  "sprint": 1,
+  "title": "Decision review and override UI",
+  "readiness": "ready",
+  "requirements": {
+    "ac_ids": [
+      "E3-S6-AC1",
+      "E3-S6-AC2",
+      "E3-S6-AC3"
+    ],
+    "brd_ids": [
+      "FRD-14",
+      "FRD-15"
+    ],
+    "br_acceptance_ids": [
+      "FRD-42",
+      "FRD-43"
+    ],
+    "scope_out": [
+      "the admin-only application list/filter view (FR-10, deferred to M2)"
+    ]
+  },
+  "entities": [
+    {
+      "name": "Decision review and override UI",
+      "status": "unknown"
+    }
+  ],
+  "approach": {
+    "program_design": "specs/design/program-design.md",
+    "canvas": "specs/design/reasons-canvas.md",
+    "amendment": null
+  },
+  "structure": {
+    "owned_files": [
+      "frontend/src/service/decisions.ts",
+      "frontend/src/ui/decision/*"
+    ],
+    "layer": "UI"
+  },
+  "operations": {
+    "pending": true,
+    "files": [],
+    "text": "- pending"
+  },
+  "safeguards": {
+    "ids": [
+      "SG-1",
+      "SG-2",
+      "SG-3",
+      "SG-4",
+      "SG-5",
+      "SG-6",
+      "SG-7",
+      "SG-8",
+      "SG-9",
+      "SG-10",
+      "SG-11",
+      "SG-12"
+    ],
+    "none": false
+  },
+  "tests": {
+    "matrix_ids": [
+      "VM-062",
+      "VM-063",
+      "VM-064"
+    ],
+    "case_ids": [
+      "VM-062",
+      "VM-063",
+      "VM-064"
+    ],
+    "layers": [
+      "e2e"
+    ]
+  },
+  "provenance": {
+    "story_path": "specs/stories/E3-S6.md",
+    "parents": [
+      "E3-S5"
+    ],
+    "tracker_key": null
+  }
+}

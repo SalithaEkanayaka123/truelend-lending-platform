@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "story_id": "E3-S1",
+  "sprint": 1,
+  "title": "Verification queue",
+  "readiness": "ready",
+  "requirements": {
+    "ac_ids": [
+      "E3-S1-AC1",
+      "E3-S1-AC2",
+      "E3-S1-AC3",
+      "E3-S1-AC4",
+      "E3-S1-AC5"
+    ],
+    "brd_ids": [
+      "FRD-6",
+      "FRD-24",
+      "FRD-34"
+    ],
+    "br_acceptance_ids": [
+      "FRD-34"
+    ],
+    "scope_out": [
+      "document content review (metadata only)"
+    ]
+  },
+  "entities": [
+    {
+      "name": "Verification queue",
+      "status": "unknown"
+    }
+  ],
+  "approach": {
+    "program_design": "specs/design/program-design.md",
+    "canvas": "specs/design/reasons-canvas.md",
+    "amendment": null
+  },
+  "structure": {
+    "owned_files": [
+      "backend/src/truelend/service/verification_service.py",
+      "backend/src/truelend/api/documents_router.py"
+    ],
+    "layer": "Service"
+  },
+  "operations": {
+    "pending": true,
+    "files": [],
+    "text": "- pending"
+  },
+  "safeguards": {
+    "ids": [
+      "SG-1",
+      "SG-2",
+      "SG-3",
+      "SG-4",
+      "SG-5",
+      "SG-6",
+      "SG-7",
+      "SG-8",
+      "SG-9",
+      "SG-10",
+      "SG-11",
+      "SG-12"
+    ],
+    "none": false
+  },
+  "tests": {
+    "matrix_ids": [
+      "VM-038",
+      "VM-039",
+      "VM-040",
+      "VM-041",
+      "VM-042"
+    ],
+    "case_ids": [
+      "VM-038",
+      "VM-039",
+      "VM-040",
+      "VM-041",
+      "VM-042"
+    ],
+    "layers": [
+      "api"
+    ]
+  },
+  "provenance": {
+    "story_path": "specs/stories/E3-S1.md",
+    "parents": [
+      "E2-S3",
+      "E1-S2"
+    ],
+    "tracker_key": null
+  }
+}
