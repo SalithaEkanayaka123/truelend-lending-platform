@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TrueLend — M1 mockup index</title>
+<style>
+  :root { --bg: #F7F8FA; --surface: #FFFFFF; --border: #E3E7ED; --text: #12171F; --text-muted: #5B6676; --primary: #0F5FDB; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 48px 16px; }
+  h1 { font-size: 1.75rem; margin-bottom: 8px; }
+  p.lead { color: var(--text-muted); margin-bottom: 32px; }
+  ul { list-style: none; padding: 0; display: grid; gap: 16px; }
+  li { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px;
+    box-shadow: 0 1px 2px rgb(16 24 40 / 6%); }
+  li a { font-size: 1.125rem; font-weight: 600; color: var(--primary); text-decoration: none; }
+  li a:hover { text-decoration: underline; }
+  .meta { color: var(--text-muted); font-size: 0.875rem; margin-top: 6px; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.8125rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>TrueLend — M1 mockups</h1>
+  <p class="lead">Interactive HTML mockups for the three UI-layer stories in scope
+    (E2-S4, E3-S6, E4-S2). See <code>aesthetic-direction.md</code> for the
+    visual direction these follow.</p>
+  <ul>
+    <li>
+      <a href="E2-S4.html">E2-S4 — Apply wizard and verification queue</a>
+      <div class="meta">Screens: Apply: Product · Apply: Details · Apply: Documents and submit ·
+        Verification queue. Endpoints: <code>GET /api/products</code>,
+        <code>POST /api/applications</code>, <code>POST /api/applications/{id}/documents</code>,
+        <code>POST /api/applications/{id}/submit</code>, <code>GET /api/verification-queue</code>,
+        <code>POST /api/documents/{id}/verify</code>.</div>
+    </li>
+    <li>
+      <a href="E3-S6.html">E3-S6 — Decision review and override</a>
+      <div class="meta">Screens: Decision panel with score gauge and reason codes ·
+        Review actions (Approve/Reject) · Override dialog. Endpoints:
+        <code>GET /api/applications/{id}</code>, <code>POST /api/applications/{id}/review</code>,
+        <code>POST /api/applications/{id}/override</code>.</div>
+    </li>
+    <li>
+      <a href="E4-S2.html">E4-S2 — Policy editor</a>
+      <div class="meta">Screens: Per-product threshold forms (Personal, Vehicle, Education) ·
+        Version list. Endpoints: <code>GET /api/policies</code>, <code>GET /api/policies/{version}</code>,
+        <code>POST /api/policies</code>.</div>
+    </li>
+  </ul>
+</main>
+</body>
+</html>

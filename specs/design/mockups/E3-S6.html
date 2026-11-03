@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TrueLend — Decision review and override (E3-S6)</title>
+<!--
+  Schema fidelity note: fields match specs/design/api-contracts.schema.json
+  (Application, Decision, Resolution, OverrideRequest, ReviewRequest) and
+  specs/design/data-models.schema.json. Reason-code copy comes from the
+  seeded policy file's reason_codes map (specs/features/F1-product-catalog.md).
+  No disbursement form is shown — that is M2 scope, outside E3-S6.
+-->
+<style>
+  :root {
+    --bg: #F7F8FA; --surface: #FFFFFF; --border: #E3E7ED; --border-strong: #788291;
+    --text: #12171F; --text-muted: #5B6676;
+    --primary: #0F5FDB; --primary-contrast: #FFFFFF;
+    --success: #117A4D; --warning: #9A5B00; --danger: #B42318; --info: #3B5BDB;
+    --success-bg: #E6F3EC; --warning-bg: #FBF0DF; --danger-bg: #FAE6E4; --info-bg: #E8ECFB;
+    --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --text-xs: 0.75rem; --text-sm: 0.875rem; --text-base: 1rem; --text-lg: 1.125rem;
+    --text-xl: 1.375rem; --text-2xl: 1.75rem;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+    --space-5: 24px; --space-6: 32px; --space-7: 48px;
+    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --radius-pill: 999px;
+    --shadow-1: 0 1px 2px rgb(16 24 40 / 6%); --shadow-2: 0 8px 24px rgb(16 24 40 / 12%);
+    --duration-fast: 120ms; --duration-base: 200ms; --ease-out: cubic-bezier(.2,0,0,1);
+    --tap-min: 44px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans);
+    font-size: var(--text-base); line-height: 1.5; }
+  h1, h2, h3 { font-weight: 600; line-height: 1.25; margin: 0; }
+  .num { font-variant-numeric: tabular-nums; }
+  a.skip-link { position: absolute; left: -999px; }
+  a.skip-link:focus { left: var(--space-2); top: var(--space-2); background: var(--surface); padding: var(--space-2); z-index: 10; }
+  header.appbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: var(--space-4);
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+  header.appbar .brand { font-weight: 600; font-size: var(--text-lg); color: var(--primary); }
+  select#app-switch { font: inherit; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border-strong); min-height: var(--tap-min); background: var(--surface); color: var(--text); }
+  main { max-width: 1100px; margin: 0 auto; padding: var(--space-5) var(--space-4) var(--space-7); }
+  .panels { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+  @media (min-width: 1024px) { .panels { grid-template-columns: 1fr 1fr 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1); padding: var(--space-5); }
+  .card h2 { font-size: var(--text-lg); margin-bottom: var(--space-3); }
+  dl.kv { display: grid; grid-template-columns: auto 1fr; gap: var(--space-2) var(--space-3); font-size: var(--text-sm); }
+  dl.kv dt { color: var(--text-muted); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-xs); font-weight: 600;
+    padding: 4px 10px; border-radius: var(--radius-pill); }
+  .badge::before { content: "●"; font-size: 8px; }
+  .badge.info { background: var(--info-bg); color: var(--info); }
+  .badge.warning { background: var(--warning-bg); color: var(--warning); }
+  .badge.success { background: var(--success-bg); color: var(--success); }
+  .badge.danger { background: var(--danger-bg); color: var(--danger); }
+  .doc-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--border); font-size: var(--text-sm); }
+  .doc-row:last-child { border-bottom: none; }
+
+  .gauge-wrap { display: flex; flex-direction: column; align-items: center; }
+  .gauge-figure { font-size: var(--text-2xl); font-weight: 600; margin-top: -40px; }
+  .reason-list { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: grid; gap: var(--space-2); }
+  .reason-list li { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: var(--space-3); font-size: var(--text-sm); }
+  .reason-list code { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); }
+
+  .field { margin-bottom: var(--space-4); }
+  .field label { display: block; font-weight: 500; font-size: var(--text-sm); margin-bottom: var(--space-1); }
+  textarea, select.reason-select { width: 100%; font: inherit; padding: var(--space-3);
+    border: 1.5px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); }
+  textarea { min-height: 88px; resize: vertical; }
+  select.reason-select { min-height: var(--tap-min); }
+  button.btn { font: inherit; font-weight: 600; border-radius: var(--radius-sm); padding: var(--space-3) var(--space-5);
+    min-height: var(--tap-min); cursor: pointer; border: 1.5px solid transparent; }
+  button.btn.primary { background: var(--primary); color: var(--primary-contrast); }
+  button.btn.primary:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+  button.btn.danger { background: var(--surface); color: var(--danger); border-color: var(--danger); }
+  button.btn.danger:disabled { color: var(--text-muted); border-color: var(--border); cursor: not-allowed; }
+  button.btn.secondary { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+  .btn-row { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+  .confirm-banner { display: none; margin-top: var(--space-3); background: var(--success-bg); color: var(--success);
+    border-radius: var(--radius-sm); padding: var(--space-3); font-size: var(--text-sm); font-weight: 600; }
+
+  dialog.sheet { border: none; border-radius: var(--radius-lg); box-shadow: var(--shadow-2); padding: 0;
+    width: min(480px, 92vw); }
+  dialog.sheet::backdrop { background: rgb(18 23 31 / 45%); }
+  .dialog-body { padding: var(--space-5); }
+  .dialog-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-4); }
+  .live-region { position: absolute; left: -9999px; }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: 1ms !important; transition-duration: 1ms !important; } }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="appbar">
+  <span class="brand">TrueLend</span>
+  <label for="app-switch" style="font-size: var(--text-sm); display:flex; align-items:center; gap: var(--space-2);">
+    Application
+    <select id="app-switch">
+      <option value="manual-review">#2 — MANUAL_REVIEW (score 680)</option>
+      <option value="auto-reject">#3 — AUTO_REJECT (score 500)</option>
+    </select>
+  </label>
+  <span style="font-size: var(--text-sm); color: var(--text-muted);">Priya Nair · UNDERWRITER</span>
+</header>
+
+<main id="main">
+  <h1 style="font-size: var(--text-2xl); margin-bottom: var(--space-4);">Application review</h1>
+
+  <div class="panels">
+    <!-- Applicant / documents panel -->
+    <div class="card">
+      <h2>Applicant</h2>
+      <dl class="kv">
+        <dt>Product</dt><dd id="f-product">PERSONAL</dd>
+        <dt>Amount</dt><dd class="num" id="f-amount">₹200,000.00</dd>
+        <dt>Tenure</dt><dd class="num" id="f-tenure">24 months</dd>
+        <dt>PAN</dt><dd class="num">******234F</dd>
+        <dt>Aadhaar</dt><dd class="num">********9012</dd>
+      </dl>
+      <h2 style="margin-top: var(--space-4);">Documents</h2>
+      <div class="doc-row"><span>ID proof</span><span class="badge success">Verified</span></div>
+      <div class="doc-row"><span>Address proof</span><span class="badge success">Verified</span></div>
+      <div class="doc-row"><span>Salary slip</span><span class="badge success">Verified</span></div>
+    </div>
+
+    <!-- Decision panel -->
+    <div class="card">
+      <h2>Decision</h2>
+      <div class="gauge-wrap">
+        <svg width="200" height="110" viewBox="0 0 200 110" role="img" aria-label="Score gauge">
+          <path d="M 10 100 A 90 90 0 0 1 190 100" fill="none" stroke="#E3E7ED" stroke-width="14" />
+          <path id="gauge-arc" d="M 10 100 A 90 90 0 0 1 190 100" fill="none" stroke="var(--warning)" stroke-width="14"
+                stroke-dasharray="283" stroke-dashoffset="100" stroke-linecap="round" />
+          <!-- thresholds for PERSONAL v1: auto_reject_below 600, auto_approve_min 700 (scale 300-900) -->
+          <line x1="76" y1="18" x2="80" y2="30" stroke="var(--danger)" stroke-width="3" />
+          <line x1="140" y1="30" x2="144" y2="18" stroke="var(--success)" stroke-width="3" />
+        </svg>
+        <div class="gauge-figure num" id="score-figure">680</div>
+      </div>
+      <dl class="kv" style="margin-top: var(--space-3);">
+        <dt>Policy version</dt><dd class="num" id="f-policy-version">1</dd>
+        <dt>Decision</dt><dd id="f-decision"><span class="badge warning">MANUAL_REVIEW</span></dd>
+      </dl>
+      <h3 style="font-size: var(--text-sm); margin: var(--space-4) 0 var(--space-2); color: var(--text-muted);">Reason codes</h3>
+      <ul class="reason-list" id="reason-list">
+        <li><code>SCORE_IN_REVIEW_BAND</code><br/>Credit score falls in the manual-review band.</li>
+      </ul>
+    </div>
+
+    <!-- Actions panel -->
+    <div class="card">
+      <h2 id="actions-title">Review</h2>
+
+      <!-- Manual review actions -->
+      <div id="review-actions">
+        <div class="field">
+          <label for="review-reason">Reason (1–500 characters)</label>
+          <textarea id="review-reason" maxlength="500" placeholder="Stable income, documents verified"></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="btn primary" id="approve-btn" disabled>Approve</button>
+          <button class="btn danger" id="reject-btn" disabled>Reject</button>
+        </div>
+      </div>
+
+      <!-- Override action (AUTO_REJECT only) -->
+      <div id="override-actions" hidden>
+        <p style="font-size: var(--text-sm); color: var(--text-muted); margin-bottom: var(--space-3);">
+          This decision was AUTO_REJECT. An override sets status to APPROVED; the original decision row is unchanged.</p>
+        <button class="btn primary" id="open-override">Override decision</button>
+      </div>
+
+      <p class="confirm-banner" id="confirm-banner" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</main>
+
+<dialog class="sheet" id="override-dialog" aria-labelledby="override-title">
+  <form class="dialog-body" method="dialog" id="override-form">
+    <h2 id="override-title">Override decision</h2>
+    <div class="field">
+      <label for="reason-code">Reason code</label>
+      <select class="reason-select" id="reason-code">
+        <option value="">Select a reason…</option>
+        <option value="COMPENSATING_FACTORS">Compensating factors</option>
+        <option value="DATA_CORRECTION">Data correction</option>
+        <option value="SENIOR_APPROVAL">Senior approval</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="override-comment">Comment (1–500 characters)</label>
+      <textarea id="override-comment" maxlength="500" placeholder="Co-signed by parent; income verified"></textarea>
+    </div>
+    <div class="dialog-actions">
+      <button type="button" class="btn secondary" id="override-cancel">Cancel</button>
+      <button type="submit" class="btn primary" id="override-submit" disabled>Submit</button>
+    </div>
+  </form>
+</dialog>
+
+<p class="live-region" id="announcer" role="status" aria-live="polite"></p>
+
+<script>
+  const scenarios = {
+    'manual-review': {
+      decision: 'MANUAL_REVIEW', score: 680, policyVersion: 1,
+      reasons: [['SCORE_IN_REVIEW_BAND', 'Credit score falls in the manual-review band.']],
+      badgeClass: 'warning', mode: 'review',
+    },
+    'auto-reject': {
+      decision: 'AUTO_REJECT', score: 500, policyVersion: 1,
+      reasons: [['SCORE_BELOW_MIN', 'Credit score is below the auto-reject threshold.']],
+      badgeClass: 'danger', mode: 'override',
+    },
+  };
+
+  function renderScenario(key) {
+    const s = scenarios[key];
+    document.getElementById('score-figure').textContent = s.score;
+    document.getElementById('f-policy-version').textContent = s.policyVersion;
+    document.getElementById('f-decision').innerHTML = `<span class="badge ${s.badgeClass}">${s.decision}</span>`;
+    document.getElementById('reason-list').innerHTML = s.reasons
+      .map(([code, msg]) => `<li><code>${code}</code><br/>${msg}</li>`).join('');
+    // gauge arc: map 300-900 score to 0-283 circumference, offset decreasing as score rises
+    const pct = (s.score - 300) / 600;
+    document.getElementById('gauge-arc').setAttribute('stroke-dashoffset', String(283 - pct * 283));
+    document.getElementById('gauge-arc').setAttribute('stroke', s.score < 600 ? 'var(--danger)' : s.score >= 700 ? 'var(--success)' : 'var(--warning)');
+
+    const isReview = s.mode === 'review';
+    document.getElementById('review-actions').hidden = !isReview;
+    document.getElementById('override-actions').hidden = isReview;
+    document.getElementById('actions-title').textContent = isReview ? 'Review' : 'Override';
+    document.getElementById('confirm-banner').style.display = 'none';
+  }
+
+  document.getElementById('app-switch').addEventListener('change', (e) => renderScenario(e.target.value));
+  renderScenario('manual-review');
+
+  // --- Review actions: disabled until reason entered (E3-S6-AC3) ---
+  const reviewReason = document.getElementById('review-reason');
+  const approveBtn = document.getElementById('approve-btn');
+  const rejectBtn = document.getElementById('reject-btn');
+  reviewReason.addEventListener('input', () => {
+    const ok = reviewReason.value.trim().length > 0 && reviewReason.value.length <= 500;
+    approveBtn.disabled = !ok; rejectBtn.disabled = !ok;
+  });
+  function resolveReview(outcome) {
+    document.getElementById('confirm-banner').textContent =
+      `${outcome === 'APPROVE' ? 'Approved' : 'Rejected'} — resolution MANUAL_REVIEW/${outcome === 'APPROVE' ? 'APPROVED' : 'REJECTED'}.`;
+    document.getElementById('confirm-banner').style.display = 'block';
+    document.getElementById('announcer').textContent = 'Review recorded.';
+  }
+  approveBtn.addEventListener('click', () => resolveReview('APPROVE'));
+  rejectBtn.addEventListener('click', () => resolveReview('REJECT'));
+
+  // --- Override dialog: Submit disabled until both reason code and comment set (E3-S6-AC2) ---
+  const dialog = document.getElementById('override-dialog');
+  const reasonCode = document.getElementById('reason-code');
+  const comment = document.getElementById('override-comment');
+  const overrideSubmit = document.getElementById('override-submit');
+  function validateOverride() {
+    overrideSubmit.disabled = !(reasonCode.value && comment.value.trim().length > 0 && comment.value.length <= 500);
+  }
+  reasonCode.addEventListener('change', validateOverride);
+  comment.addEventListener('input', validateOverride);
+  document.getElementById('open-override').addEventListener('click', () => {
+    reasonCode.value = ''; comment.value = ''; overrideSubmit.disabled = true;
+    dialog.showModal();
+  });
+  document.getElementById('override-cancel').addEventListener('click', () => dialog.close());
+  document.getElementById('override-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    dialog.close();
+    document.getElementById('confirm-banner').textContent =
+      `Overridden — status APPROVED, reason ${reasonCode.value}, decision row unchanged (AUTO_REJECT).`;
+    document.getElementById('confirm-banner').style.display = 'block';
+    document.getElementById('announcer').textContent = 'Override recorded.';
+  });
+</script>
+</body>
+</html>

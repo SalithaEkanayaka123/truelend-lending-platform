@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TrueLend — Apply &amp; Verification queue (E2-S4)</title>
+<!--
+  Schema fidelity note: every field below corresponds to
+  specs/design/api-contracts.schema.json (ProductRule, CreateApplicationRequest,
+  Application, DocumentChecklistItem, VerificationQueueItem) and
+  specs/design/data-models.schema.json. Seed values (products, tenure/amount
+  ranges, required_documents) come from specs/features/F1-product-catalog.md
+  policy version 1. No field here is invented; no file upload beyond the
+  {type, filename} stub is implemented (FA-F2.5 — metadata only).
+-->
+<style>
+  :root {
+    --bg: #F7F8FA; --surface: #FFFFFF; --surface-raised: #FFFFFF;
+    --border: #E3E7ED; --border-strong: #788291;
+    --text: #12171F; --text-muted: #5B6676;
+    --primary: #0F5FDB; --primary-contrast: #FFFFFF;
+    --success: #117A4D; --warning: #9A5B00; --danger: #B42318; --info: #3B5BDB;
+    --success-bg: #E6F3EC; --warning-bg: #FBF0DF; --danger-bg: #FAE6E4; --info-bg: #E8ECFB;
+    --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --text-xs: 0.75rem; --text-sm: 0.875rem; --text-base: 1rem; --text-lg: 1.125rem;
+    --text-xl: 1.375rem; --text-2xl: 1.75rem;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+    --space-5: 24px; --space-6: 32px; --space-7: 48px;
+    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --radius-pill: 999px;
+    --shadow-1: 0 1px 2px rgb(16 24 40 / 6%);
+    --shadow-2: 0 8px 24px rgb(16 24 40 / 12%);
+    --duration-fast: 120ms; --duration-base: 200ms; --ease-out: cubic-bezier(.2,0,0,1);
+    --tap-min: 44px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--font-sans); font-size: var(--text-base); line-height: 1.5; }
+  h1, h2, h3 { font-weight: 600; line-height: 1.25; margin: 0; }
+  .num { font-variant-numeric: tabular-nums; }
+  a.skip-link { position: absolute; left: -999px; }
+  a.skip-link:focus { left: var(--space-2); top: var(--space-2); background: var(--surface);
+    padding: var(--space-2); border-radius: var(--radius-sm); z-index: 10; }
+  header.appbar { background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: var(--space-4) var(--space-4); display: flex; align-items: center;
+    justify-content: space-between; gap: var(--space-4); }
+  header.appbar .brand { font-weight: 600; font-size: var(--text-lg); color: var(--primary); }
+  nav.tabs { display: flex; gap: var(--space-2); }
+  nav.tabs button { font: inherit; border: 1px solid var(--border-strong); background: var(--surface);
+    color: var(--text); padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill);
+    cursor: pointer; min-height: var(--tap-min); }
+  nav.tabs button[aria-selected="true"] { background: var(--primary); color: var(--primary-contrast);
+    border-color: var(--primary); }
+  main { max-width: 1200px; margin: 0 auto; padding: var(--space-5) var(--space-4) var(--space-7); }
+  section[hidden] { display: none; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1); padding: var(--space-5); }
+
+  /* Stepper */
+  .stepper { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-5); }
+  .stepper .step { display: flex; align-items: center; gap: var(--space-2); color: var(--text-muted);
+    font-size: var(--text-sm); font-weight: 500; }
+  .stepper .dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: center; font-weight: 600; }
+  .stepper .step.active .dot, .stepper .step.done .dot { border-color: var(--primary); color: var(--primary-contrast); background: var(--primary); }
+  .stepper .step.active, .stepper .step.done { color: var(--text); }
+  .stepper .connector { flex: 1; height: 2px; background: var(--border); position: relative; }
+  .stepper .connector .fill { position: absolute; inset: 0; background: var(--primary); width: 0%;
+    transition: width var(--duration-base) var(--ease-out); }
+
+  /* Product cards */
+  .products { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+  @media (min-width: 768px) { .products { grid-template-columns: repeat(3, 1fr); } }
+  .product-card { border: 2px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-4);
+    cursor: pointer; background: var(--surface); transition: border-color var(--duration-fast); }
+  .product-card:focus-visible, .product-card.selected { border-color: var(--primary); outline: none;
+    box-shadow: 0 0 0 3px rgb(15 95 219 / 40%); }
+  .product-card h3 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
+  .product-card dl { display: grid; grid-template-columns: auto 1fr; gap: var(--space-1) var(--space-2);
+    font-size: var(--text-sm); margin: var(--space-3) 0; }
+  .product-card dt { color: var(--text-muted); }
+  .product-card .docs { font-size: var(--text-xs); color: var(--text-muted); margin-top: var(--space-2); }
+
+  /* Forms */
+  .field { margin-bottom: var(--space-4); }
+  .field label { display: block; font-weight: 500; font-size: var(--text-sm); margin-bottom: var(--space-1); }
+  .field .hint { font-size: var(--text-xs); color: var(--text-muted); margin-top: var(--space-1); }
+  .field input[type=text], .field input[type=number] {
+    width: 100%; font: inherit; font-size: var(--text-base); padding: var(--space-3);
+    border: 1.5px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface);
+    color: var(--text); min-height: var(--tap-min); }
+  .field input:focus-visible { outline: none; box-shadow: 0 0 0 3px rgb(15 95 219 / 40%); border-color: var(--primary); }
+  .field.invalid input { border-color: var(--danger); }
+  .field .error { display: none; color: var(--danger); font-size: var(--text-xs); margin-top: var(--space-1); }
+  .field.invalid .error { display: block; }
+  .grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+  @media (min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border); }
+  .toggle-row:last-child { border-bottom: none; }
+  .switch { position: relative; width: 44px; height: 26px; }
+  .switch input { opacity: 0; width: 100%; height: 100%; margin: 0; position: absolute; cursor: pointer; }
+  .switch .track { position: absolute; inset: 0; background: var(--border-strong); border-radius: var(--radius-pill);
+    transition: background var(--duration-fast); }
+  .switch input:checked + .track { background: var(--primary); }
+  .switch .thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: var(--surface);
+    border-radius: 50%; transition: transform var(--duration-fast) var(--ease-out); }
+  .switch input:checked ~ .thumb { transform: translateX(18px); }
+
+  button.btn { font: inherit; font-weight: 600; border-radius: var(--radius-sm); padding: var(--space-3) var(--space-5);
+    min-height: var(--tap-min); cursor: pointer; border: 1.5px solid transparent; }
+  button.btn.primary { background: var(--primary); color: var(--primary-contrast); }
+  button.btn.primary:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+  button.btn.secondary { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+  .actions { display: flex; justify-content: space-between; margin-top: var(--space-5); }
+
+  /* Checklist */
+  .checklist-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+    padding: var(--space-3) 0; border-bottom: 1px solid var(--border); }
+  .checklist-row:last-child { border-bottom: none; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-xs); font-weight: 600;
+    padding: 4px 10px; border-radius: var(--radius-pill); }
+  .badge.missing { background: var(--border); color: var(--text-muted); }
+  .badge.uploaded { background: var(--success-bg); color: var(--success); }
+  .badge::before { content: "●"; font-size: 8px; }
+
+  /* Queue: table + cards */
+  .queue-table { width: 100%; border-collapse: collapse; display: none; }
+  @media (min-width: 768px) { .queue-table { display: table; } .queue-cards { display: none; } }
+  .queue-table caption { text-align: left; font-size: var(--text-sm); color: var(--text-muted); padding-bottom: var(--space-2); }
+  .queue-table th, .queue-table td { text-align: left; padding: var(--space-3); border-bottom: 1px solid var(--border); font-size: var(--text-sm); }
+  .queue-table th { color: var(--text-muted); font-weight: 500; }
+  .queue-cards { display: grid; gap: var(--space-3); }
+  .queue-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: var(--space-4); box-shadow: var(--shadow-1); }
+  .queue-card ul { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: grid; gap: var(--space-1); font-size: var(--text-sm); }
+  .queue-card ul li { display: flex; justify-content: space-between; color: var(--text-muted); }
+  .queue-card ul li b { color: var(--text); font-weight: 500; }
+  .row-actions { display: flex; gap: var(--space-2); margin-top: var(--space-3); }
+  .row-fade-out { animation: fadeCollapse var(--duration-base) var(--ease-out) forwards; }
+  @keyframes fadeCollapse { to { opacity: 0; transform: scaleY(0); max-height: 0; } }
+
+  /* Dialog */
+  dialog.sheet { border: none; border-radius: var(--radius-lg); box-shadow: var(--shadow-2); padding: 0;
+    width: min(480px, 92vw); }
+  dialog.sheet::backdrop { background: rgb(18 23 31 / 45%); }
+  .dialog-body { padding: var(--space-5); }
+  .dialog-body h2 { font-size: var(--text-lg); margin-bottom: var(--space-3); }
+  textarea { width: 100%; font: inherit; padding: var(--space-3); border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-sm); min-height: 96px; resize: vertical; }
+  .counter { font-size: var(--text-xs); color: var(--text-muted); text-align: right; margin-top: var(--space-1); }
+  .dialog-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-4); }
+
+  .live-region { position: absolute; left: -9999px; }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: 1ms !important; transition-duration: 1ms !important; } }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="appbar">
+  <span class="brand">TrueLend</span>
+  <nav class="tabs" role="tablist" aria-label="Screens for E2-S4">
+    <button role="tab" aria-selected="true" id="tab-apply" data-target="screen-apply">Apply</button>
+    <button role="tab" aria-selected="false" id="tab-queue" data-target="screen-queue">Verification queue</button>
+  </nav>
+  <span class="num" style="font-size: var(--text-sm); color: var(--text-muted);">Asha Rao · CUSTOMER</span>
+</header>
+
+<main id="main">
+  <!-- ========================= APPLY WIZARD ========================= -->
+  <section id="screen-apply" role="tabpanel" aria-labelledby="tab-apply">
+    <h1 style="font-size: var(--text-2xl); margin-bottom: var(--space-4);">Apply for a loan</h1>
+
+    <div class="stepper" role="list" aria-label="Application steps">
+      <div class="step active" data-step="1" role="listitem"><span class="dot">1</span><span>Product</span></div>
+      <div class="connector"><div class="fill" id="fill-1"></div></div>
+      <div class="step" data-step="2" role="listitem"><span class="dot">2</span><span>Details</span></div>
+      <div class="connector"><div class="fill" id="fill-2"></div></div>
+      <div class="step" data-step="3" role="listitem"><span class="dot">3</span><span>Documents</span></div>
+    </div>
+
+    <!-- Step 1: Product -->
+    <div class="wizard-step card" data-step-panel="1">
+      <h2>Choose a product</h2>
+      <p style="color: var(--text-muted); font-size: var(--text-sm); margin: var(--space-2) 0 var(--space-4);">
+        Ranges and required documents come live from <code>GET /api/products</code> (policy_version 1).</p>
+      <div class="products" id="product-list">
+        <article class="product-card selected" tabindex="0" role="button" aria-pressed="true" data-product="PERSONAL">
+          <h3>Personal</h3>
+          <dl>
+            <dt>Rate</dt><dd class="num">12.00% p.a.</dd>
+            <dt>Amount</dt><dd class="num">₹50,000.00 – ₹1,500,000.00</dd>
+            <dt>Tenure</dt><dd class="num">12–60 months</dd>
+          </dl>
+          <div class="docs">Requires: ID proof, Address proof, Salary slip</div>
+        </article>
+        <article class="product-card" tabindex="0" role="button" aria-pressed="false" data-product="VEHICLE">
+          <h3>Vehicle</h3>
+          <dl>
+            <dt>Rate</dt><dd class="num">9.50% p.a.</dd>
+            <dt>Amount</dt><dd class="num">₹100,000.00 – ₹2,500,000.00</dd>
+            <dt>Tenure</dt><dd class="num">12–84 months</dd>
+          </dl>
+          <div class="docs">Requires: ID proof, Address proof, Salary slip, Vehicle quotation</div>
+        </article>
+        <article class="product-card" tabindex="0" role="button" aria-pressed="false" data-product="EDUCATION">
+          <h3>Education</h3>
+          <dl>
+            <dt>Rate</dt><dd class="num">8.50% p.a.</dd>
+            <dt>Amount</dt><dd class="num">₹50,000.00 – ₹2,000,000.00</dd>
+            <dt>Tenure</dt><dd class="num">12–120 months</dd>
+          </dl>
+          <div class="docs">Requires: ID proof, Address proof, Admission letter, Fee structure</div>
+        </article>
+      </div>
+      <div class="actions"><span></span><button class="btn primary" id="to-step-2">Continue</button></div>
+    </div>
+
+    <!-- Step 2: Details -->
+    <div class="wizard-step card" data-step-panel="2" hidden>
+      <h2>Application details</h2>
+      <div class="grid-2" style="margin-top: var(--space-4);">
+        <div class="field">
+          <label for="amount">Requested amount (₹)</label>
+          <input type="text" id="amount" inputmode="decimal" autocomplete="off" value="200000.00" />
+          <p class="hint">₹50,000.00 – ₹1,500,000.00 for Personal</p>
+        </div>
+        <div class="field" id="tenure-field">
+          <label for="tenure">Tenure (months)</label>
+          <input type="number" id="tenure" value="24" />
+          <p class="hint">12–60 months for Personal</p>
+          <p class="error" id="tenure-error" role="alert">12–60 months</p>
+        </div>
+        <div class="field">
+          <label for="age">Age (years)</label>
+          <input type="number" id="age" value="30" />
+        </div>
+        <div class="field">
+          <label for="income">Monthly income (₹)</label>
+          <input type="text" id="income" inputmode="decimal" autocomplete="off" value="60000.00" />
+        </div>
+        <div class="field">
+          <label for="pan">PAN</label>
+          <input type="text" id="pan" autocomplete="off" value="ABCDE1234F" />
+        </div>
+        <div class="field">
+          <label for="aadhaar">Aadhaar</label>
+          <input type="text" id="aadhaar" autocomplete="off" value="123456789012" />
+        </div>
+      </div>
+      <h3 style="font-size: var(--text-base); margin: var(--space-4) 0 var(--space-2);">Credit history</h3>
+      <div class="toggle-row"><span>Prior default</span><label class="switch"><input type="checkbox" /><span class="track"></span><span class="thumb"></span></label></div>
+      <div class="toggle-row"><span>Missed payment (last 12 months)</span><label class="switch"><input type="checkbox" /><span class="track"></span><span class="thumb"></span></label></div>
+      <div class="toggle-row"><span>Thin credit file</span><label class="switch"><input type="checkbox" /><span class="track"></span><span class="thumb"></span></label></div>
+      <div class="actions">
+        <button class="btn secondary" id="back-to-1">Back</button>
+        <button class="btn primary" id="to-step-3">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Documents -->
+    <div class="wizard-step card" data-step-panel="3" hidden>
+      <h2>Documents and submit</h2>
+      <p style="color: var(--text-muted); font-size: var(--text-sm); margin: var(--space-2) 0 var(--space-4);">
+        Upload sends <code>{type, filename}</code> only — no file content (FA-F2.5).</p>
+      <div id="doc-checklist">
+        <div class="checklist-row" data-type="ID_PROOF">
+          <span>ID proof</span>
+          <span style="display:flex; align-items:center; gap: var(--space-3);">
+            <span class="badge missing">Missing</span>
+            <button class="btn secondary upload-btn">Upload</button>
+          </span>
+        </div>
+        <div class="checklist-row" data-type="ADDRESS_PROOF">
+          <span>Address proof</span>
+          <span style="display:flex; align-items:center; gap: var(--space-3);">
+            <span class="badge missing">Missing</span>
+            <button class="btn secondary upload-btn">Upload</button>
+          </span>
+        </div>
+        <div class="checklist-row" data-type="SALARY_SLIP">
+          <span>Salary slip</span>
+          <span style="display:flex; align-items:center; gap: var(--space-3);">
+            <span class="badge missing">Missing</span>
+            <button class="btn secondary upload-btn">Upload</button>
+          </span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn secondary" id="back-to-2">Back</button>
+        <button class="btn primary" id="submit-app" disabled>Submit</button>
+      </div>
+      <p id="submit-confirm" class="live-region" role="status" aria-live="polite" style="position:static; display:none; margin-top: var(--space-3); color: var(--success); font-weight: 600;">
+        Submitted — status SUBMITTED, policy_version 1.</p>
+    </div>
+  </section>
+
+  <!-- ========================= VERIFICATION QUEUE ========================= -->
+  <section id="screen-queue" role="tabpanel" aria-labelledby="tab-queue" hidden>
+    <h1 style="font-size: var(--text-2xl); margin-bottom: var(--space-4);">Verification queue</h1>
+    <div class="card">
+      <table class="queue-table" id="queue-table">
+        <caption>UPLOADED documents awaiting verification, oldest first</caption>
+        <thead>
+          <tr><th scope="col">Document</th><th scope="col">Application</th><th scope="col">Type</th><th scope="col">Uploaded</th><th scope="col">Action</th></tr>
+        </thead>
+        <tbody id="queue-tbody">
+          <tr data-doc="1">
+            <td>#1</td><td class="num">#2</td><td>Salary slip</td><td>20 Mar 2026, 09:02</td>
+            <td class="row-actions"><button class="btn primary verify-btn" data-outcome="VERIFIED">Verify</button><button class="btn secondary verify-btn" data-outcome="REJECTED">Reject</button></td>
+          </tr>
+          <tr data-doc="2">
+            <td>#2</td><td class="num">#3</td><td>ID proof</td><td>20 Mar 2026, 09:10</td>
+            <td class="row-actions"><button class="btn primary verify-btn" data-outcome="VERIFIED">Verify</button><button class="btn secondary verify-btn" data-outcome="REJECTED">Reject</button></td>
+          </tr>
+          <tr data-doc="3">
+            <td>#3</td><td class="num">#4</td><td>Vehicle quotation</td><td>20 Mar 2026, 10:44</td>
+            <td class="row-actions"><button class="btn primary verify-btn" data-outcome="VERIFIED">Verify</button><button class="btn secondary verify-btn" data-outcome="REJECTED">Reject</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul class="queue-cards" id="queue-cards" aria-label="UPLOADED documents awaiting verification, oldest first">
+        <li class="queue-card" data-doc="1">
+          <strong>Salary slip</strong>
+          <ul><li><span>Document</span><b>#1</b></li><li><span>Application</span><b class="num">#2</b></li><li><span>Uploaded</span><b>20 Mar 2026, 09:02</b></li></ul>
+          <div class="row-actions"><button class="btn primary verify-btn" data-outcome="VERIFIED">Verify</button><button class="btn secondary verify-btn" data-outcome="REJECTED">Reject</button></div>
+        </li>
+        <li class="queue-card" data-doc="2">
+          <strong>ID proof</strong>
+          <ul><li><span>Document</span><b>#2</b></li><li><span>Application</span><b class="num">#3</b></li><li><span>Uploaded</span><b>20 Mar 2026, 09:10</b></li></ul>
+          <div class="row-actions"><button class="btn primary verify-btn" data-outcome="VERIFIED">Verify</button><button class="btn secondary verify-btn" data-outcome="REJECTED">Reject</button></div>
+        </li>
+        <li class="queue-card" data-doc="3">
+          <strong>Vehicle quotation</strong>
+          <ul><li><span>Document</span><b>#3</b></li><li><span>Application</span><b class="num">#4</b></li><li><span>Uploaded</span><b>20 Mar 2026, 10:44</b></li></ul>
+          <div class="row-actions"><button class="btn primary verify-btn" data-outcome="VERIFIED">Verify</button><button class="btn secondary verify-btn" data-outcome="REJECTED">Reject</button></div>
+        </li>
+      </ul>
+      <p id="queue-empty" style="display:none; color: var(--text-muted); text-align:center; padding: var(--space-5) 0;">All documents are verified.</p>
+    </div>
+  </section>
+</main>
+
+<dialog class="sheet" id="verify-dialog" aria-labelledby="verify-dialog-title">
+  <form class="dialog-body" method="dialog" id="verify-form">
+    <h2 id="verify-dialog-title">Verify document</h2>
+    <label for="verify-reason" style="font-size: var(--text-sm); font-weight: 500; display:block; margin-bottom: var(--space-1);">Reason (1–500 characters)</label>
+    <textarea id="verify-reason" maxlength="500" aria-describedby="verify-counter" placeholder="Name matches PAN record"></textarea>
+    <p class="counter" id="verify-counter">0 / 500</p>
+    <div class="dialog-actions">
+      <button type="button" class="btn secondary" id="verify-cancel">Cancel</button>
+      <button type="submit" class="btn primary" id="verify-confirm" disabled>Confirm</button>
+    </div>
+  </form>
+</dialog>
+
+<p class="live-region" id="announcer" role="status" aria-live="polite"></p>
+
+<script>
+  // --- Tab switching ---
+  const tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(o => o.setAttribute('aria-selected', String(o === t)));
+    document.getElementById('screen-apply').hidden = t.id !== 'tab-apply';
+    document.getElementById('screen-queue').hidden = t.id !== 'tab-queue';
+  }));
+
+  // --- Wizard step navigation ---
+  const steps = document.querySelectorAll('.stepper .step');
+  function goTo(stepNum) {
+    document.querySelectorAll('.wizard-step').forEach(p => p.hidden = Number(p.dataset.stepPanel) !== stepNum);
+    steps.forEach(s => {
+      const n = Number(s.dataset.step);
+      s.classList.toggle('active', n === stepNum);
+      s.classList.toggle('done', n < stepNum);
+    });
+    document.getElementById('fill-1').style.width = stepNum > 1 ? '100%' : '0%';
+    document.getElementById('fill-2').style.width = stepNum > 2 ? '100%' : '0%';
+  }
+  document.getElementById('to-step-2').addEventListener('click', () => goTo(2));
+  document.getElementById('back-to-1').addEventListener('click', () => goTo(1));
+  document.getElementById('back-to-2').addEventListener('click', () => goTo(2));
+
+  // --- Product selection ---
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.product-card').forEach(c => { c.classList.remove('selected'); c.setAttribute('aria-pressed', 'false'); });
+      card.classList.add('selected'); card.setAttribute('aria-pressed', 'true');
+    });
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); } });
+  });
+
+  // --- Tenure inline validation (E2-S4-AC2: tenure 72 for PERSONAL -> "12-60 months") ---
+  const tenureInput = document.getElementById('tenure');
+  const tenureField = document.getElementById('tenure-field');
+  function validateTenure() {
+    const v = Number(tenureInput.value);
+    const invalid = v < 12 || v > 60;
+    tenureField.classList.toggle('invalid', invalid);
+    return !invalid;
+  }
+  tenureInput.addEventListener('blur', validateTenure);
+  tenureInput.addEventListener('input', () => { if (tenureField.classList.contains('invalid')) validateTenure(); });
+  document.getElementById('to-step-3').addEventListener('click', () => {
+    validateTenure();
+    goTo(3);
+  });
+
+  // --- Document upload (stub: metadata only) ---
+  let uploadedCount = 0;
+  const totalDocs = document.querySelectorAll('.checklist-row').length;
+  document.querySelectorAll('.upload-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const row = btn.closest('.checklist-row');
+      const badge = row.querySelector('.badge');
+      if (badge.classList.contains('missing')) {
+        badge.classList.remove('missing'); badge.classList.add('uploaded'); badge.textContent = 'Uploaded';
+        btn.textContent = 'Replace'; uploadedCount++;
+        document.getElementById('submit-app').disabled = uploadedCount < totalDocs;
+      }
+    });
+  });
+  document.getElementById('submit-app').addEventListener('click', () => {
+    document.getElementById('submit-confirm').style.display = 'block';
+    document.getElementById('submit-app').disabled = true;
+    document.getElementById('announcer').textContent = 'Application submitted, status SUBMITTED.';
+  });
+
+  // --- Verification queue: dialog + remove-without-reload ---
+  const dialog = document.getElementById('verify-dialog');
+  const reasonInput = document.getElementById('verify-reason');
+  const counter = document.getElementById('verify-counter');
+  const confirmBtn = document.getElementById('verify-confirm');
+  let activeRowDocId = null, activeOutcome = null;
+
+  function openDialog(docId, outcome) {
+    activeRowDocId = docId; activeOutcome = outcome;
+    document.getElementById('verify-dialog-title').textContent = outcome === 'VERIFIED' ? 'Verify document' : 'Reject document';
+    reasonInput.value = ''; counter.textContent = '0 / 500'; confirmBtn.disabled = true;
+    dialog.showModal();
+  }
+  document.querySelectorAll('.verify-btn').forEach(btn => {
+    btn.addEventListener('click', () => openDialog(btn.closest('[data-doc]').dataset.doc, btn.dataset.outcome));
+  });
+  reasonInput.addEventListener('input', () => {
+    const len = reasonInput.value.length;
+    counter.textContent = len + ' / 500';
+    confirmBtn.disabled = len < 1 || len > 500;
+  });
+  document.getElementById('verify-cancel').addEventListener('click', () => dialog.close());
+  document.getElementById('verify-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    dialog.close();
+    [`tr[data-doc="${activeRowDocId}"]`, `li[data-doc="${activeRowDocId}"]`].forEach(sel => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      el.classList.add('row-fade-out');
+      setTimeout(() => {
+        el.remove();
+        if (document.querySelectorAll('#queue-tbody tr').length === 0) {
+          document.getElementById('queue-empty').style.display = 'block';
+          document.getElementById('queue-table').style.display = 'none';
+          document.getElementById('queue-cards').style.display = 'none';
+        }
+      }, 200);
+    });
+    document.getElementById('announcer').textContent = `Document #${activeRowDocId} marked ${activeOutcome}.`;
+  });
+</script>
+</body>
+</html>
