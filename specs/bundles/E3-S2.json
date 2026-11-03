@@ -26,7 +26,7 @@
   "entities": [
     {
       "name": "Credit-scoring stub",
-      "status": "unknown"
+      "status": "new"
     }
   ],
   "approach": {
@@ -41,9 +41,12 @@
     "layer": "Service"
   },
   "operations": {
-    "pending": true,
-    "files": [],
-    "text": "- pending"
+    "pending": false,
+    "files": [
+      "backend/tests/unit/test_scoring.py",
+      "backend/src/truelend/service/scoring.py"
+    ],
+    "text": "- Write `backend/tests/unit/test_scoring.py` first covering AC1-AC5 and the float rejection guard\n- Write `backend/src/truelend/service/scoring.py`: pure score(age_years, monthly_income, flags) -> int with base 600, age points, capped income points and flag penalties, Decimal only"
   },
   "safeguards": {
     "ids": [

@@ -1,7 +1,7 @@
 {
   "status": "sealed",
   "waived_by": null,
-  "sealedAt": "2026-11-03T05:56:58.955Z",
+  "sealedAt": "2026-11-03T06:17:00.510Z",
   "artifacts": [
     {
       "path": "specs/brd/brd.md",
@@ -95,7 +95,7 @@
     },
     {
       "path": "specs\\bundles\\E1-S1.json",
-      "sha256": "a1bedd232052e3a2db57546503e9b6ded4836a7b7cd340c33da01f61d329b014",
+      "sha256": "086030ccefd4f50df37116c13750b73b171381cb48dbcef1e92234d0e10e7308",
       "phase": null
     },
     {
@@ -105,12 +105,12 @@
     },
     {
       "path": "specs\\bundles\\E1-S3.json",
-      "sha256": "46b818dc0d8fbcad4336912992263be9a8bf870ff6c3022f8cff4b85060ba69d",
+      "sha256": "dc7adf26f3d9f333d699674541fd694abf8e972e1c38a9c3f965b3155d8a231f",
       "phase": null
     },
     {
       "path": "specs\\bundles\\E1-S4.json",
-      "sha256": "c7b374995a7f1376876a25becc0d4b8ffa7767851b2199d36a0d16cbf23cef0b",
+      "sha256": "affc1656e23aabd18fd34f44c1d50e53ccffb6a315b9f0ef6bcfbff9cf47f7c6",
       "phase": null
     },
     {
@@ -140,7 +140,7 @@
     },
     {
       "path": "specs\\bundles\\E3-S2.json",
-      "sha256": "4f77e4e6e7b7e82befd4d41e8a09c1b7b40e73beef708b25b05982ee8d81c459",
+      "sha256": "f7aaf0409e4136ee6b719e44b035a15152037f2ac9488f7ba6846d6347ec4dc6",
       "phase": null
     },
     {

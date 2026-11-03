@@ -27,7 +27,7 @@
   "entities": [
     {
       "name": "JSON logs, correlation IDs, and redaction",
-      "status": "unknown"
+      "status": "new"
     }
   ],
   "approach": {
@@ -43,9 +43,14 @@
     "layer": "Config"
   },
   "operations": {
-    "pending": true,
-    "files": [],
-    "text": "- pending"
+    "pending": false,
+    "files": [
+      "backend/src/truelend/config/logging.py",
+      "backend/src/truelend/api/middleware.py",
+      "backend/tests/unit/test_logging.py",
+      "backend/tests/api/test_logging.py"
+    ],
+    "text": "- Write `backend/src/truelend/config/logging.py`: redact() for PAN, Aadhaar and document filenames, RedactionFilter, JsonFormatter, correlation-id contextvar and resolve_correlation_id (regex ^[A-Za-z0-9-]{8,64}$ else UUID4), configure_logging\n- Write `backend/src/truelend/api/middleware.py`: correlation-id and access-log middleware emitting exactly one JSON line per request, echoing X-Correlation-ID, converting unhandled exceptions to the 500 envelope and logging the redacted trace\n- Write `backend/tests/unit/test_logging.py` and `backend/tests/api/test_logging.py` first (AC1-AC5), then implement until green"
   },
   "safeguards": {
     "ids": [

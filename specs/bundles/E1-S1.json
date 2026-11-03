@@ -25,7 +25,7 @@
   "entities": [
     {
       "name": "Authentication and role guard",
-      "status": "unknown"
+      "status": "new"
     }
   ],
   "approach": {
@@ -43,9 +43,19 @@
     "layer": "API"
   },
   "operations": {
-    "pending": true,
-    "files": [],
-    "text": "- pending"
+    "pending": false,
+    "files": [
+      "backend/src/truelend/types/contracts.py",
+      "backend/src/truelend/repository/users_repo.py",
+      "backend/src/truelend/service/auth_service.py",
+      "hash/verify",
+      "issue/verify",
+      "backend/src/truelend/api/deps.py",
+      "backend/src/truelend/api/auth_router.py",
+      "backend/tests/api/test_auth.py",
+      "backend/tests/architecture/test_auth_boundary.py"
+    ],
+    "text": "- Add `backend/src/truelend/types/contracts.py` Protocols (AuthPrincipal, Clock) consumed here (declared by E1-S4)\n- Write `backend/src/truelend/repository/users_repo.py`: sqlite3 lookup of a user by email and by id, returning a frozen UserRecord\n- Write `backend/src/truelend/service/auth_service.py`: scrypt password hash/verify, stdlib HS256 JWT issue/verify with injected Clock and 1800s lifetime, login (uniform failure, dummy hash for unknown email) and resolve_principal\n- Write `backend/src/truelend/api/deps.py`: connection, settings, clock and auth-service providers, get_current_principal bearer dependency and require_roles(*roles) role guard\n- Write `backend/src/truelend/api/auth_router.py`: public POST /api/auth/login router and guarded GET /api/auth/me router\n- Write `backend/tests/api/test_auth.py` and `backend/tests/architecture/test_auth_boundary.py` first (AC1-AC5), then implement until green"
   },
   "safeguards": {
     "ids": [

@@ -35,7 +35,7 @@
   "entities": [
     {
       "name": "Health, migrations, and architecture guards",
-      "status": "unknown"
+      "status": "new"
     }
   ],
   "approach": {
@@ -60,9 +60,25 @@
     "layer": "Config"
   },
   "operations": {
-    "pending": true,
-    "files": [],
-    "text": "- pending"
+    "pending": false,
+    "files": [
+      "backend/src/truelend/types/enums.py",
+      "backend/src/truelend/types/errors.py",
+      "backend/src/truelend/types/money.py",
+      "backend/src/truelend/types/contracts.py",
+      "backend/src/truelend/config/settings.py",
+      "backend/src/truelend/config/errors.py",
+      "backend/src/truelend/config/money.py",
+      "backend/src/truelend/config/db.py",
+      "backend/migrations/0001_users_and_audit.sql",
+      "backend/src/truelend/api/health_router.py",
+      "backend/src/truelend/api/main.py",
+      "backend/tests/api/test_health.py",
+      "backend/tests/repo/test_migrations.py",
+      "backend/tests/architecture/test_layers.py",
+      "backend/tests/architecture/test_money.py"
+    ],
+    "text": "- Write `backend/src/truelend/types/enums.py`, `backend/src/truelend/types/errors.py`, `backend/src/truelend/types/money.py` and `backend/src/truelend/types/contracts.py` (Protocol declarations, CreditFlags, Clock; no business logic)\n- Write `backend/src/truelend/config/settings.py` (TRUELEND_ env settings), `backend/src/truelend/config/errors.py` (error envelope and status mapping), `backend/src/truelend/config/money.py` (paise/Decimal/wire helpers)\n- Write `backend/src/truelend/config/db.py`: run_migrations (SHA-256 checksummed, idempotent, MIGRATION_CHECKSUM_MISMATCH abort) and seed of the five synthetic users\n- Write `backend/migrations/0001_users_and_audit.sql`: users, audit_log with abort triggers\n- Write `backend/src/truelend/api/health_router.py` and `backend/src/truelend/api/main.py` app factory (lifespan runs migrations and seed, registers routers, middleware, exception handlers and the TRUELEND_ENV=test boom route)\n- Write `backend/tests/api/test_health.py`, `backend/tests/repo/test_migrations.py`, `backend/tests/architecture/test_layers.py` and `backend/tests/architecture/test_money.py` first (AC1-AC5), then implement until green"
   },
   "safeguards": {
     "ids": [
