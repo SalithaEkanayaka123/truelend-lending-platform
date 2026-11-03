@@ -25,21 +25,34 @@
       "questions_asked": 0,
       "answered": 0,
       "recordedAt": "2026-11-03T05:17:03.520Z"
+    },
+    {
+      "round": 3,
+      "verdict": "approved",
+      "feedback": [],
+      "changes": [
+        "Added TRUELEND_ENV=test-gated /api/_test/boom (ADMIN token), QA-VM-014-NT 404 check, evaluator env note; VM-005 enumerates in test env",
+        "Approval refreshed: earlier receipt went stale only because CRLF became LF on the develop merge/checkout (content identical)"
+      ],
+      "declined": [],
+      "questions_asked": 0,
+      "answered": 0,
+      "recordedAt": "2026-11-03T05:35:05.166Z"
     }
   ],
   "artifacts": [
     {
       "path": "specs/test_artefacts/test-plan.md",
-      "sha256": "fd7f10dfd2b9fe52379a2c1181aed6dd1590d45787589253d4e6e56edee988c8"
+      "sha256": "b9fa4c7cccafae72bd0341863edb8068f737f3b51e9385f42939ce50cabd129c"
     },
     {
       "path": "specs/test_artefacts/verification-matrix.json",
-      "sha256": "f176ab7691c19cb1fe3a2133adba06f4a373996c03c9d6aa44e9b3ef1a615cc3"
+      "sha256": "73e6f67c277e35ad780c3a78eec1880369c87c1cbd534a6609218c51bacf152b"
     }
   ],
   "low_engagement": true,
   "waived_by": null,
-  "approvedAt": "2026-11-03T05:17:03.520Z",
+  "approvedAt": "2026-11-03T05:35:05.166Z",
   "session_id": "ea37eb06-bbab-42d0-b472-e75542e5f420",
   "in_session": false
 }
