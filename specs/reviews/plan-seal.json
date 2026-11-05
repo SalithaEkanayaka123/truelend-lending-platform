@@ -1,7 +1,7 @@
 {
   "status": "sealed",
   "waived_by": null,
-  "sealedAt": "2026-11-05T07:02:18.512Z",
+  "sealedAt": "2026-11-05T10:14:24.109Z",
   "artifacts": [
     {
       "path": "specs/brd/brd.md",
@@ -60,7 +60,7 @@
     },
     {
       "path": "specs/test_artefacts/verification-matrix.json",
-      "sha256": "6e828f322cc5e43f8216b7572d4f1d31acdcae6ea9c32f4d2f3b842ac091d087",
+      "sha256": "a1726728286ae977a93866de4dec7f7ed1654402b86856f00c99efa365feb0c1",
       "phase": "test"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "path": "specs\\test_artefacts\\verification-matrix.json",
-      "sha256": "6e828f322cc5e43f8216b7572d4f1d31acdcae6ea9c32f4d2f3b842ac091d087",
+      "sha256": "a1726728286ae977a93866de4dec7f7ed1654402b86856f00c99efa365feb0c1",
       "phase": null
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "path": "specs\\bundles\\E2-S3.json",
-      "sha256": "1d3d6843014cfbaea93aee6483e874e6a26eb5824657832616acb9dd87ad459b",
+      "sha256": "2297fa0097c4615655f4b7b7f4f4b81f165723f06af93f450bfb8a5358c03b86",
       "phase": null
     },
     {
@@ -165,7 +165,7 @@
     },
     {
       "path": "specs\\bundles\\E4-S2.json",
-      "sha256": "350cf34d66dd2698d5b2bdcd274dc454c2404513027cf11d223707959c04d455",
+      "sha256": "1e756f771f3ee81e3ffeddac3fb70d13e17ce12d0f2cc19f4c3ea4272f09bf20",
       "phase": null
     }
   ]

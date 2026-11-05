@@ -94,17 +94,27 @@
       "questions_asked": 0,
       "answered": 0,
       "recordedAt": "2026-11-05T07:02:18.294Z"
+    },
+    {
+      "round": 9,
+      "verdict": "approved",
+      "feedback": [],
+      "changes": [],
+      "declined": [],
+      "questions_asked": 0,
+      "answered": 0,
+      "recordedAt": "2026-11-05T10:14:23.441Z"
     }
   ],
   "artifacts": [
     {
       "path": "specs/test_artefacts/verification-matrix.json",
-      "sha256": "6e828f322cc5e43f8216b7572d4f1d31acdcae6ea9c32f4d2f3b842ac091d087"
+      "sha256": "a1726728286ae977a93866de4dec7f7ed1654402b86856f00c99efa365feb0c1"
     }
   ],
   "low_engagement": true,
   "waived_by": null,
-  "approvedAt": "2026-11-05T07:02:18.294Z",
-  "session_id": "79f42b85-6145-45bd-8e49-50f76d1f9d7e",
-  "in_session": true
+  "approvedAt": "2026-11-05T10:14:23.441Z",
+  "session_id": "92e6f94f-b990-47be-a8c1-aae0e291843c",
+  "in_session": false
 }

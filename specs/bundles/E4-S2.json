@@ -39,9 +39,26 @@
     "layer": "UI"
   },
   "operations": {
-    "pending": true,
-    "files": [],
-    "text": "- pending"
+    "pending": false,
+    "files": [
+      "frontend/src/ui/pages/PolicyEditorPage.test.tsx",
+      "frontend/src/ui/components/ProductThresholdForm.test.tsx",
+      "e2e/policy-editor.spec.ts",
+      "frontend/index.html",
+      "frontend/vite.config.ts",
+      "frontend/src/main.tsx",
+      "frontend/src/ui/App.tsx",
+      "frontend/src/types/policy.ts",
+      "frontend/src/repository/apiClient.ts",
+      "frontend/src/repository/policiesRepo.ts",
+      "frontend/src/service/usePolicies.ts",
+      "frontend/src/service/policyValidation.ts",
+      "frontend/src/ui/components/ProductThresholdForm.tsx",
+      "frontend/src/ui/pages/PolicyEditorPage.tsx",
+      "specs/design/mockups/E4-S2.html",
+      "specs/ui_spec.md"
+    ],
+    "text": "- Step 1: write failing Vitest tests first in frontend/src/ui/pages/PolicyEditorPage.test.tsx and frontend/src/ui/components/ProductThresholdForm.test.tsx (AC2 inline min_age < max_age error disabling Save, AC3 Draft v2 confirmation and list refresh) and a Playwright viewport spec in e2e/policy-editor.spec.ts (AC1 375x812 single column, no horizontal scroll)\n- Step 2: scaffold the Vite app entry in frontend/index.html, frontend/vite.config.ts, frontend/src/main.tsx and frontend/src/ui/App.tsx; add frontend/src/types/policy.ts for ProductRule and PolicyVersion; money values stay strings\n- Step 3: add the typed API client in frontend/src/repository/apiClient.ts and frontend/src/repository/policiesRepo.ts (GET /api/policies, GET /api/products, POST /api/policies); nothing else calls fetch; never log application data\n- Step 4: add hooks in frontend/src/service/usePolicies.ts (list, create draft) and frontend/src/service/policyValidation.ts (min_age < max_age and the other FA-F1.6 threshold checks mirrored for inline feedback only; the backend decides)\n- Step 5: add frontend/src/ui/components/ProductThresholdForm.tsx and frontend/src/ui/pages/PolicyEditorPage.tsx following specs/design/mockups/E4-S2.html and specs/ui_spec.md (forms stack in one column on mobile, Save disabled while invalid, Draft v2 confirmation, version list)"
   },
   "safeguards": {
     "ids": [
