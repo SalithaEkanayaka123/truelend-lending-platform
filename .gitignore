@@ -67,3 +67,6 @@ package-lock.json
 .claude/state/nav-telemetry-summary.json
 .claude/tdd-guard/
 .claude/claude-security-guidance.local.md
+
+backend/data/
+*.db
