@@ -1917,7 +1917,9 @@
         "e2e"
       ],
       "implementation_paths": [
-        "e4-s2-component"
+        "frontend/src/ui/pages/PolicyEditorPage.tsx",
+        "frontend/src/ui/components/ProductThresholdForm.tsx",
+        "e2e/policy-editor.spec.ts"
       ],
       "checks": [
         {
@@ -1937,7 +1939,10 @@
         "e2e"
       ],
       "implementation_paths": [
-        "e4-s2-component"
+        "frontend/src/ui/pages/PolicyEditorPage.tsx",
+        "frontend/src/service/usePolicyEditor.ts",
+        "frontend/src/service/policyValidation.ts",
+        "e2e/policy-editor.spec.ts"
       ],
       "checks": [
         {
@@ -1961,7 +1966,9 @@
         "e2e"
       ],
       "implementation_paths": [
-        "e4-s2-component"
+        "frontend/src/ui/pages/PolicyEditorPage.tsx",
+        "frontend/src/service/usePolicyEditor.ts",
+        "e2e/policy-editor.spec.ts"
       ],
       "checks": [
         {
