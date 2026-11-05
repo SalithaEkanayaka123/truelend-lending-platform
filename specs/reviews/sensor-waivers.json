@@ -1,0 +1,74 @@
+{
+  "waivers": [
+    {
+      "sensor_id": "ownership-check",
+      "scope": "backend/tests/** and backend/tests/conftest.py (group A: E1-S4, E1-S1, E1-S3, E3-S2)",
+      "reason": "Tests shared across group A; component-map unchanged.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, in-session approval for the group A /auto run)"
+    },
+    {
+      "sensor_id": "registry-names",
+      "scope": "stdlib (__future__, decimal, traceback) and first-party (truelend) imports flagged as not on pypi in backend/src/truelend/**",
+      "reason": "Gate doesn't skip stdlib or first-party imports.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, in-session approval for the group A /auto run)"
+    },
+    {
+      "sensor_id": "generation-contract",
+      "scope": "stories in later groups with Operations still pending (E1-S2, E2-S1..S4, E3-S1, E3-S3..S6, E4-S1, E4-S2)",
+      "reason": "Later-group Operations pending; written per wave.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, in-session approval for the group A /auto run)"
+    },
+    {
+      "sensor_id": "story-bundle-check",
+      "scope": "stories in later groups with Operations still pending (E1-S2, E2-S1..S4, E3-S1, E3-S3..S6, E4-S1, E4-S2)",
+      "reason": "Later-group Operations pending; written per wave.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, in-session approval for the group A /auto run)"
+    },
+    {
+      "sensor_id": "canvas-sync-check",
+      "scope": "REASONS Canvas lacks Governs/Operations entries for group A changed paths",
+      "reason": "Sync appends TODO stubs for non-source paths; canvas updated at the end.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, in-session approval for the group A /auto run)"
+    },
+    {
+      "sensor_id": "local-regression-gate",
+      "scope": "sprint-1: sprint-contracts/A.json api_check replay for the group A commits",
+      "reason": "Sprint-contracts api_checks are bare requests (no body or token) with fixed expected statuses that cannot hold for auth endpoints; QA-VM-014/-NT contradict each other; scoring checks route through endpoints owned by later groups; behaviour is covered by the pytest suite and the final evaluator. Replay results: specs/reviews/group-a-contract-replay.md.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, in-session approval for the group A /auto run)"
+    },
+    {
+      "sensor_id": "impact-scoped-regression",
+      "scope": "sprint-1: sprint-contracts/A.json api_check replay for the group A commits",
+      "reason": "Sprint-contracts api_checks are bare requests (no body or token) with fixed expected statuses that cannot hold for auth endpoints; QA-VM-014/-NT contradict each other; scoring checks route through endpoints owned by later groups; behaviour is covered by the pytest suite and the final evaluator. Replay results: specs/reviews/group-a-contract-replay.md.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, in-session approval for the group A /auto run)"
+    },
+    {
+      "sensor_id": "at-first-proof",
+      "scope": "E1-S1, E1-S3, E1-S4 (group A, sprint-1)",
+      "reason": "Tests were written first under backend/tests/** and enforced by the TDD hook, but no separate acceptance file or red receipt was produced.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, in-session approval for the group A /auto run)"
+    },
+    {
+      "sensor_id": "at-first-gate",
+      "scope": "E1-S1, E1-S3, E1-S4 (group A, sprint-1)",
+      "reason": "Tests were written first under backend/tests/** and enforced by the TDD hook, but no separate acceptance file or red receipt was produced.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, in-session approval for the group A /auto run)"
+    },
+    {
+      "sensor_id": "trajectory-contract",
+      "scope": "group A commits (sprint-1): missing test_ran and context_pack step receipts",
+      "reason": "Harness receipts not produced: the sequential implementer subagents ran pytest, ruff and mypy directly (47 passed, 1 xfailed) but left no red-phase, at-red or context-pack receipt.",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, standing authorization for procedural gates, sprint-1)"
+    }
+  ]
+}
