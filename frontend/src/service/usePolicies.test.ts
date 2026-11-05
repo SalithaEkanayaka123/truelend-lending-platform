@@ -44,6 +44,37 @@ describe('usePolicies', () => {
     expect(result.current.error).toBeNull();
   });
 
+  it('exposes the error code and correlation id of a failed products load', async () => {
+    vi.mocked(policiesRepo.listProducts).mockRejectedValue(
+      new ApiError('INTERNAL_ERROR', 'An unexpected error occurred.', 'corr-1'),
+    );
+    vi.mocked(policiesRepo.listPolicies).mockResolvedValue({ items: [], total: 0, limit: 20, offset: 0 });
+
+    const { result } = renderHook(() => usePolicies());
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    expect(result.current.error).toBe('An unexpected error occurred.');
+    expect(result.current.loadError).toEqual({ code: 'INTERNAL_ERROR', correlationId: 'corr-1' });
+  });
+
+  it('reload clears the error and fetches the catalog again', async () => {
+    vi.mocked(policiesRepo.listProducts)
+      .mockRejectedValueOnce(new ApiError('INTERNAL_ERROR', 'boom', 'corr-1'))
+      .mockResolvedValue([personal, vehicle, education]);
+    vi.mocked(policiesRepo.listPolicies).mockResolvedValue({ items: [], total: 0, limit: 20, offset: 0 });
+
+    const { result } = renderHook(() => usePolicies());
+    await waitFor(() => expect(result.current.error).toBe('boom'));
+
+    act(() => {
+      result.current.reload();
+    });
+    await waitFor(() => expect(result.current.products).toHaveLength(3));
+
+    expect(result.current.error).toBeNull();
+    expect(result.current.loadError).toBeNull();
+  });
+
   it('prepends the new draft to the version list and advances the base version (E4-S2-AC3)', async () => {
     vi.mocked(policiesRepo.listProducts).mockResolvedValue([personal, vehicle, education]);
     vi.mocked(policiesRepo.listPolicies).mockResolvedValue({

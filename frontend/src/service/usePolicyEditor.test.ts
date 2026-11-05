@@ -41,6 +41,8 @@ function policiesFixture(overrides: Partial<UsePoliciesResult> = {}): UsePolicie
     baseVersion: 1,
     loading: false,
     error: null,
+    loadError: null,
+    reload: vi.fn(),
     createDraft: vi.fn(),
     ...overrides,
   };

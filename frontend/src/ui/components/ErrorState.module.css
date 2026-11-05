@@ -1,0 +1,58 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-5);
+  display: grid;
+  gap: var(--space-3);
+  max-width: 100%;
+  min-width: 0;
+}
+
+.message {
+  margin: 0;
+  color: var(--danger);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.reference {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.link {
+  font: inherit;
+  color: var(--primary);
+  background: none;
+  border: 0;
+  padding: var(--space-1);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.retry {
+  font: inherit;
+  font-weight: 600;
+  min-height: var(--tap-min);
+  justify-self: start;
+  padding: 0 var(--space-5);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--primary-contrast);
+  cursor: pointer;
+}
+
+@media (max-width: 479px) {
+  .retry {
+    justify-self: stretch;
+  }
+}

@@ -57,6 +57,8 @@ function mockUsePolicies(overrides: Partial<UsePoliciesResult> = {}): void {
     baseVersion: 1,
     loading: false,
     error: null,
+    loadError: null,
+    reload: vi.fn(),
     createDraft: vi.fn(),
     ...overrides,
   };
@@ -67,6 +69,35 @@ describe('PolicyEditorPage', () => {
   afterEach(() => {
     cleanup();
     vi.restoreAllMocks();
+  });
+
+  it('shows an inline error card with the reference and a working Retry when products fail to load', async () => {
+    const reload = vi.fn();
+    mockUsePolicies({
+      products: [],
+      error: 'An unexpected error occurred.',
+      loadError: { code: 'INTERNAL_ERROR', correlationId: 'corr-9' },
+      reload,
+    });
+    const user = userEvent.setup();
+    render(<PolicyEditorPage />);
+
+    expect(screen.getByRole('alert')).toHaveTextContent('An unexpected error occurred.');
+    expect(screen.getByText(/corr-9/)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /retry/i }));
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows a friendly No access state, not the raw error, when the API answers 403', () => {
+    mockUsePolicies({
+      products: [],
+      error: 'Forbidden.',
+      loadError: { code: 'FORBIDDEN', correlationId: 'corr-3' },
+    });
+    render(<PolicyEditorPage />);
+
+    expect(screen.getByRole('heading', { name: /no access/i })).toBeInTheDocument();
+    expect(screen.queryByText('Forbidden.')).not.toBeInTheDocument();
   });
 
   it('renders the seeded version list with the approved v1 badge', () => {

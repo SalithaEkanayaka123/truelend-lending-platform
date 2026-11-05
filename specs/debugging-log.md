@@ -88,7 +88,30 @@ Incidents hit while building TrueLend with the Claude Harness Engine on Windows.
 - **Fix:** `canvas-sync-check` is waived until 2026-11-30, with the canvas to be updated at the end of the group. The `spdd-sync` output is not committed to the canvas.
 - **Evidence:** `specs/reviews/sensor-waivers.json` (`canvas-sync-check`, reason "Sync appends TODO stubs for non-source paths; canvas updated at the end."); `specs/reviews/spdd-sync.json`; commit `37fd888`.
 
+## 10. `GET /api/products` returned 500 `INTERNAL_ERROR` with no trace anywhere
+
+- **Symptom:** `GET /api/products` returned `500 INTERNAL_ERROR` for `admin@example.test` against the dev DB, correlation id `676401d2-8072-4405-aea1-df70d3b0f0ab` *(reported)*. Login and `/api/policies` worked. The UI showed the error boundary *(reported)*. It happened again while checking the fix in a browser at 375px: correlation id `441fe440-6ff7-4add-9890-0517f025271e`, two failed `/api/products` calls, then 200 on every later call.
+- **Root cause (logging gap, confirmed):** Nothing in production called `configure_logging`. `CorrelationIdLoggingMiddleware` logged the exception to the `truelend.access` logger at INFO, and under uvicorn that logger had no handler, so the line and its traceback were dropped. The tests hid this because the `client` fixture configures logging itself. A 500 could not be traced from its correlation id.
+- **Root cause (the 500 itself, not confirmed):** It does not reproduce on demand.
+  - 10 role-matrix tests pass against the real app, migrations and seed: five roles on seed v1, and five roles after a policy v2 is created and approved through the real routes.
+  - The dev server returns 200 for every role it was tried with.
+  - 100 parallel calls through the Vite proxy (login, then products and policies in parallel) all returned 200.
+  - The failure pattern fits an unhandled exception inside `get_active_catalog`, which re-reads and hashes `policy_v0001.json` on every call. `/api/policies` never reads that file, and it never failed. A transient `OSError` on the file read, such as a Windows file lock, would fit but is **unproven**.
+  - The first live traceback will settle it.
+- **Fix:**
+  - `create_app` calls `configure_logging()`, so JSON log lines go to stderr.
+  - The middleware logs an unhandled exception at ERROR, with `correlation_id` and the redacted traceback.
+  - Frontend: a failed products load shows an inline error card with the reference and Retry. A render crash shows Retry and Sign out. A 403 shows a friendly "No access".
+  - No speculative change was made to the policy read path.
+- **Evidence:**
+  - `backend/tests/api/test_500_traceability.py` (red before the fix, green after).
+  - `backend/tests/api/test_products_roles.py`.
+  - Frontend tests: `ErrorState`, `AppErrorBoundary`, `App` (per-role routing), `PolicyEditorPage`, `usePolicies`.
+  - Next step: search the uvicorn terminal for correlation id `441fe440-6ff7-4add-9890-0517f025271e` and read its `trace` field.
+
 ## Open items
+
+- Incident 10: find the exception behind the intermittent products 500 (see its trace in the backend log) and fix it with a regression test.
 
 - The waivers in incidents 4, 8 and 9 expire on 2026-11-30. Revisit them before then.
 - Incidents 3, 4, 6 and 7 are harness-side problems. Only the `.claude/hooks/lib/tdd.js` change for incident 6 is committed.

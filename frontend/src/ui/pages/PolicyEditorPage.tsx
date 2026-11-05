@@ -6,10 +6,12 @@
 
 import type { JSX } from 'react';
 
-import { usePolicies } from '../../service/usePolicies';
+import { usePolicies, type UsePoliciesResult } from '../../service/usePolicies';
 import { usePolicyEditor, type UsePolicyEditorResult } from '../../service/usePolicyEditor';
 import { PRODUCT_TYPES } from '../../types/policy';
 import type { PolicyVersion } from '../../types/policy';
+import { ErrorState } from '../components/ErrorState';
+import { FullPageState } from '../components/FullPageState';
 import { ProductThresholdForm } from '../components/ProductThresholdForm';
 import styles from './PolicyEditorPage.module.css';
 
@@ -62,12 +64,29 @@ function VersionList({ versions }: { versions: PolicyVersion[] }): JSX.Element {
   );
 }
 
+/** A failed catalog load: a friendly No access for 403, otherwise an inline
+ * error card with the reference and Retry -- never a blank page. */
+function LoadFailure({ policies }: { policies: UsePoliciesResult }): JSX.Element {
+  if (policies.loadError?.code === 'FORBIDDEN') {
+    return <FullPageState title="No access" message="Your role cannot open this page." />;
+  }
+  return (
+    <main className={styles.main}>
+      <ErrorState
+        message={policies.error ?? 'Failed to load the policy catalog.'}
+        correlationId={policies.loadError?.correlationId}
+        onRetry={policies.reload}
+      />
+    </main>
+  );
+}
+
 export function PolicyEditorPage(): JSX.Element {
   const policies = usePolicies();
   const editor = usePolicyEditor(policies);
 
   if (policies.loading) return <p aria-busy="true">Loading policy catalog…</p>;
-  if (policies.error) return <p role="alert">{policies.error}</p>;
+  if (policies.error) return <LoadFailure policies={policies} />;
 
   return (
     <main className={styles.main}>
