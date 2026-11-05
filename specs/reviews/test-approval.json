@@ -38,6 +38,30 @@
       "questions_asked": 0,
       "answered": 0,
       "recordedAt": "2026-11-03T05:35:05.166Z"
+    },
+    {
+      "round": 4,
+      "verdict": "approved",
+      "feedback": [],
+      "changes": [
+        "Group A implementers updated verification-matrix.json rows only: implementation_paths now real files (VM-010..014, VM-043..047), status and evidence_path added. Approved by user in-session; no assertion or test-plan text changed."
+      ],
+      "declined": [],
+      "questions_asked": 0,
+      "answered": 0,
+      "recordedAt": "2026-11-05T02:57:32.174Z"
+    },
+    {
+      "round": 5,
+      "verdict": "approved",
+      "feedback": [],
+      "changes": [
+        "Group A implementers updated verification-matrix.json rows only: implementation_paths now real files (VM-001..005, VM-010..019, VM-043..047), status and evidence_path added (VM-004 left unexecuted: xfail until E1-S2). Approved by user in-session; no assertion or test-plan text changed."
+      ],
+      "declined": [],
+      "questions_asked": 0,
+      "answered": 0,
+      "recordedAt": "2026-11-05T03:04:45.880Z"
     }
   ],
   "artifacts": [
@@ -47,12 +71,12 @@
     },
     {
       "path": "specs/test_artefacts/verification-matrix.json",
-      "sha256": "73e6f67c277e35ad780c3a78eec1880369c87c1cbd534a6609218c51bacf152b"
+      "sha256": "e07c8af56f866defd3b940fcc16fb6a9a43eaaddfaf3f5135f53d21b38b919b5"
     }
   ],
   "low_engagement": true,
   "waived_by": null,
-  "approvedAt": "2026-11-03T05:35:05.166Z",
-  "session_id": "ea37eb06-bbab-42d0-b472-e75542e5f420",
-  "in_session": false
+  "approvedAt": "2026-11-05T03:04:45.880Z",
+  "session_id": "513ba805-2234-4129-8b35-fd29fb9d658d",
+  "in_session": true
 }

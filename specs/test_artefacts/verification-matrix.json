@@ -11,13 +11,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e1-s1-component"
+        "backend/src/truelend/repository/users_repo.py",
+        "backend/src/truelend/service/auth_service.py",
+        "backend/src/truelend/api/deps.py",
+        "backend/src/truelend/api/auth_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-001-api",
           "layer": "api",
-          "description": "Verify E1-S1-AC1: the response is 200 with expires_in 1800 and role CUSTOMER"
+          "description": "Verify E1-S1-AC1: the response is 200 with expires_in 1800 and role CUSTOMER",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_auth.py"
         }
       ],
       "obligations": [
@@ -43,13 +48,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e1-s1-component"
+        "backend/src/truelend/repository/users_repo.py",
+        "backend/src/truelend/service/auth_service.py",
+        "backend/src/truelend/api/deps.py",
+        "backend/src/truelend/api/auth_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-002-api",
           "layer": "api",
-          "description": "Verify E1-S1-AC2: it is 401 UNAUTHENTICATED with no token and the same body whether or not the email exists"
+          "description": "Verify E1-S1-AC2: it is 401 UNAUTHENTICATED with no token and the same body whether or not the email exists",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_auth.py"
         }
       ],
       "obligations": [
@@ -74,13 +84,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e1-s1-component"
+        "backend/src/truelend/repository/users_repo.py",
+        "backend/src/truelend/service/auth_service.py",
+        "backend/src/truelend/api/deps.py",
+        "backend/src/truelend/api/auth_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-003-api",
           "layer": "api",
-          "description": "Verify E1-S1-AC3: it is 401"
+          "description": "Verify E1-S1-AC3: it is 401",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_auth.py"
         }
       ]
     },
@@ -94,7 +109,7 @@
         "api"
       ],
       "implementation_paths": [
-        "e1-s1-component"
+        "backend/src/truelend/api/deps.py"
       ],
       "checks": [
         {
@@ -121,13 +136,16 @@
         "api"
       ],
       "implementation_paths": [
-        "e1-s1-component"
+        "backend/src/truelend/api/deps.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-005-api",
           "layer": "api",
-          "description": "Verify E1-S1-AC5: every route except POST /api/auth/login and GET /health declares the auth dependency"
+          "description": "Verify E1-S1-AC5: every route except POST /api/auth/login and GET /health declares the auth dependency",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_auth.py"
         }
       ]
     },
@@ -241,13 +259,16 @@
         "unit"
       ],
       "implementation_paths": [
-        "e1-s3-component"
+        "backend/src/truelend/config/logging.py",
+        "backend/src/truelend/api/middleware.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-010-unit",
           "layer": "unit",
-          "description": "Verify E1-S3-AC1: exactly one JSON log line has the keys ts, level, event, correlation_id, method, path, status, duration_ms"
+          "description": "Verify E1-S3-AC1: exactly one JSON log line has the keys ts, level, event, correlation_id, method, path, status, duration_ms",
+          "status": "executed",
+          "evidence_path": "backend/tests/unit/test_logging.py"
         }
       ]
     },
@@ -261,13 +282,16 @@
         "unit"
       ],
       "implementation_paths": [
-        "e1-s3-component"
+        "backend/src/truelend/config/logging.py",
+        "backend/src/truelend/api/middleware.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-011-unit",
           "layer": "unit",
-          "description": "Verify E1-S3-AC2: a missing header yields a UUID4 echoed in the response header and equal to the log's correlation_id, `req-12345678` is reused as-is, and `a b!` is replaced by a"
+          "description": "Verify E1-S3-AC2: a missing header yields a UUID4 echoed in the response header and equal to the log's correlation_id, `req-12345678` is reused as-is, and `a b!` is replaced by a",
+          "status": "executed",
+          "evidence_path": "backend/tests/unit/test_logging.py"
         }
       ]
     },
@@ -282,18 +306,23 @@
         "api"
       ],
       "implementation_paths": [
-        "e1-s3-component"
+        "backend/src/truelend/config/logging.py",
+        "backend/src/truelend/api/middleware.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-012-unit",
           "layer": "unit",
-          "description": "Verify E1-S3-AC3: neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears"
+          "description": "Verify E1-S3-AC3: neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears",
+          "status": "executed",
+          "evidence_path": "backend/tests/unit/test_logging.py"
         },
         {
           "id": "CHK-VM-012-api",
           "layer": "api",
-          "description": "Verify E1-S3-AC3: neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears"
+          "description": "Verify E1-S3-AC3: neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_logging.py"
         }
       ],
       "obligations": [
@@ -316,18 +345,23 @@
         "api"
       ],
       "implementation_paths": [
-        "e1-s3-component"
+        "backend/src/truelend/config/logging.py",
+        "backend/src/truelend/api/middleware.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-013-unit",
           "layer": "unit",
-          "description": "Verify E1-S3-AC4: the document ID appears and the filename does not"
+          "description": "Verify E1-S3-AC4: the document ID appears and the filename does not",
+          "status": "executed",
+          "evidence_path": "backend/tests/unit/test_logging.py"
         },
         {
           "id": "CHK-VM-013-api",
           "layer": "api",
-          "description": "Verify E1-S3-AC4: the document ID appears and the filename does not"
+          "description": "Verify E1-S3-AC4: the document ID appears and the filename does not",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_logging.py"
         }
       ],
       "obligations": [
@@ -348,23 +382,31 @@
         "api"
       ],
       "implementation_paths": [
-        "e1-s3-component"
+        "backend/src/truelend/config/logging.py",
+        "backend/src/truelend/api/middleware.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-014-unit",
           "layer": "unit",
-          "description": "Verify E1-S3-AC5: the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter"
+          "description": "Verify E1-S3-AC5: the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter",
+          "status": "executed",
+          "evidence_path": "backend/tests/unit/test_logging.py"
         },
         {
           "id": "CHK-VM-014-api",
           "layer": "api",
-          "description": "Verify E1-S3-AC5: the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter"
+          "description": "Verify E1-S3-AC5: the response is 500 with the error envelope and no stack trace, and the trace is logged as JSON through the redaction filter",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_logging.py"
         },
         {
           "id": "CHK-VM-014-api-nontest",
           "layer": "api",
-          "description": "Verify E1-S3-AC5 test-only route: GET /api/_test/boom returns 404 when TRUELEND_ENV is not test"
+          "description": "Verify E1-S3-AC5 test-only route: GET /api/_test/boom returns 404 when TRUELEND_ENV is not test",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_logging.py"
         }
       ],
       "obligations": [
@@ -386,23 +428,30 @@
         "api"
       ],
       "implementation_paths": [
-        "e1-s4-component"
+        "backend/src/truelend/api/health_router.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-015-unit",
           "layer": "unit",
-          "description": "Verify E1-S4-AC1: it is 200 {\"status\":\"ok\"} in at most 1000 ms"
+          "description": "Verify E1-S4-AC1: it is 200 {\"status\":\"ok\"} in at most 1000 ms",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_health.py"
         },
         {
           "id": "CHK-VM-015-performance",
           "layer": "performance",
-          "description": "Verify E1-S4-AC1: it is 200 {\"status\":\"ok\"} in at most 1000 ms"
+          "description": "Verify E1-S4-AC1: it is 200 {\"status\":\"ok\"} in at most 1000 ms",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_health.py"
         },
         {
           "id": "CHK-VM-015-api",
           "layer": "api",
-          "description": "Verify E1-S4-AC1: it is 200 {\"status\":\"ok\"} in at most 1000 ms"
+          "description": "Verify E1-S4-AC1: it is 200 {\"status\":\"ok\"} in at most 1000 ms",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_health.py"
         }
       ]
     },
@@ -416,13 +465,16 @@
         "unit"
       ],
       "implementation_paths": [
-        "e1-s4-component"
+        "backend/src/truelend/config/db.py",
+        "backend/migrations/0001_users_and_audit.sql"
       ],
       "checks": [
         {
           "id": "CHK-VM-016-unit",
           "layer": "unit",
-          "description": "Verify E1-S4-AC2: none re-run and schema_migrations still has 3 rows with SHA-256 values"
+          "description": "Verify E1-S4-AC2: none re-run and schema_migrations still has 3 rows with SHA-256 values",
+          "status": "executed",
+          "evidence_path": "backend/tests/repo/test_migrations.py"
         }
       ]
     },
@@ -436,13 +488,16 @@
         "unit"
       ],
       "implementation_paths": [
-        "e1-s4-component"
+        "backend/src/truelend/config/db.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-017-unit",
           "layer": "unit",
-          "description": "Verify E1-S4-AC3: startup aborts with MIGRATION_CHECKSUM_MISMATCH and /health never returns 200"
+          "description": "Verify E1-S4-AC3: startup aborts with MIGRATION_CHECKSUM_MISMATCH and /health never returns 200",
+          "status": "executed",
+          "evidence_path": "backend/tests/repo/test_migrations.py"
         }
       ]
     },
@@ -456,13 +511,15 @@
         "unit"
       ],
       "implementation_paths": [
-        "e1-s4-component"
+        "backend/src/truelend/types/contracts.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-018-unit",
           "layer": "unit",
-          "description": "Verify E1-S4-AC4: no module imports from a higher layer in the order types, config, repository, service, api, ui"
+          "description": "Verify E1-S4-AC4: no module imports from a higher layer in the order types, config, repository, service, api, ui",
+          "status": "executed",
+          "evidence_path": "backend/tests/architecture/test_layers.py"
         }
       ]
     },
@@ -476,13 +533,16 @@
         "unit"
       ],
       "implementation_paths": [
-        "e1-s4-component"
+        "backend/src/truelend/types/money.py",
+        "backend/src/truelend/config/money.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-019-unit",
           "layer": "unit",
-          "description": "Verify E1-S4-AC5: it finds no float type, no float( call, and no REAL money column"
+          "description": "Verify E1-S4-AC5: it finds no float type, no float( call, and no REAL money column",
+          "status": "executed",
+          "evidence_path": "backend/tests/architecture/test_money.py"
         }
       ],
       "obligations": [
@@ -1089,7 +1149,7 @@
         "unit"
       ],
       "implementation_paths": [
-        "e3-s2-component"
+        "backend/src/truelend/service/scoring.py"
       ],
       "checks": [
         {
@@ -1118,7 +1178,7 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s2-component"
+        "backend/src/truelend/service/scoring.py"
       ],
       "checks": [
         {
@@ -1141,7 +1201,7 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s2-component"
+        "backend/src/truelend/service/scoring.py"
       ],
       "checks": [
         {
@@ -1161,7 +1221,7 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s2-component"
+        "backend/src/truelend/service/scoring.py"
       ],
       "checks": [
         {
@@ -1185,7 +1245,7 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s2-component"
+        "backend/src/truelend/service/scoring.py"
       ],
       "checks": [
         {
