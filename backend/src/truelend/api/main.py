@@ -8,6 +8,7 @@ middleware. Both are marked inside `create_app` below.
 
 from __future__ import annotations
 
+import sqlite3
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
@@ -16,16 +17,18 @@ from uuid import uuid4
 from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from truelend.api import auth_router, health_router
-from truelend.api.deps import get_current_principal
+from truelend.api import audit_router, auth_router, health_router
+from truelend.api.deps import get_clock, get_conn, get_current_principal
 from truelend.api.middleware import CorrelationIdLoggingMiddleware
 from truelend.config.db import get_connection, run_migrations, seed_users
 from truelend.config.errors import CODE_BY_STATUS, error_envelope, status_for_domain_error
 from truelend.config.settings import Settings, get_settings
-from truelend.types.contracts import Clock
-from truelend.types.errors import DomainError
+from truelend.repository import audit_repo
+from truelend.types.contracts import AuthPrincipal, Clock
+from truelend.types.errors import ConflictError, DomainError
 
 
 class _SystemClock:
@@ -97,6 +100,58 @@ def _register_test_boom_route(app: FastAPI, settings: Settings) -> None:
         raise RuntimeError("boom")
 
 
+class _TestAuditedActionRequest(BaseModel):
+    """Body for `/api/_test/audited-action` (E1-S2 AC1/AC4 test fixture)."""
+
+    entity_type: str
+    entity_id: int
+    action: str
+    fail: bool = False
+
+
+def _audited_action_handler(
+    body: _TestAuditedActionRequest,
+    request: Request,
+    principal: AuthPrincipal,
+    conn: sqlite3.Connection,
+    clock: Clock,
+) -> dict[str, str]:
+    audit_repo.insert(
+        conn,
+        clock,
+        actor=principal,
+        action=body.action,
+        entity_type=body.entity_type,
+        entity_id=body.entity_id,
+        correlation_id=_correlation_id(request),
+    )
+    if body.fail:
+        conn.rollback()
+        raise ConflictError("TEST_CONFLICT", "Simulated action failure.")
+    conn.commit()
+    return {"status": "ok"}
+
+
+def _register_test_audit_route(app: FastAPI, settings: Settings) -> None:
+    """`/api/_test/audited-action`: only mounted when `env == "test"`
+    (E1-S2 AC1/AC4). Writes the audit row in the action's own transaction;
+    `fail=True` rolls both back and raises a 409 through the DomainError
+    envelope.
+    """
+    if settings.env != "test":
+        return
+
+    @app.post("/api/_test/audited-action", include_in_schema=False)
+    def _audited_action(
+        body: _TestAuditedActionRequest,
+        request: Request,
+        principal: AuthPrincipal = Depends(get_current_principal),
+        conn: sqlite3.Connection = Depends(get_conn),
+        clock: Clock = Depends(get_clock),
+    ) -> dict[str, str]:
+        return _audited_action_handler(body, request, principal, conn, clock)
+
+
 def create_app(settings: Settings | None = None, clock: Clock | None = None) -> FastAPI:
     resolved_settings = settings or get_settings()
     app = FastAPI(lifespan=_lifespan)
@@ -105,8 +160,10 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
 
     app.include_router(health_router.router)
     app.include_router(auth_router.router)
+    app.include_router(audit_router.router)
     app.add_middleware(CorrelationIdLoggingMiddleware)
 
     _register_test_boom_route(app, resolved_settings)
+    _register_test_audit_route(app, resolved_settings)
     _register_exception_handlers(app)
     return app

@@ -5,7 +5,6 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any
 
-import pytest
 from fastapi import FastAPI
 from fastapi import routing as fastapi_routing
 from fastapi.routing import APIRoute
@@ -76,7 +75,6 @@ def test_e1_s1_ac3_tampered_and_garbage_tokens_rejected(
         assert r.status_code == 401
 
 
-@pytest.mark.xfail(strict=True, reason="needs /api/audit from E1-S2")
 def test_e1_s1_ac4_customer_forbidden_on_audit(
     client: TestClient, login: Callable[[str], dict[str, str]]
 ) -> None:

@@ -19,14 +19,12 @@
       "FRD-22",
       "FRD-24"
     ],
-    "scope_out": [
-      "automated-decision logging (not an underwriter action); customer action logging"
-    ]
+    "scope_out": []
   },
   "entities": [
     {
-      "name": "Audit trail",
-      "status": "unknown"
+      "name": "AuditEntry (audit_log row)",
+      "status": "existing"
     }
   ],
   "approach": {
@@ -42,9 +40,21 @@
     "layer": "Repository"
   },
   "operations": {
-    "pending": true,
-    "files": [],
-    "text": "- pending"
+    "pending": false,
+    "files": [
+      "specs/test_artefacts/acceptance/test_e1_s2_audit.py",
+      "unit/API",
+      "backend/tests/api/test_audit.py",
+      "backend/tests/repo/test_audit_repo.py",
+      "record/list",
+      "backend/src/truelend/repository/audit_repo.py",
+      "entity_type/entity_id/action",
+      "backend/src/truelend/api/audit_router.py",
+      "backend/src/truelend/api/main.py",
+      "AC1/AC4",
+      "backend/tests/api/test_auth.py"
+    ],
+    "text": "- Step 1: write acceptance tests first in specs/test_artefacts/acceptance/test_e1_s2_audit.py (AC1-AC4), run record-at-red.js while red; unit/API tests in backend/tests/api/test_audit.py and backend/tests/repo/test_audit_repo.py\r\n- Step 2: add record/list functions (insert uses caller's connection and transaction, UTC occurred_at from Clock, no commit) in backend/src/truelend/repository/audit_repo.py\r\n- Step 3: add GET /api/audit (ADMIN only via require_roles, filters entity_type/entity_id/action, ascending id, {items,total,limit,offset}) in backend/src/truelend/api/audit_router.py\r\n- Step 4: register the audit router in backend/src/truelend/api/main.py; env=test only audited route for AC1/AC4 so success commits row and 409 rolls back with the action\r\n- Step 5: remove the xfail on test_e1_s1_ac4_customer_forbidden_on_audit in backend/tests/api/test_auth.py and drop audit-check bookkeeping"
   },
   "safeguards": {
     "ids": [
