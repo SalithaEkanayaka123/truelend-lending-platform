@@ -130,3 +130,12 @@ def test_e2_s2_owner_can_read_their_own_application(
     r = client.get("/api/applications/1", headers=headers)
     assert r.status_code == 200
     assert r.json()["id"] == 1
+
+
+def test_e2_s2_policy_editor_is_forbidden_from_reading_an_application(
+    client: TestClient, login: Callable[[str], dict[str, str]]
+) -> None:
+    _apply(client, login("customer1@example.test"))
+    r = client.get("/api/applications/1", headers=login("policy@example.test"))
+    assert r.status_code == 403
+    assert r.json()["error"]["code"] == "FORBIDDEN"

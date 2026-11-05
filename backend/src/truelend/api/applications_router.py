@@ -9,7 +9,7 @@ from decimal import Decimal
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 
-from truelend.api.deps import get_clock, get_conn, get_current_principal, require_roles
+from truelend.api.deps import get_clock, get_conn, require_roles
 from truelend.config.money import decimal_to_wire
 from truelend.service.application_service import (
     ApplicationView,
@@ -138,6 +138,6 @@ def apply_route(
 def get_application_route(
     application_id: int,
     conn: sqlite3.Connection = Depends(get_conn),
-    principal: AuthPrincipal = Depends(get_current_principal),
+    principal: AuthPrincipal = Depends(require_roles("CUSTOMER", "UNDERWRITER", "ADMIN")),
 ) -> ApplicationResponse:
     return _to_response(get_for_owner(conn, application_id, principal))
