@@ -92,12 +92,15 @@ Incidents hit while building TrueLend with the Claude Harness Engine on Windows.
 
 - **Symptom:** `GET /api/products` returned `500 INTERNAL_ERROR` for `admin@example.test` against the dev DB, correlation id `676401d2-8072-4405-aea1-df70d3b0f0ab` *(reported)*. Login and `/api/policies` worked. The UI showed the error boundary *(reported)*. It happened again while checking the fix in a browser at 375px: correlation id `441fe440-6ff7-4add-9890-0517f025271e`, two failed `/api/products` calls, then 200 on every later call.
 - **Root cause (logging gap, confirmed):** Nothing in production called `configure_logging`. `CorrelationIdLoggingMiddleware` logged the exception to the `truelend.access` logger at INFO, and under uvicorn that logger had no handler, so the line and its traceback were dropped. The tests hid this because the `client` fixture configures logging itself. A 500 could not be traced from its correlation id.
-- **Root cause (the 500 itself, not confirmed):** It does not reproduce on demand.
-  - 10 role-matrix tests pass against the real app, migrations and seed: five roles on seed v1, and five roles after a policy v2 is created and approved through the real routes.
-  - The dev server returns 200 for every role it was tried with.
-  - 100 parallel calls through the Vite proxy (login, then products and policies in parallel) all returned 200.
-  - The failure pattern fits an unhandled exception inside `get_active_catalog`, which re-reads and hashes `policy_v0001.json` on every call. `/api/policies` never reads that file, and it never failed. A transient `OSError` on the file read, such as a Windows file lock, would fit but is **unproven**.
-  - The first live traceback will settle it.
+- **Root cause (the 500 itself, confirmed by the e2e suite, see incident 11):** a thread-affinity bug in the per-request SQLite connection, not the policy file. The traceback, logged by the fix above:
+  ```
+  sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.
+    deps.py:54 get_current_principal -> auth_service.py:80 resolve_principal -> users_repo.py:30 find_by_id
+  ```
+  `get_conn` is a sync generator dependency. FastAPI runs the dependency and the dependants (`get_current_principal`) in the threadpool, and they can land on different worker threads. The connection is then created on one thread and used on another. Every authenticated route is exposed, not only `/api/products`; `/api/policies` fails the same way.
+  - It is intermittent because a single idle worker thread is reused, so requests that arrive one at a time usually get the same thread. Requests that arrive together get different threads. The UI fires products and policies together, which is why it showed up there.
+  - Earlier evidence was misleading for the same reason: the role-matrix tests and 100 curl calls run one request at a time, or nearly so.
+  - My earlier hypothesis here, a transient `OSError` reading `policy_v0001.json`, was wrong.
 - **Fix:**
   - `create_app` calls `configure_logging()`, so JSON log lines go to stderr.
   - The middleware logs an unhandled exception at ERROR, with `correlation_id` and the redacted traceback.
@@ -109,9 +112,22 @@ Incidents hit while building TrueLend with the Claude Harness Engine on Windows.
   - Frontend tests: `ErrorState`, `AppErrorBoundary`, `App` (per-role routing), `PolicyEditorPage`, `usePolicies`.
   - Next step: search the uvicorn terminal for correlation id `441fe440-6ff7-4add-9890-0517f025271e` and read its `trace` field.
 
+## 11. Playwright e2e suite: concurrent requests return 500 (open, not fixed)
+
+- **Symptom:** The new `e2e/` suite (real backend, real Vite, chromium, no mocks) is red for every screen that loads the policy editor (landing as POLICY_EDITOR, ADMIN or POLICY_EDITOR opening `/policies`, the editor happy path at both viewports, the existing `policy-editor.spec.ts`, and the POLICY_EDITOR screenshots). The failures are "heading not found", plus console errors and `HTTP 500` on `/api/products` and `/api/policies` with correlation ids. The same specs pass for roles and pages that do not fire those two requests together. 38 passed, 11 failed, 2 flaky (the two flaky tests passed on retry).
+- **Root cause:** the same bug as incident 10. `get_conn` hands a SQLite connection created on one threadpool thread to `get_current_principal`, which may run on another. `loop.spec.ts` has a concurrent variant that reproduces it directly: 8 requests in flight, 193 of 200 calls returned 500 for ADMIN.
+- **Why the sequential loop cannot see it:** `GET /api/products` x200 one at a time passes for all four roles, because one idle worker thread is reused. The concurrent-burst test is the one that catches it.
+- **Fix:** none, by instruction. The failing specs stay red. The fix belongs in `backend/src/truelend/api/deps.py` (create the connection on the thread that uses it, or open it with `check_same_thread=False`), with a regression test that fires concurrent requests.
+- **Suite notes:**
+  - The brief says `POLICY_MANAGER`; the role is `POLICY_EDITOR`.
+  - Navigating with `page.goto` after sign-in drops the in-memory token by design, so the specs navigate client-side.
+  - The suite runs on backend 8100 and Vite 5173 (override with `E2E_FRONTEND_PORT` when a dev server holds 5173) and uses its own temp DB and policy directory, so it never writes into `backend/policies/`.
+  - `frontend/playwright.config.ts` also points at `../e2e`; with `e2e/` now having its own `@playwright/test`, running that config may load two copies of Playwright. Use `cd e2e && npm run e2e`.
+- **Evidence:** `e2e/api.spec.ts`, `loop.spec.ts`, `ui.spec.ts`, `screenshots.spec.ts`; run with `cd e2e && npm run e2e`.
+
 ## Open items
 
-- Incident 10: find the exception behind the intermittent products 500 (see its trace in the backend log) and fix it with a regression test.
+- Incidents 10 and 11: fix the cross-thread SQLite connection in `deps.get_conn` / `get_current_principal`, with a concurrent-request regression test, then re-run `cd e2e && npm run e2e` until green.
 
 - The waivers in incidents 4, 8 and 9 expire on 2026-11-30. Revisit them before then.
 - Incidents 3, 4, 6 and 7 are harness-side problems. Only the `.claude/hooks/lib/tdd.js` change for incident 6 is committed.

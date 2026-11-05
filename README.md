@@ -8,6 +8,25 @@ This project was scaffolded with **Claude Harness Engine v5**.
 | **Shape** | Consumer-facing app (high design bar) |
 | **Posture** | balanced (Sonnet generation) · full ceremony · docker verification |
 
+## Quick start
+
+```powershell
+# backend (terminal 1)           -> http://127.0.0.1:8000
+cd backend; uv sync
+uv run uvicorn truelend.api.main:create_app --factory --app-dir src --host 127.0.0.1 --port 8000 --reload
+
+# frontend (terminal 2)          -> http://localhost:5173
+cd frontend; npm ci; npm run dev
+
+# end-to-end suite (real backend + Vite, chromium, no mocks)
+cd e2e; npm install; npm run install:browsers   # first time only
+cd e2e && npm run e2e
+```
+
+Demo users (synthetic) all use the password `Synthetic-Dev-Pass-1!`: `admin@example.test`, `policy@example.test`, `underwriter@example.test`, `customer1@example.test`, `customer2@example.test`.
+
+`npm run e2e` starts its own backend (port 8100, temp DB under `e2e/.tmp`, `TRUELEND_ENV=test`) and its own Vite, and refuses to reuse a running one. If your dev frontend already holds port 5173, run `E2E_FRONTEND_PORT=5273 npm run e2e` (PowerShell: `$env:E2E_FRONTEND_PORT=5273; npm run e2e`). Screenshots go to `e2e/screenshots/` unless `CI=true`.
+
 ## Pick The Work Route
 
 Primary routes:
