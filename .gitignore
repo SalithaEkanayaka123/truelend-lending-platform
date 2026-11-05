@@ -83,3 +83,4 @@ specs/reviews/spdd-sync.json
 
 backend/data/
 *.db
+.playwright-mcp/
