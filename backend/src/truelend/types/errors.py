@@ -47,3 +47,16 @@ class MigrationChecksumMismatchError(DomainError):
             "after it was applied.",
         )
         self.filename = filename
+
+
+class PolicyChecksumMismatchError(DomainError):
+    """A policy file recorded in `policy_versions` was edited or removed
+    after it was approved."""
+
+    def __init__(self, version: int) -> None:
+        super().__init__(
+            "POLICY_CHECKSUM_MISMATCH",
+            f"Policy checksum mismatch for version {version}: file was edited or removed "
+            "after it was approved.",
+        )
+        self.version = version

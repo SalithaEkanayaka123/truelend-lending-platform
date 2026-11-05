@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "products": {
+    "PERSONAL": {
+      "min_age": 21,
+      "max_age": 60,
+      "min_income": "25000.00",
+      "min_tenure_months": 12,
+      "max_tenure_months": 60,
+      "min_amount": "50000.00",
+      "max_amount": "1500000.00",
+      "annual_rate_pct": "12.00",
+      "auto_reject_below_score": 600,
+      "auto_approve_min_score": 700,
+      "required_documents": ["ID_PROOF", "ADDRESS_PROOF", "SALARY_SLIP"]
+    },
+    "VEHICLE": {
+      "min_age": 21,
+      "max_age": 65,
+      "min_income": "30000.00",
+      "min_tenure_months": 12,
+      "max_tenure_months": 84,
+      "min_amount": "100000.00",
+      "max_amount": "2000000.00",
+      "annual_rate_pct": "10.50",
+      "auto_reject_below_score": 620,
+      "auto_approve_min_score": 710,
+      "required_documents": ["ID_PROOF", "ADDRESS_PROOF", "SALARY_SLIP", "VEHICLE_QUOTATION"]
+    },
+    "EDUCATION": {
+      "min_age": 18,
+      "max_age": 45,
+      "min_income": "20000.00",
+      "min_tenure_months": 12,
+      "max_tenure_months": 96,
+      "min_amount": "50000.00",
+      "max_amount": "2500000.00",
+      "annual_rate_pct": "9.00",
+      "auto_reject_below_score": 580,
+      "auto_approve_min_score": 690,
+      "required_documents": ["ID_PROOF", "ADDRESS_PROOF", "ADMISSION_LETTER", "FEE_STRUCTURE"]
+    }
+  },
+  "reason_codes": {
+    "INCOME_BELOW_MIN": "Income is below the minimum for this product.",
+    "AGE_OUT_OF_RANGE": "Applicant age is outside the product's allowed range.",
+    "SCORE_BELOW_MIN": "Credit score is below the auto-reject threshold.",
+    "SCORE_MEETS_AUTO_APPROVE": "Credit score meets the auto-approve threshold.",
+    "SCORE_IN_REVIEW_BAND": "Credit score falls in the manual-review band."
+  },
+  "override_reason_codes": ["COMPENSATING_FACTORS", "DATA_CORRECTION", "SENIOR_APPROVAL"]
+}

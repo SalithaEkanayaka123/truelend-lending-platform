@@ -563,7 +563,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/products_router.py"
       ],
       "checks": [
         {
@@ -603,7 +605,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/products_router.py"
       ],
       "checks": [
         {
@@ -636,7 +640,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/products_router.py"
       ],
       "checks": [
         {
@@ -659,7 +665,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/products_router.py"
       ],
       "checks": [
         {
@@ -679,7 +687,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/products_router.py"
       ],
       "checks": [
         {

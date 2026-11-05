@@ -67,6 +67,10 @@ def test_e1_s4_ac3_startup_aborts_and_health_never_200(
         (base.migrations_dir / "0001_users_and_audit.sql").read_text(encoding="utf-8"),
         encoding="utf-8",
     )
+    (mig / "0002_policy_versions.sql").write_text(
+        (base.migrations_dir / "0002_policy_versions.sql").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
     settings = replace(base, migrations_dir=mig)
     with TestClient(create_app(settings)) as ok:
         assert ok.get("/health").status_code == 200

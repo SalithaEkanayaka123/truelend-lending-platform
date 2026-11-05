@@ -20,15 +20,21 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from truelend.api import audit_router, auth_router, health_router
+from truelend.api import audit_router, auth_router, health_router, products_router
 from truelend.api.deps import get_clock, get_conn, get_current_principal
 from truelend.api.middleware import CorrelationIdLoggingMiddleware
 from truelend.config.db import get_connection, run_migrations, seed_users
 from truelend.config.errors import CODE_BY_STATUS, error_envelope, status_for_domain_error
 from truelend.config.settings import Settings, get_settings
 from truelend.repository import audit_repo
+from truelend.service import policy_service
 from truelend.types.contracts import AuthPrincipal, Clock
 from truelend.types.errors import ConflictError, DomainError
+
+# The seeded ADMIN user is always id 1 (config.db.seed_users inserts it
+# first); the policy catalog's seed version is recorded as created/approved
+# by that user.
+_SEED_ADMIN_USER_ID = 1
 
 
 class _SystemClock:
@@ -44,6 +50,10 @@ async def _lifespan(app: FastAPI) -> AsyncIterator[None]:
     conn = get_connection(settings)
     run_migrations(conn, settings.migrations_dir)
     seed_users(conn)
+    policy_service.seed_policy_version_one(
+        conn, settings.policies_dir, clock=app.state.clock, created_by=_SEED_ADMIN_USER_ID
+    )
+    policy_service.verify_policy_checksums(conn)
     app.state.conn = conn
     try:
         yield
@@ -161,6 +171,7 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
     app.include_router(health_router.router)
     app.include_router(auth_router.router)
     app.include_router(audit_router.router)
+    app.include_router(products_router.router)
     app.add_middleware(CorrelationIdLoggingMiddleware)
 
     _register_test_boom_route(app, resolved_settings)
