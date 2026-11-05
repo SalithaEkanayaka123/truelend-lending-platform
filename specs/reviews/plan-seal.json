@@ -1,7 +1,7 @@
 {
   "status": "sealed",
   "waived_by": null,
-  "sealedAt": "2026-11-05T04:51:40.107Z",
+  "sealedAt": "2026-11-05T07:02:18.512Z",
   "artifacts": [
     {
       "path": "specs/brd/brd.md",
@@ -60,7 +60,7 @@
     },
     {
       "path": "specs/test_artefacts/verification-matrix.json",
-      "sha256": "bec94a0097843790f93a4edd96606af5d1be95911372e731f262e5fc4da8320a",
+      "sha256": "6e828f322cc5e43f8216b7572d4f1d31acdcae6ea9c32f4d2f3b842ac091d087",
       "phase": "test"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "path": "specs\\test_artefacts\\verification-matrix.json",
-      "sha256": "bec94a0097843790f93a4edd96606af5d1be95911372e731f262e5fc4da8320a",
+      "sha256": "6e828f322cc5e43f8216b7572d4f1d31acdcae6ea9c32f4d2f3b842ac091d087",
       "phase": null
     },
     {

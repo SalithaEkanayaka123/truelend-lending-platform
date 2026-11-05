@@ -74,3 +74,28 @@ class PolicyChecksumMismatchError(DomainError):
             "after it was approved.",
         )
         self.version = version
+
+
+class PolicyFieldValidationError(ValidationError):
+    """A policy `changes` patch fails a domain validation rule (rate/age/
+    tenure/amount/score range) -> 422, naming the offending product type and
+    field (E4-S1-AC6)."""
+
+    def __init__(self, product_type: str, field: str, message: str) -> None:
+        super().__init__("VALIDATION_ERROR", f"{product_type}.{field}: {message}")
+        self.product_type = product_type
+        self.field = field
+
+
+class PolicyPathTraversalError(DomainError):
+    """A `policy_versions` row's `file_path` does not resolve inside the
+    configured policies directory (`..` escape or a symlink pointing
+    outside it) -> treated as a server-side integrity failure, not a client
+    mistake (E4-S1)."""
+
+    def __init__(self, file_path: str) -> None:
+        super().__init__(
+            "POLICY_PATH_TRAVERSAL",
+            f"Policy file path '{file_path}' does not resolve inside the policies directory.",
+        )
+        self.file_path = file_path

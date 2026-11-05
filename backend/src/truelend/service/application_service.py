@@ -10,6 +10,7 @@ import sqlite3
 from dataclasses import dataclass
 from datetime import UTC
 from decimal import Decimal
+from pathlib import Path
 
 from truelend.repository import applications_repo, documents_repo
 from truelend.repository.applications_repo import ApplicationRecord
@@ -65,10 +66,12 @@ class ApplicationView:
     submitted_at: str | None
 
 
-def apply(conn: sqlite3.Connection, clock: Clock, request: ApplyRequest) -> ApplicationView:
+def apply(
+    conn: sqlite3.Connection, clock: Clock, request: ApplyRequest, *, policies_dir: Path
+) -> ApplicationView:
     """Create a DRAFT application and its MISSING-document checklist in one
     transaction (single owner of both inserts, SG-8)."""
-    rule = _rule_for(conn, request.product_type)
+    rule = _rule_for(conn, request.product_type, policies_dir=policies_dir)
     _validate_range(rule, request.requested_amount, request.tenure_months)
     created_at = clock.now().astimezone(UTC).isoformat()
     application_id = applications_repo.insert_application(
@@ -104,8 +107,10 @@ def _is_hidden_from(record: ApplicationRecord, principal: AuthPrincipal) -> bool
     return principal.role == "CUSTOMER" and record.applicant_user_id != principal.user_id
 
 
-def _rule_for(conn: sqlite3.Connection, product_type: ProductType) -> ProductRule:
-    catalog = {rule.product_type: rule for rule in get_active_catalog(conn)}
+def _rule_for(
+    conn: sqlite3.Connection, product_type: ProductType, *, policies_dir: Path
+) -> ProductRule:
+    catalog = {rule.product_type: rule for rule in get_active_catalog(conn, policies_dir)}
     return catalog[product_type]
 
 

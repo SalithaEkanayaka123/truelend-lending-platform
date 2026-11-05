@@ -81,6 +81,55 @@ def get_active_version(conn: sqlite3.Connection) -> PolicyVersionRecord | None:
     return _to_record(row) if row is not None else None
 
 
+def get_by_version(conn: sqlite3.Connection, version: int) -> PolicyVersionRecord | None:
+    """A single row by `version`, or `None` (E4-S1)."""
+    row = conn.execute(
+        f"SELECT {_COLUMNS} FROM policy_versions WHERE version = ?", (version,)
+    ).fetchone()
+    return _to_record(row) if row is not None else None
+
+
+def next_version(conn: sqlite3.Connection) -> int:
+    """The next version number to create: one past the highest existing
+    version, or 1 if the table is empty (E4-S1)."""
+    row = conn.execute("SELECT MAX(version) FROM policy_versions").fetchone()
+    return cast(int, row[0] or 0) + 1
+
+
+def insert_draft(
+    conn: sqlite3.Connection,
+    *,
+    version: int,
+    file_path: str,
+    sha256: str,
+    base_version: int,
+    created_by: int,
+    created_at: str,
+) -> None:
+    """Insert a new `DRAFT` row (E4-S1-AC1). `approved_by`/`approved_at`
+    stay `NULL` until `approve` transitions it."""
+    conn.execute(
+        "INSERT INTO policy_versions"
+        " (version, status, file_path, sha256, base_version, created_by, created_at)"
+        " VALUES (?, 'DRAFT', ?, ?, ?, ?, ?)",
+        (version, file_path, sha256, base_version, created_by, created_at),
+    )
+
+
+def approve(
+    conn: sqlite3.Connection, *, version: int, approved_by: int, approved_at: str
+) -> int:
+    """`DRAFT` -> `APPROVED` (E4-S1-AC3); the trigger additionally rejects
+    every other transition. Returns the row count (0 if `version` was not
+    `DRAFT` or does not exist) so the caller can tell a no-op from a write."""
+    cursor = conn.execute(
+        "UPDATE policy_versions SET status = 'APPROVED', approved_by = ?, approved_at = ?"
+        " WHERE version = ? AND status = 'DRAFT'",
+        (approved_by, approved_at, version),
+    )
+    return cursor.rowcount
+
+
 def _to_record(
     row: tuple[int, str, str, str, int | None, int, str, int | None, str | None],
 ) -> PolicyVersionRecord:

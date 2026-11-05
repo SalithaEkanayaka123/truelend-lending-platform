@@ -7,6 +7,8 @@ from truelend.types.errors import (
     DomainError,
     ForbiddenError,
     NotFoundError,
+    PolicyChecksumMismatchError,
+    PolicyPathTraversalError,
     PolicyViolationException,
     ValidationError,
 )
@@ -17,6 +19,8 @@ STATUS_BY_ERROR_TYPE: dict[type[DomainError], int] = {
     ForbiddenError: 403,
     ConflictError: 409,
     PolicyViolationException: 422,
+    PolicyChecksumMismatchError: 500,
+    PolicyPathTraversalError: 500,
 }
 
 CODE_BY_STATUS: dict[int, str] = {

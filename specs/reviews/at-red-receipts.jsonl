@@ -2,3 +2,4 @@
 {"storyId":"E1-S2","atPath":"specs/test_artefacts/acceptance/test_e1_s2_audit.py","observedRedAt":"2026-11-05T03:44:07.653Z","testCmd":"cd backend && uv run pytest -c pyproject.toml -q ../specs/test_artefacts/acceptance/test_e1_s2_audit.py"}
 {"storyId":"E2-S1","atPath":"specs/test_artefacts/acceptance/test_e2_s1_catalog.py","observedRedAt":"2026-11-05T03:55:25.012Z","testCmd":"cd backend && uv run pytest -c pyproject.toml -q ../specs/test_artefacts/acceptance/test_e2_s1_catalog.py"}
 {"storyId":"E2-S2","atPath":"specs/test_artefacts/acceptance/test_e2_s2_apply.py","observedRedAt":"2026-11-05T05:04:21.938Z","testCmd":"cd backend && uv run pytest -c pyproject.toml -q ../specs/test_artefacts/acceptance/test_e2_s2_apply.py"}
+{"storyId":"E4-S1","atPath":"specs/test_artefacts/acceptance/test_e4_s1_policies.py","observedRedAt":"2026-11-05T05:51:31.278Z","testCmd":"cd backend && uv run pytest -c pyproject.toml -q ../specs/test_artefacts/acceptance/test_e4_s1_policies.py"}

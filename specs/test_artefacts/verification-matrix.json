@@ -1726,13 +1726,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e4-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/policies_router.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-065-api",
           "layer": "api",
-          "description": "Verify E4-S1-AC1: it is 201 with version 2, status DRAFT, file policy_v0002.json written, an audit row POLICY_CREATED, and the SHA-256 of policy_v0001.json unchanged"
+          "description": "Verify E4-S1-AC1: it is 201 with version 2, status DRAFT, file policy_v0002.json written, an audit row POLICY_CREATED, and the SHA-256 of policy_v0001.json unchanged",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_policies.py"
         }
       ],
       "obligations": [
@@ -1756,13 +1761,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e4-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/policies_router.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-066-api",
           "layer": "api",
-          "description": "Verify E4-S1-AC2: PERSONAL min_income is still \"25000.00\" and policy_version is 1"
+          "description": "Verify E4-S1-AC2: PERSONAL min_income is still \"25000.00\" and policy_version is 1",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_policies.py"
         }
       ]
     },
@@ -1776,13 +1786,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e4-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/policies_router.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-067-api",
           "layer": "api",
-          "description": "Verify E4-S1-AC3: it is 200 APPROVED with approved_by 1, an audit row POLICY_APPROVED, and GET /api/products shows PERSONAL min_income \"30000.00\" with policy_version 2"
+          "description": "Verify E4-S1-AC3: it is 200 APPROVED with approved_by 1, an audit row POLICY_APPROVED, and GET /api/products shows PERSONAL min_income \"30000.00\" with policy_version 2",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_policies.py"
         }
       ]
     },
@@ -1796,13 +1811,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e4-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/policies_router.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-068-api",
           "layer": "api",
-          "description": "Verify E4-S1-AC4: the HTTP verbs return 405 and the SQL UPDATE aborts at the database"
+          "description": "Verify E4-S1-AC4: the HTTP verbs return 405 and the SQL UPDATE aborts at the database",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_policies.py"
         }
       ],
       "obligations": [
@@ -1819,13 +1839,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e4-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/policies_router.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-069-api",
           "layer": "api",
-          "description": "Verify E4-S1-AC5: it is 403"
+          "description": "Verify E4-S1-AC5: it is 403",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_policies.py"
         }
       ]
     },
@@ -1839,13 +1864,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e4-s1-component"
+        "backend/src/truelend/repository/policy_repo.py",
+        "backend/src/truelend/service/policy_service.py",
+        "backend/src/truelend/api/policies_router.py",
+        "backend/src/truelend/api/main.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-070-api",
           "layer": "api",
-          "description": "Verify E4-S1-AC6: it is 422 VALIDATION_ERROR naming the offending field and no file is written"
+          "description": "Verify E4-S1-AC6: it is 422 VALIDATION_ERROR naming the offending field and no file is written",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_policies.py"
         }
       ],
       "obligations": [

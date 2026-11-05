@@ -8,8 +8,9 @@ import sqlite3
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
-from truelend.api.deps import get_conn, get_current_principal
+from truelend.api.deps import get_app_settings, get_conn, get_current_principal
 from truelend.config.money import decimal_to_wire
+from truelend.config.settings import Settings
 from truelend.service.policy_service import ProductRule, get_active_catalog
 from truelend.types.contracts import AuthPrincipal
 from truelend.types.enums import DocumentType, ProductType
@@ -54,7 +55,8 @@ def _to_response(rule: ProductRule) -> ProductRuleResponse:
 @router.get("", response_model=list[ProductRuleResponse])
 def list_products_route(
     conn: sqlite3.Connection = Depends(get_conn),
+    settings: Settings = Depends(get_app_settings),
     principal: AuthPrincipal = Depends(get_current_principal),
 ) -> list[ProductRuleResponse]:
     del principal  # guard only; the catalog is the same for every role
-    return [_to_response(rule) for rule in get_active_catalog(conn)]
+    return [_to_response(rule) for rule in get_active_catalog(conn, settings.policies_dir)]

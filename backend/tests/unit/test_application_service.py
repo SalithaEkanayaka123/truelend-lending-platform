@@ -45,7 +45,7 @@ def _request(**overrides: Any) -> ApplyRequest:
     return replace(_BASE_REQUEST, **overrides)
 
 
-def _conn(tmp_path: Path) -> sqlite3.Connection:
+def _conn(tmp_path: Path) -> tuple[sqlite3.Connection, Path]:
     conn = sqlite3.connect(tmp_path / "svc.db")
     run_migrations(conn, _MIGRATIONS_DIR)
     conn.execute(
@@ -58,44 +58,54 @@ def _conn(tmp_path: Path) -> sqlite3.Connection:
         _REAL_POLICY_FILE.read_text(encoding="utf-8"), encoding="utf-8"
     )
     policy_service.seed_policy_version_one(conn, policies_dir, clock=_FixedClock(), created_by=1)
-    return conn
+    return conn, policies_dir
 
 
 def test_vm027_tenure_below_min_raises_tenure_out_of_range(tmp_path: Path) -> None:
-    conn = _conn(tmp_path)
+    conn, policies_dir = _conn(tmp_path)
     with pytest.raises(TenureOutOfRangeError) as exc:
-        application_service.apply(conn, _FixedClock(), _request(tenure_months=11))
+        application_service.apply(
+            conn, _FixedClock(), _request(tenure_months=11), policies_dir=policies_dir
+        )
     assert exc.value.code == "TENURE_OUT_OF_RANGE"
 
 
 def test_vm027_tenure_above_max_raises_tenure_out_of_range(tmp_path: Path) -> None:
-    conn = _conn(tmp_path)
+    conn, policies_dir = _conn(tmp_path)
     with pytest.raises(TenureOutOfRangeError) as exc:
-        application_service.apply(conn, _FixedClock(), _request(tenure_months=61))
+        application_service.apply(
+            conn, _FixedClock(), _request(tenure_months=61), policies_dir=policies_dir
+        )
     assert exc.value.code == "TENURE_OUT_OF_RANGE"
 
 
 def test_vm027_amount_below_min_raises_amount_out_of_range(tmp_path: Path) -> None:
-    conn = _conn(tmp_path)
+    conn, policies_dir = _conn(tmp_path)
     with pytest.raises(AmountOutOfRangeError) as exc:
         application_service.apply(
-            conn, _FixedClock(), _request(requested_amount=Decimal("49999.99"))
+            conn,
+            _FixedClock(),
+            _request(requested_amount=Decimal("49999.99")),
+            policies_dir=policies_dir,
         )
     assert exc.value.code == "AMOUNT_OUT_OF_RANGE"
 
 
 def test_vm027_amount_above_max_raises_amount_out_of_range(tmp_path: Path) -> None:
-    conn = _conn(tmp_path)
+    conn, policies_dir = _conn(tmp_path)
     with pytest.raises(AmountOutOfRangeError) as exc:
         application_service.apply(
-            conn, _FixedClock(), _request(requested_amount=Decimal("1500000.01"))
+            conn,
+            _FixedClock(),
+            _request(requested_amount=Decimal("1500000.01")),
+            policies_dir=policies_dir,
         )
     assert exc.value.code == "AMOUNT_OUT_OF_RANGE"
 
 
 def test_vm027_in_range_request_succeeds(tmp_path: Path) -> None:
-    conn = _conn(tmp_path)
-    view = application_service.apply(conn, _FixedClock(), _request())
+    conn, policies_dir = _conn(tmp_path)
+    view = application_service.apply(conn, _FixedClock(), _request(), policies_dir=policies_dir)
     assert view.status == "DRAFT"
     assert view.requested_amount == Decimal("200000.00")
     assert view.tenure_months == 24

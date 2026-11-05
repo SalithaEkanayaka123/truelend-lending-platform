@@ -25,6 +25,7 @@ from truelend.api import (
     audit_router,
     auth_router,
     health_router,
+    policies_router,
     products_router,
 )
 from truelend.api.deps import get_clock, get_conn, get_current_principal
@@ -59,7 +60,7 @@ async def _lifespan(app: FastAPI) -> AsyncIterator[None]:
     policy_service.seed_policy_version_one(
         conn, settings.policies_dir, clock=app.state.clock, created_by=_SEED_ADMIN_USER_ID
     )
-    policy_service.verify_policy_checksums(conn)
+    policy_service.verify_policy_checksums(conn, settings.policies_dir)
     app.state.conn = conn
     try:
         yield
@@ -178,6 +179,7 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
     app.include_router(auth_router.router)
     app.include_router(audit_router.router)
     app.include_router(products_router.router)
+    app.include_router(policies_router.router)
     app.include_router(applications_router.router)
     app.add_middleware(CorrelationIdLoggingMiddleware)
 
