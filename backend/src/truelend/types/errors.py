@@ -4,6 +4,8 @@ boundary (see `truelend.config.errors`).
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 
 class DomainError(Exception):
     """Base domain error. `code` is the machine-readable error-envelope code."""
@@ -85,6 +87,37 @@ class PolicyFieldValidationError(ValidationError):
         super().__init__("VALIDATION_ERROR", f"{product_type}.{field}: {message}")
         self.product_type = product_type
         self.field = field
+
+
+class DocumentTypeNotRequiredError(ValidationError):
+    """Uploaded `type` is not on this application's checklist -> 422
+    (E2-S3-AC2)."""
+
+    def __init__(self, document_type: str) -> None:
+        super().__init__(
+            "DOCUMENT_TYPE_NOT_REQUIRED",
+            f"{document_type} is not required for this application.",
+        )
+        self.document_type = document_type
+
+
+class AlreadySubmittedError(ConflictError):
+    """`submit` called a second time (application is not DRAFT) -> 409
+    (E2-S3-AC5)."""
+
+    def __init__(self) -> None:
+        super().__init__("ALREADY_SUBMITTED", "This application has already been submitted.")
+
+
+class MissingDocumentsError(ConflictError):
+    """Not every required document is UPLOADED or later -> 409, naming the
+    missing types; status stays DRAFT (E2-S3-AC3)."""
+
+    def __init__(self, missing: Sequence[str]) -> None:
+        super().__init__(
+            "MISSING_DOCUMENTS", "Upload the documents marked Missing, then submit again."
+        )
+        self.missing = list(missing)
 
 
 class PolicyPathTraversalError(DomainError):

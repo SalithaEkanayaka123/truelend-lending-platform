@@ -58,3 +58,38 @@ def test_get_checklist_returns_empty_list_for_application_with_no_checklist(
     conn = _conn(tmp_path)
     app_id = _application_id(conn)
     assert documents_repo.get_checklist(conn, app_id) == []
+
+
+def test_mark_uploaded_sets_status_filename_and_uploaded_at(tmp_path: Path) -> None:
+    conn = _conn(tmp_path)
+    app_id = _application_id(conn)
+    documents_repo.insert_checklist(conn, app_id, ["ID_PROOF", "SALARY_SLIP"])
+    conn.commit()
+    documents_repo.mark_uploaded(conn, app_id, "ID_PROOF", "id_front.png", _CREATED_AT)
+    conn.commit()
+    checklist = documents_repo.get_checklist(conn, app_id)
+    id_proof = next(item for item in checklist if item.type == "ID_PROOF")
+    assert id_proof.status == "UPLOADED"
+    assert id_proof.filename == "id_front.png"
+    salary_slip = next(item for item in checklist if item.type == "SALARY_SLIP")
+    assert salary_slip.status == "MISSING"
+
+
+def test_mark_uploaded_on_rejected_document_resets_to_uploaded_and_clears_reason(
+    tmp_path: Path,
+) -> None:
+    conn = _conn(tmp_path)
+    app_id = _application_id(conn)
+    documents_repo.insert_checklist(conn, app_id, ["ID_PROOF"])
+    conn.execute(
+        "UPDATE application_documents SET status = 'REJECTED', reason = 'blurry'"
+        " WHERE application_id = ? AND type = 'ID_PROOF'",
+        (app_id,),
+    )
+    conn.commit()
+    documents_repo.mark_uploaded(conn, app_id, "ID_PROOF", "id_front_v2.png", _CREATED_AT)
+    conn.commit()
+    item = documents_repo.get_checklist(conn, app_id)[0]
+    assert item.status == "UPLOADED"
+    assert item.filename == "id_front_v2.png"
+    assert item.reason is None

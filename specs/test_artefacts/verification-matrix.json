@@ -873,13 +873,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s3-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/document_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-030-api",
           "layer": "api",
-          "description": "Verify E2-S3-AC1: it is 201 and that document is UPLOADED with no file content stored"
+          "description": "Verify E2-S3-AC1: it is 201 and that document is UPLOADED with no file content stored",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_documents.py"
         }
       ],
       "obligations": [
@@ -898,13 +903,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s3-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/document_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-031-api",
           "layer": "api",
-          "description": "Verify E2-S3-AC2: it is 422 DOCUMENT_TYPE_NOT_REQUIRED"
+          "description": "Verify E2-S3-AC2: it is 422 DOCUMENT_TYPE_NOT_REQUIRED",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_documents.py"
         }
       ],
       "obligations": [
@@ -922,13 +932,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s3-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/document_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-032-api",
           "layer": "api",
-          "description": "Verify E2-S3-AC3: it is 409 MISSING_DOCUMENTS with missing [\"SALARY_SLIP\"] and status stays DRAFT"
+          "description": "Verify E2-S3-AC3: it is 409 MISSING_DOCUMENTS with missing [\"SALARY_SLIP\"] and status stays DRAFT",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_documents.py"
         }
       ],
       "obligations": [
@@ -947,13 +962,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s3-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/document_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-033-api",
           "layer": "api",
-          "description": "Verify E2-S3-AC4: it is 200, status SUBMITTED, policy_version 1, and submitted_at set"
+          "description": "Verify E2-S3-AC4: it is 200, status SUBMITTED, policy_version 1, and submitted_at set",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_documents.py"
         }
       ],
       "obligations": [
@@ -971,13 +991,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s3-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/document_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-034-api",
           "layer": "api",
-          "description": "Verify E2-S3-AC5: it is 409 ALREADY_SUBMITTED"
+          "description": "Verify E2-S3-AC5: it is 409 ALREADY_SUBMITTED",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_documents.py"
         }
       ],
       "obligations": [

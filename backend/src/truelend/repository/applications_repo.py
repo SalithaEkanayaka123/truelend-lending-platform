@@ -87,6 +87,18 @@ def insert_application(
     return cast(int, cursor.lastrowid)
 
 
+def mark_submitted(
+    conn: sqlite3.Connection, application_id: int, policy_version: int, submitted_at: str
+) -> None:
+    """Set status to SUBMITTED, pin `policy_version`, and record
+    `submitted_at`. Caller commits (SG-8)."""
+    conn.execute(
+        "UPDATE applications SET status = 'SUBMITTED', policy_version = ?,"
+        " submitted_at = ? WHERE id = ?",
+        (policy_version, submitted_at, application_id),
+    )
+
+
 def get_by_id(conn: sqlite3.Connection, application_id: int) -> ApplicationRecord | None:
     """The row for `application_id`, or `None` if it does not exist."""
     row = conn.execute(

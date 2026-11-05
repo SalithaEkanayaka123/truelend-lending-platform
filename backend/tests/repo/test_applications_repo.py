@@ -57,3 +57,29 @@ def test_insert_then_get_round_trips_decimal_money_and_flags(tmp_path: Path) -> 
 def test_get_by_id_returns_none_for_missing_id(tmp_path: Path) -> None:
     conn = _conn(tmp_path)
     assert applications_repo.get_by_id(conn, 999) is None
+
+
+def test_mark_submitted_sets_status_policy_version_and_submitted_at(tmp_path: Path) -> None:
+    conn = _conn(tmp_path)
+    app_id = applications_repo.insert_application(
+        conn,
+        applicant_user_id=1,
+        product_type="PERSONAL",
+        requested_amount=Decimal("200000.00"),
+        tenure_months=24,
+        age_years=30,
+        monthly_income=Decimal("60000.00"),
+        credit_flags=_flags(),
+        pan="ABCDE1234F",
+        aadhaar="123456789012",
+        created_at=_CREATED_AT,
+    )
+    conn.commit()
+    submitted_at = "2026-01-02T00:00:00+00:00"
+    applications_repo.mark_submitted(conn, app_id, 1, submitted_at)
+    conn.commit()
+    record = applications_repo.get_by_id(conn, app_id)
+    assert record is not None
+    assert record.status == "SUBMITTED"
+    assert record.policy_version == 1
+    assert record.submitted_at == submitted_at

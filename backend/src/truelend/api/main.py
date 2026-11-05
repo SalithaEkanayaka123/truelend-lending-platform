@@ -36,7 +36,7 @@ from truelend.config.settings import Settings, get_settings
 from truelend.repository import audit_repo
 from truelend.service import policy_service
 from truelend.types.contracts import AuthPrincipal, Clock
-from truelend.types.errors import ConflictError, DomainError
+from truelend.types.errors import ConflictError, DomainError, MissingDocumentsError
 
 # The seeded ADMIN user is always id 1 (config.db.seed_users inserts it
 # first); the policy catalog's seed version is recorded as created/approved
@@ -72,12 +72,23 @@ def _correlation_id(request: Request) -> str:
     return getattr(request.state, "correlation_id", None) or str(uuid4())
 
 
+def _domain_error_body(exc: DomainError, correlation_id: str) -> dict[str, dict[str, object]]:
+    error_body: dict[str, object] = {
+        "code": exc.code,
+        "message": str(exc),
+        "correlation_id": correlation_id,
+    }
+    if isinstance(exc, MissingDocumentsError):
+        error_body["missing"] = exc.missing
+    return {"error": error_body}
+
+
 def _register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(DomainError)
     async def _domain_error(request: Request, exc: Exception) -> JSONResponse:
         assert isinstance(exc, DomainError)
         status_code = status_for_domain_error(exc)
-        body = error_envelope(exc.code, str(exc), _correlation_id(request))
+        body = _domain_error_body(exc, _correlation_id(request))
         return JSONResponse(status_code=status_code, content=body)
 
     @app.exception_handler(StarletteHTTPException)

@@ -19,6 +19,7 @@ from truelend.service.application_service import (
     apply,
     get_for_owner,
 )
+from truelend.service.document_service import submit_application, upload_document
 from truelend.types.contracts import AuthPrincipal, Clock, CreditFlags
 from truelend.types.enums import ApplicationStatus, DocumentStatus, DocumentType, ProductType
 
@@ -44,6 +45,11 @@ class CreateApplicationRequest(BaseModel):
     credit_flags: CreditFlagsBody
     pan: str = Field(pattern=_PAN_PATTERN)
     aadhaar: str = Field(pattern=_AADHAAR_PATTERN)
+
+
+class UploadDocumentRequest(BaseModel):
+    type: DocumentType
+    filename: str = Field(min_length=1)
 
 
 class DocumentChecklistItemResponse(BaseModel):
@@ -143,3 +149,36 @@ def get_application_route(
     principal: AuthPrincipal = Depends(require_roles("CUSTOMER", "UNDERWRITER", "ADMIN")),
 ) -> ApplicationResponse:
     return _to_response(get_for_owner(conn, application_id, principal))
+
+
+@router.post("/{application_id}/documents", response_model=ApplicationResponse, status_code=201)
+def upload_document_route(
+    application_id: int,
+    body: UploadDocumentRequest,
+    conn: sqlite3.Connection = Depends(get_conn),
+    clock: Clock = Depends(get_clock),
+    principal: AuthPrincipal = Depends(require_roles("CUSTOMER")),
+) -> ApplicationResponse:
+    view = upload_document(
+        conn,
+        clock,
+        application_id,
+        document_type=body.type,
+        filename=body.filename,
+        principal=principal,
+    )
+    return _to_response(view)
+
+
+@router.post("/{application_id}/submit", response_model=ApplicationResponse)
+def submit_application_route(
+    application_id: int,
+    conn: sqlite3.Connection = Depends(get_conn),
+    clock: Clock = Depends(get_clock),
+    settings: Settings = Depends(get_app_settings),
+    principal: AuthPrincipal = Depends(require_roles("CUSTOMER")),
+) -> ApplicationResponse:
+    view = submit_application(
+        conn, clock, application_id, principal=principal, policies_dir=settings.policies_dir
+    )
+    return _to_response(view)

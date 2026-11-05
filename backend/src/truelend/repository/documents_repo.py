@@ -37,6 +37,23 @@ def insert_checklist(
     )
 
 
+def mark_uploaded(
+    conn: sqlite3.Connection,
+    application_id: int,
+    document_type: DocumentType,
+    filename: str,
+    uploaded_at: str,
+) -> None:
+    """Set one checklist row to UPLOADED, record `filename`/`uploaded_at`,
+    and clear any prior rejection reason -- this also resets a REJECTED row
+    back to UPLOADED. Caller commits (SG-8)."""
+    conn.execute(
+        "UPDATE application_documents SET status = 'UPLOADED', filename = ?,"
+        " reason = NULL, uploaded_at = ? WHERE application_id = ? AND type = ?",
+        (filename, uploaded_at, application_id, document_type),
+    )
+
+
 def get_checklist(conn: sqlite3.Connection, application_id: int) -> list[ChecklistItemRecord]:
     """The checklist for one application, ascending by insertion order."""
     rows = conn.execute(
