@@ -12,12 +12,12 @@ import sqlite3
 from typing import Any
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Query, Request
 from pydantic import BaseModel
 
 from truelend.api.deps import get_app_settings, get_clock, get_conn, require_roles
 from truelend.config.settings import Settings
-from truelend.repository.policy_repo import PolicyVersionRecord
+from truelend.repository.policy_repo import PolicyVersionRecord, list_versions
 from truelend.service.policy_service import approve_policy, create_policy, get_policy
 from truelend.types.contracts import AuthPrincipal, Clock
 from truelend.types.enums import DocumentType, PolicyStatus, ProductType
@@ -54,6 +54,13 @@ class PolicyVersionResponse(BaseModel):
     created_at: str
     approved_by: int | None
     approved_at: str | None
+
+
+class PolicyVersionPageResponse(BaseModel):
+    items: list[PolicyVersionResponse]
+    total: int
+    limit: int
+    offset: int
 
 
 def _correlation_id(request: Request) -> str:
@@ -112,6 +119,24 @@ def approve_policy_route(
         conn, clock, version=version, actor=principal, correlation_id=_correlation_id(request)
     )
     return _to_response(record)
+
+
+@router.get("", response_model=PolicyVersionPageResponse)
+def list_policies_route(
+    limit: int = Query(default=20, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
+    conn: sqlite3.Connection = Depends(get_conn),
+    principal: AuthPrincipal = Depends(require_roles("POLICY_EDITOR", "ADMIN")),
+) -> PolicyVersionPageResponse:
+    del principal  # guard only
+    records = list_versions(conn)
+    page = records[offset : offset + limit]
+    return PolicyVersionPageResponse(
+        items=[_to_response(r) for r in page],
+        total=len(records),
+        limit=limit,
+        offset=offset,
+    )
 
 
 @router.get("/{version}", response_model=PolicyVersionResponse)

@@ -140,3 +140,52 @@ def test_mutation_verbs_on_policies_path_are_405(tmp_path: Path) -> None:
         assert client.put("/api/policies/1", headers=headers, json={}).status_code == 405
         assert client.patch("/api/policies/1", headers=headers, json={}).status_code == 405
         assert client.delete("/api/policies/1", headers=headers).status_code == 405
+
+
+def test_list_policies_returns_seeded_version_one(tmp_path: Path) -> None:
+    settings = _settings(tmp_path)
+    with TestClient(create_app(settings, clock=_FixedClock())) as client:
+        headers = _login(client, "policy@example.test")
+        r = client.get("/api/policies", headers=headers)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["total"] == 1
+    assert body["limit"] == 20
+    assert body["offset"] == 0
+    assert body["items"][0]["version"] == 1
+    assert body["items"][0]["status"] == "APPROVED"
+
+
+def test_list_policies_includes_new_draft_after_create(tmp_path: Path) -> None:
+    settings = _settings(tmp_path)
+    with TestClient(create_app(settings, clock=_FixedClock())) as client:
+        headers = _login(client, "policy@example.test")
+        _create_draft(client, headers)
+        r = client.get("/api/policies", headers=headers)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["total"] == 2
+    assert [i["version"] for i in body["items"]] == [1, 2]
+
+
+def test_list_policies_respects_limit_and_offset(tmp_path: Path) -> None:
+    settings = _settings(tmp_path)
+    with TestClient(create_app(settings, clock=_FixedClock())) as client:
+        headers = _login(client, "policy@example.test")
+        _create_draft(client, headers)
+        r = client.get("/api/policies?limit=1&offset=1", headers=headers)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["total"] == 2
+    assert body["limit"] == 1
+    assert body["offset"] == 1
+    assert len(body["items"]) == 1
+    assert body["items"][0]["version"] == 2
+
+
+def test_list_policies_requires_policy_editor_or_admin_role(tmp_path: Path) -> None:
+    settings = _settings(tmp_path)
+    with TestClient(create_app(settings, clock=_FixedClock())) as client:
+        headers = _login(client, "customer1@example.test")
+        r = client.get("/api/policies", headers=headers)
+    assert r.status_code == 403
