@@ -30,6 +30,20 @@ class ConflictError(DomainError):
     """Action is not valid for the entity's current state -> 409."""
 
 
+class TenureOutOfRangeError(ValidationError):
+    """Requested tenure (months) is outside the product's policy range -> 422."""
+
+    def __init__(self, message: str) -> None:
+        super().__init__("TENURE_OUT_OF_RANGE", message)
+
+
+class AmountOutOfRangeError(ValidationError):
+    """Requested amount is outside the product's policy range -> 422."""
+
+    def __init__(self, message: str) -> None:
+        super().__init__("AMOUNT_OUT_OF_RANGE", message)
+
+
 class PolicyViolationException(DomainError):
     """Application fails a policy rule during underwriting. Code is fixed in M1."""
 

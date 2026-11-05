@@ -48,9 +48,18 @@
     "layer": "Service"
   },
   "operations": {
-    "pending": true,
-    "files": [],
-    "text": "- pending"
+    "pending": false,
+    "files": [
+      "specs/test_artefacts/acceptance/test_e4_s1_policies.py",
+      "backend/tests/api/test_policies.py",
+      "backend/src/truelend/repository/policy_repo.py",
+      "backend/src/truelend/service/policy_service.py",
+      "rate/age/tenure/amount/score",
+      "backend/src/truelend/api/policies_router.py",
+      "PUT/PATCH/DELETE",
+      "backend/src/truelend/api/main.py"
+    ],
+    "text": "- Step 1: write acceptance tests first in specs/test_artefacts/acceptance/test_e4_s1_policies.py (AC1-AC6), run record-at-red.js while red; API tests in backend/tests/api/test_policies.py\n- Step 2: extend backend/src/truelend/repository/policy_repo.py (insert DRAFT, approve DRAFT to APPROVED with approved_by, list) and verify the 0002 trigger aborts any other UPDATE and DELETE; add a migration only if the trigger is insufficient\n- Step 3: extend backend/src/truelend/service/policy_service.py (create_policy: copy predecessor file byte-identical to a new policy_vNNNN.json then apply changes, validate rate/age/tenure/amount/score ranges before any file is written; approve_policy; re-verify the approved file SHA-256 on each read or cache by hash; confine file_path inside the policies directory, rejecting traversal)\n- Step 4: add backend/src/truelend/api/policies_router.py (POST /api/policies for POLICY_EDITOR or ADMIN, POST /api/policies/{version}/approve for ADMIN only, no PUT/PATCH/DELETE so 405, audit POLICY_CREATED and POLICY_APPROVED) and register it in backend/src/truelend/api/main.py"
   },
   "safeguards": {
     "ids": [

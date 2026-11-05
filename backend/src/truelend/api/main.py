@@ -20,7 +20,13 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from truelend.api import audit_router, auth_router, health_router, products_router
+from truelend.api import (
+    applications_router,
+    audit_router,
+    auth_router,
+    health_router,
+    products_router,
+)
 from truelend.api.deps import get_clock, get_conn, get_current_principal
 from truelend.api.middleware import CorrelationIdLoggingMiddleware
 from truelend.config.db import get_connection, run_migrations, seed_users
@@ -172,6 +178,7 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
     app.include_router(auth_router.router)
     app.include_router(audit_router.router)
     app.include_router(products_router.router)
+    app.include_router(applications_router.router)
     app.add_middleware(CorrelationIdLoggingMiddleware)
 
     _register_test_boom_route(app, resolved_settings)

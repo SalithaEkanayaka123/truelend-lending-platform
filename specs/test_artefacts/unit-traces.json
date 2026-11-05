@@ -38,5 +38,9 @@
   {
     "matrix_id": "VM-047",
     "path": "backend/tests/unit/test_scoring.py"
+  },
+  {
+    "matrix_id": "VM-027",
+    "path": "backend/tests/unit/test_application_service.py"
   }
 ]

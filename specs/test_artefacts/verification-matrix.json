@@ -709,13 +709,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s2-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/application_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-025-api",
           "layer": "api",
-          "description": "Verify E2-S2-AC1: it is 201 with id 1, status DRAFT, applicant_user_id 4"
+          "description": "Verify E2-S2-AC1: it is 201 with id 1, status DRAFT, applicant_user_id 4",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_applications.py"
         }
       ],
       "obligations": [
@@ -744,13 +749,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s2-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/application_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-026-api",
           "layer": "api",
-          "description": "Verify E2-S2-AC2: required_documents is ID_PROOF, ADDRESS_PROOF, SALARY_SLIP (each MISSING); a VEHICLE application lists 4 documents including VEHICLE_QUOTATION; an EDUCATION one"
+          "description": "Verify E2-S2-AC2: required_documents is ID_PROOF, ADDRESS_PROOF, SALARY_SLIP (each MISSING); a VEHICLE application lists 4 documents including VEHICLE_QUOTATION; an EDUCATION one",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_applications.py"
         }
       ],
       "obligations": [
@@ -770,18 +780,25 @@
         "unit"
       ],
       "implementation_paths": [
-        "e2-s2-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/application_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-027-api",
           "layer": "api",
-          "description": "Verify E2-S2-AC3: it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively"
+          "description": "Verify E2-S2-AC3: it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_applications.py"
         },
         {
           "id": "CHK-VM-027-unit",
           "layer": "unit",
-          "description": "Verify E2-S2-AC3: it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively"
+          "description": "Verify E2-S2-AC3: it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively",
+          "status": "executed",
+          "evidence_path": "backend/tests/unit/test_application_service.py"
         }
       ],
       "obligations": [
@@ -800,13 +817,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s2-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/application_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-028-api",
           "layer": "api",
-          "description": "Verify E2-S2-AC4: it is 422 VALIDATION_ERROR; a valid application returns pan_masked \"******234F\" and aadhaar_masked \"********9012\" and no raw values"
+          "description": "Verify E2-S2-AC4: it is 422 VALIDATION_ERROR; a valid application returns pan_masked \"******234F\" and aadhaar_masked \"********9012\" and no raw values",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_applications.py"
         }
       ],
       "obligations": [
@@ -826,13 +848,18 @@
         "api"
       ],
       "implementation_paths": [
-        "e2-s2-component"
+        "backend/src/truelend/repository/applications_repo.py",
+        "backend/src/truelend/repository/documents_repo.py",
+        "backend/src/truelend/service/application_service.py",
+        "backend/src/truelend/api/applications_router.py"
       ],
       "checks": [
         {
           "id": "CHK-VM-029-api",
           "layer": "api",
-          "description": "Verify E2-S2-AC5: it is 404"
+          "description": "Verify E2-S2-AC5: it is 404",
+          "status": "executed",
+          "evidence_path": "backend/tests/api/test_applications.py"
         }
       ]
     },
