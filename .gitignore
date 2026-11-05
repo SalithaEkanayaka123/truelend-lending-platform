@@ -67,6 +67,19 @@ package-lock.json
 .claude/state/nav-telemetry-summary.json
 .claude/tdd-guard/
 .claude/claude-security-guidance.local.md
+# harness run state and generated reports
+.claude/state/current-*
+.claude/state/red-phase-presnap.json
+.claude/state/risk-envelope.json
+.claude/state/task-envelope.json
+.claude/state/task-envelope-history/
+.claude/state/handoff/
+.claude/state/work-claims/
+specs/reviews/local-regression-gate-verdict.json
+specs/reviews/sensor-checks.json
+specs/reviews/sensor-waivers-verdict.json
+specs/reviews/spdd-sync.json
+
 
 backend/data/
 *.db
