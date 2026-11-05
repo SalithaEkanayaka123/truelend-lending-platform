@@ -32,6 +32,7 @@ from truelend.api.deps import get_clock, get_conn, get_current_principal
 from truelend.api.middleware import CorrelationIdLoggingMiddleware
 from truelend.config.db import get_connection, run_migrations, seed_users
 from truelend.config.errors import CODE_BY_STATUS, error_envelope, status_for_domain_error
+from truelend.config.logging import configure_logging
 from truelend.config.settings import Settings, get_settings
 from truelend.repository import audit_repo
 from truelend.service import policy_service
@@ -182,6 +183,7 @@ def _register_test_audit_route(app: FastAPI, settings: Settings) -> None:
 
 def create_app(settings: Settings | None = None, clock: Clock | None = None) -> FastAPI:
     resolved_settings = settings or get_settings()
+    configure_logging()  # JSON lines to stderr; without this the access/500 log is dropped
     app = FastAPI(lifespan=_lifespan)
     app.state.settings = resolved_settings
     app.state.clock = clock or _SystemClock()

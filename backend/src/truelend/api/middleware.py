@@ -65,4 +65,5 @@ class CorrelationIdLoggingMiddleware(BaseHTTPMiddleware):
             "duration_ms": duration_ms,
             "correlation_id": correlation_id,
         }
-        _logger.info("request_handled", exc_info=exc, extra={"fields": fields})
+        level = logging.ERROR if exc is not None else logging.INFO
+        _logger.log(level, "request_handled", exc_info=exc, extra={"fields": fields})
