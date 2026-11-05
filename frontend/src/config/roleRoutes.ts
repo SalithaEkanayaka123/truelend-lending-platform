@@ -23,6 +23,14 @@ export const LANDING_NAME: Record<Role, string> = {
   POLICY_EDITOR: 'Policy editor',
 };
 
+/** Plain-words role name for badges (ui_spec §2 calls CUSTOMER the Applicant). */
+export const ROLE_LABEL: Record<Role, string> = {
+  CUSTOMER: 'Applicant',
+  UNDERWRITER: 'Underwriter',
+  ADMIN: 'Admin',
+  POLICY_EDITOR: 'Policy editor',
+};
+
 const ROUTE_ROLES: Record<string, readonly Role[] | 'ALL'> = {
   [HOME_PATH]: 'ALL',
   [POLICIES_PATH]: POLICY_ROLES,

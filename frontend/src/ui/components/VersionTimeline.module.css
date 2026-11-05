@@ -1,0 +1,97 @@
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/* The line runs through the dots. */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: var(--space-4);
+  bottom: var(--space-4);
+  width: 2px;
+  background: var(--border);
+}
+
+.item {
+  position: relative;
+  margin: 0 0 var(--space-2);
+  padding: var(--space-3) var(--space-3) var(--space-3) 44px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+}
+
+.item[data-current='true'] {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.dot {
+  position: absolute;
+  left: 9px;
+  top: calc(var(--space-3) + 6px);
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+}
+
+.item[data-current='true'] .dot {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.version {
+  font-size: var(--text-base);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.pillApproved,
+.pillDraft,
+.currentTag {
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.pillApproved {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.pillDraft {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.currentTag {
+  background: var(--navy);
+  color: var(--navy-contrast);
+}
+
+.meta {
+  margin: var(--space-1) 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}

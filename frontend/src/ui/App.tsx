@@ -6,6 +6,7 @@ import { useCallback, type JSX } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { LANDING_NAME, canOpen, landingPath } from '../config/roleRoutes';
+import { displayNameFromEmail } from '../service/displayName';
 import { useAuth, type UseAuthResult } from '../service/useAuth';
 import type { Role } from '../types/auth';
 import { AppErrorBoundary } from './components/AppErrorBoundary';
@@ -56,14 +57,20 @@ function RoleRoutes({ role, home }: { role: Role; home: Home }): JSX.Element {
   );
 }
 
-function SignedIn({ role, onSignOut }: { role: Role; onSignOut: () => void }): JSX.Element {
+interface SignedInProps {
+  role: Role;
+  userName: string;
+  onSignOut: () => void;
+}
+
+function SignedIn({ role, userName, onSignOut }: SignedInProps): JSX.Element {
   const location = useLocation();
   const landing = landingPath(role);
   if (location.pathname === SIGN_IN_PATH) {
     return <Navigate to={intendedPath(location.state) ?? landing} replace />;
   }
   return (
-    <AppShell role={role} onSignOut={onSignOut}>
+    <AppShell role={role} userName={userName} onSignOut={onSignOut}>
       <RoleRoutes role={role} home={{ to: landing, label: LANDING_NAME[role] }} />
     </AppShell>
   );
@@ -81,7 +88,7 @@ export function App(): JSX.Element {
   return (
     <AppErrorBoundary onSignOut={signOut}>
       {auth.token && auth.role ? (
-        <SignedIn role={auth.role} onSignOut={signOut} />
+        <SignedIn role={auth.role} userName={displayNameFromEmail(auth.email)} onSignOut={signOut} />
       ) : (
         <SignedOut auth={auth} />
       )}

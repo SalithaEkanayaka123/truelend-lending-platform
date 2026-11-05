@@ -10,6 +10,16 @@ test.skip(Boolean(process.env.CI), 'screenshots are a local artefact');
 const outDir = path.join(__dirname, 'screenshots');
 
 for (const viewport of VIEWPORTS) {
+  // The policy editor for the roles that can open it (POLICY_EDITOR lands there).
+  test(`screenshot policy editor as ADMIN @${viewport.name}`, async ({ page }) => {
+    await page.setViewportSize(viewport.size);
+    await uiSignIn(page, 'admin@example.test');
+    await page.getByRole('link', { name: 'Policies', exact: true }).first().click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Policy editor' })).toBeVisible();
+    await page.waitForLoadState('networkidle');
+    await page.screenshot({ path: path.join(outDir, `admin-policy-editor-${viewport.name}.png`), fullPage: true });
+  });
+
   for (const r of ROLES) {
     test(`screenshot ${r.role} @${viewport.name}`, async ({ page }) => {
       await page.setViewportSize(viewport.size);

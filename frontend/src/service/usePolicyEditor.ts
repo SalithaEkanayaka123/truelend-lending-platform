@@ -5,11 +5,11 @@
  * backend decides; this hook only mirrors its rules for inline feedback and
  * applies its 422 response when the inline check missed something. */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Dispatch, FormEvent, SetStateAction } from 'react';
 
 import { ApiError } from '../repository/apiClient';
-import { buildChangesPayload } from './policyChanges';
+import { buildChangesPayload, countChanges } from './policyChanges';
 import { hasFieldErrors, validateProductRule, type FieldErrors } from './policyValidation';
 import type { UsePoliciesResult } from './usePolicies';
 import { PRODUCT_TYPES } from '../types/policy';
@@ -57,17 +57,18 @@ function mergeServerError(prev: ServerErrors, parsed: ParsedServerError): Server
 
 function useEditedState(products: ProductRule[]): {
   edited: EditedState;
-  originals: Record<ProductType, ProductRule> | null;
+  originals: EditedState;
   onFieldChange: (productType: ProductType, patch: ProductChangePatch) => void;
+  markSaved: (saved: Record<ProductType, ProductRule>) => void;
 } {
   const [edited, setEdited] = useState<EditedState>(null);
-  const originalsRef = useRef<Record<ProductType, ProductRule> | null>(null);
+  const [originals, setOriginals] = useState<EditedState>(null);
 
   useEffect(() => {
     if (edited !== null || products.length === 0) return;
     const seeded = seedEdited(products);
     if (seeded) {
-      originalsRef.current = seeded;
+      setOriginals(seeded);
       setEdited(seeded);
     }
   }, [products, edited]);
@@ -76,7 +77,7 @@ function useEditedState(products: ProductRule[]): {
     setEdited((prev) => (prev ? { ...prev, [productType]: { ...prev[productType], ...patch } } : prev));
   }, []);
 
-  return { edited, originals: originalsRef.current, onFieldChange };
+  return { edited, originals, onFieldChange, markSaved: setOriginals };
 }
 
 function applySubmitError(
@@ -96,26 +97,30 @@ function applySubmitError(
   setTopError(err instanceof Error ? err.message : 'Failed to save the policy draft.');
 }
 
+/** Resolves `true` when the draft was created, `false` when the save failed. */
 async function submitDraft(
   changes: CreatePolicyRequest['changes'],
   createDraft: UsePoliciesResult['createDraft'],
   setBanner: Dispatch<SetStateAction<string | null>>,
   setServerErrors: Dispatch<SetStateAction<ServerErrors>>,
   setTopError: Dispatch<SetStateAction<string | null>>,
-): Promise<void> {
+): Promise<boolean> {
   try {
     const created = await createDraft(changes);
     setBanner(`Draft v${created.version}`);
     setServerErrors({});
+    return true;
   } catch (err) {
     applySubmitError(err, setServerErrors, setTopError);
+    return false;
   }
 }
 
 function useDraftSubmit(
   edited: EditedState,
-  originals: Record<ProductType, ProductRule> | null,
+  originals: EditedState,
   createDraft: UsePoliciesResult['createDraft'],
+  markSaved: (saved: Record<ProductType, ProductRule>) => void,
 ): {
   submitting: boolean;
   topError: string | null;
@@ -134,11 +139,13 @@ function useDraftSubmit(
       if (!edited || !originals) return;
       setSubmitting(true);
       setTopError(null);
-      submitDraft(buildChangesPayload(originals, edited), createDraft, setBanner, setServerErrors, setTopError).finally(
-        () => setSubmitting(false),
-      );
+      submitDraft(buildChangesPayload(originals, edited), createDraft, setBanner, setServerErrors, setTopError)
+        .then((saved) => {
+          if (saved) markSaved(edited);
+        })
+        .finally(() => setSubmitting(false));
     },
-    [edited, originals, createDraft],
+    [edited, originals, createDraft, markSaved],
   );
 
   return { submitting, topError, banner, serverErrors, onSubmit };
@@ -151,6 +158,8 @@ export interface UsePolicyEditorResult {
   topError: string | null;
   banner: string | null;
   anyInvalid: boolean;
+  /** Editable fields that differ from the last loaded or saved values. */
+  changeCount: number;
   errorsFor: (productType: ProductType) => FieldErrors;
   onFieldChange: (productType: ProductType, patch: ProductChangePatch) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
@@ -158,14 +167,23 @@ export interface UsePolicyEditorResult {
 
 export function usePolicyEditor(policies: UsePoliciesResult): UsePolicyEditorResult {
   const { products, versions, createDraft } = policies;
-  const { edited, originals, onFieldChange } = useEditedState(products);
-  const { submitting, topError, banner, serverErrors, onSubmit } = useDraftSubmit(edited, originals, createDraft);
+  const { edited, originals, onFieldChange, markSaved } = useEditedState(products);
+  const { submitting, topError, banner, serverErrors, onSubmit } = useDraftSubmit(
+    edited,
+    originals,
+    createDraft,
+    markSaved,
+  );
 
   const anyInvalid = useMemo(() => computeAnyInvalid(edited, serverErrors), [edited, serverErrors]);
+  const changeCount = useMemo(
+    () => (edited && originals ? countChanges(originals, edited) : 0),
+    [edited, originals],
+  );
   const errorsFor = useCallback(
     (productType: ProductType): FieldErrors => (edited ? fieldErrorsFor(edited[productType], serverErrors, productType) : {}),
     [edited, serverErrors],
   );
 
-  return { edited, versions, submitting, topError, banner, anyInvalid, errorsFor, onFieldChange, onSubmit };
+  return { edited, versions, submitting, topError, banner, anyInvalid, changeCount, errorsFor, onFieldChange, onSubmit };
 }

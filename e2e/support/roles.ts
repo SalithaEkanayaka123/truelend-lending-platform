@@ -26,6 +26,7 @@ export const ROLES: RoleCase[] = [
 
 export const VIEWPORTS = [
   { name: 'desktop', size: { width: 1280, height: 800 } },
+  { name: 'tablet', size: { width: 768, height: 1024 } },
   { name: 'mobile', size: { width: 375, height: 812 } },
 ] as const;
 

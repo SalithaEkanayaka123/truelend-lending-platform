@@ -28,6 +28,17 @@ export function diffProductRule(original: ProductRule, edited: ProductRule): Pro
   return patch;
 }
 
+/** How many editable fields differ from `originals`, across all products. */
+export function countChanges(
+  originals: Record<ProductType, ProductRule>,
+  edited: Record<ProductType, ProductRule>,
+): number {
+  return (Object.keys(originals) as ProductType[]).reduce(
+    (total, productType) => total + Object.keys(diffProductRule(originals[productType], edited[productType])).length,
+    0,
+  );
+}
+
 /** The `changes` body for `POST /api/policies`: only a product key whose
  * diff is non-empty is included. */
 export function buildChangesPayload(

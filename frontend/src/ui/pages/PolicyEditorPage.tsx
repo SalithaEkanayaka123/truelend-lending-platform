@@ -1,66 +1,58 @@
-/** Policy editor screen (S-M-4): one `ProductThresholdForm` per product,
- * pre-filled from the base version, Save disabled while any product has an
- * inline validation error (E4-S2-AC2), and a "Draft v{N}" confirmation with
- * an updated version list after a successful save (E4-S2-AC3). Approving a
- * version is an ADMIN-only action, out of this screen's scope. */
+/** Policy editor screen (S-M-4): one collapsible `ProductSection` per product
+ * pre-filled from the base version, inline validation, a sticky action bar
+ * (Save is disabled until something changed, E4-S2-AC2), a "Draft v{N}" toast
+ * after a successful save (E4-S2-AC3), and the versions as a timeline.
+ * Approving a version is an ADMIN-only action, out of this screen's scope. */
 
 import type { JSX } from 'react';
 
+import { useDismissable } from '../../service/useDismissable';
 import { usePolicies, type UsePoliciesResult } from '../../service/usePolicies';
 import { usePolicyEditor, type UsePolicyEditorResult } from '../../service/usePolicyEditor';
 import { PRODUCT_TYPES } from '../../types/policy';
-import type { PolicyVersion } from '../../types/policy';
+import { ActionBar } from '../components/ActionBar';
 import { ErrorState } from '../components/ErrorState';
 import { FullPageState } from '../components/FullPageState';
+import { ProductSection } from '../components/ProductSection';
 import { ProductThresholdForm } from '../components/ProductThresholdForm';
+import { Toast } from '../components/Toast';
+import { VersionTimeline } from '../components/VersionTimeline';
 import styles from './PolicyEditorPage.module.css';
 
 function EditorForm({ editor }: { editor: UsePolicyEditorResult }): JSX.Element {
-  if (!editor.edited) return <p aria-busy="true">Loading policy catalog…</p>;
   const edited = editor.edited;
+  if (!edited) return <p aria-busy="true">Loading policy catalog…</p>;
   return (
-    <form onSubmit={editor.onSubmit}>
-      {editor.topError ? <p role="alert">{editor.topError}</p> : null}
-      <div className={styles.productForms}>
-        {PRODUCT_TYPES.map((pt) => (
+    <form className={styles.form} onSubmit={editor.onSubmit}>
+      {PRODUCT_TYPES.map((pt) => (
+        <ProductSection
+          key={pt}
+          productType={pt}
+          rule={edited[pt]}
+          errorCount={Object.keys(editor.errorsFor(pt)).length}
+          defaultOpen={pt === PRODUCT_TYPES[0]}
+        >
           <ProductThresholdForm
-            key={pt}
             productType={pt}
             rule={edited[pt]}
             errors={editor.errorsFor(pt)}
             onChange={(patch) => editor.onFieldChange(pt, patch)}
           />
-        ))}
-      </div>
-      <div className={styles.saveRow}>
-        <button type="submit" className={styles.saveBtn} disabled={editor.anyInvalid || editor.submitting}>
-          {editor.submitting ? 'Saving…' : 'Save'}
-        </button>
-      </div>
-      {editor.banner ? (
-        <p role="status" aria-live="polite" className={styles.banner}>
-          {editor.banner}
-        </p>
-      ) : null}
+        </ProductSection>
+      ))}
+      <ActionBar changeCount={editor.changeCount} invalid={editor.anyInvalid} submitting={editor.submitting} />
     </form>
   );
 }
 
-function VersionList({ versions }: { versions: PolicyVersion[] }): JSX.Element {
-  if (versions.length === 0) {
-    return <p className={styles.emptyState}>No policy versions.</p>;
-  }
+function Toasts({ banner, error }: { banner: string | null; error: string | null }): JSX.Element {
+  const [success, dismissSuccess] = useDismissable(banner);
+  const [failure, dismissFailure] = useDismissable(error);
   return (
-    <ul className={styles.versionList}>
-      {versions.map((version) => (
-        <li key={version.version}>
-          <span>{`v${version.version}`}</span>
-          <span className={version.status === 'APPROVED' ? styles.badgeSuccess : styles.badgeInfo}>
-            {version.status === 'APPROVED' ? 'Approved' : 'Draft'}
-          </span>
-        </li>
-      ))}
-    </ul>
+    <div className={styles.toasts}>
+      {success ? <Toast kind="success" message={success} onDismiss={dismissSuccess} /> : null}
+      {failure ? <Toast kind="error" message={failure} onDismiss={dismissFailure} /> : null}
+    </div>
   );
 }
 
@@ -90,14 +82,22 @@ export function PolicyEditorPage(): JSX.Element {
 
   return (
     <main className={styles.main}>
-      <section className={styles.card} aria-labelledby="editor-heading">
+      <header className={styles.pageHead}>
         <h1 id="editor-heading">Policy editor</h1>
-        <EditorForm editor={editor} />
-      </section>
-      <aside className={styles.card} aria-labelledby="versions-heading">
-        <h2 id="versions-heading">Versions</h2>
-        <VersionList versions={policies.versions} />
-      </aside>
+        <p className={styles.lead}>Adjust underwriting thresholds by product. Saving creates a new draft version.</p>
+      </header>
+      <div className={styles.layout}>
+        <section aria-labelledby="editor-heading" className={styles.editor}>
+          <EditorForm editor={editor} />
+        </section>
+        <aside className={styles.card} aria-labelledby="versions-heading">
+          <h2 id="versions-heading" className={styles.cardTitle}>
+            Versions
+          </h2>
+          <VersionTimeline versions={policies.versions} />
+        </aside>
+      </div>
+      <Toasts banner={editor.banner} error={editor.topError} />
     </main>
   );
 }

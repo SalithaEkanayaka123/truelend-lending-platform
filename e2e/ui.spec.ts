@@ -48,7 +48,8 @@ for (const viewport of VIEWPORTS) {
       await expect(page.getByRole('heading', { name: 'Policy editor' })).toBeVisible();
 
       // A distinct value per viewport so each run is a real change.
-      await page.getByLabel('Min age').first().fill(viewport.name === 'desktop' ? '22' : '23');
+      const value = { desktop: '22', tablet: '23', mobile: '24' }[viewport.name];
+      await page.getByLabel('Min age').first().fill(value);
       await page.getByRole('button', { name: /save/i }).click();
 
       await expect(page.getByRole('status')).toContainText(/draft v\d+/i);
