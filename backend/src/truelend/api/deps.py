@@ -22,10 +22,14 @@ _bearer_scheme = HTTPBearer(auto_error=False)
 
 
 def get_conn(request: Request) -> Iterator[sqlite3.Connection]:
-    """A per-request connection, not the lifespan's shared one: sync route
-    handlers each run in their own thread pool thread, and a `sqlite3.
-    Connection` may only be used on the thread that created it."""
-    conn = get_connection(cast(Settings, request.app.state.settings))
+    """A per-request connection, never shared across requests.
+
+    FastAPI runs this generator, the sync dependants (`get_current_principal`)
+    and the sync route handler on threadpool threads that may differ within
+    one request, so the connection must not be pinned to its creating thread
+    (incident 11). That is safe because the request's steps run strictly one
+    after another, so the connection is never used by two threads at once."""
+    conn = get_connection(cast(Settings, request.app.state.settings), check_same_thread=False)
     try:
         yield conn
     finally:

@@ -106,28 +106,29 @@ Incidents hit while building TrueLend with the Claude Harness Engine on Windows.
   - The middleware logs an unhandled exception at ERROR, with `correlation_id` and the redacted traceback.
   - Frontend: a failed products load shows an inline error card with the reference and Retry. A render crash shows Retry and Sign out. A 403 shows a friendly "No access".
   - No speculative change was made to the policy read path.
+- **Status:** fixed. The thread-affinity root cause was fixed under incident 11.
 - **Evidence:**
   - `backend/tests/api/test_500_traceability.py` (red before the fix, green after).
   - `backend/tests/api/test_products_roles.py`.
   - Frontend tests: `ErrorState`, `AppErrorBoundary`, `App` (per-role routing), `PolicyEditorPage`, `usePolicies`.
   - Next step: search the uvicorn terminal for correlation id `441fe440-6ff7-4add-9890-0517f025271e` and read its `trace` field.
 
-## 11. Playwright e2e suite: concurrent requests return 500 (open, not fixed)
+## 11. Playwright e2e suite: concurrent requests return 500 (fixed)
 
 - **Symptom:** The new `e2e/` suite (real backend, real Vite, chromium, no mocks) is red for every screen that loads the policy editor (landing as POLICY_EDITOR, ADMIN or POLICY_EDITOR opening `/policies`, the editor happy path at both viewports, the existing `policy-editor.spec.ts`, and the POLICY_EDITOR screenshots). The failures are "heading not found", plus console errors and `HTTP 500` on `/api/products` and `/api/policies` with correlation ids. The same specs pass for roles and pages that do not fire those two requests together. 38 passed, 11 failed, 2 flaky (the two flaky tests passed on retry).
 - **Root cause:** the same bug as incident 10. `get_conn` hands a SQLite connection created on one threadpool thread to `get_current_principal`, which may run on another. `loop.spec.ts` has a concurrent variant that reproduces it directly: 8 requests in flight, 193 of 200 calls returned 500 for ADMIN.
 - **Why the sequential loop cannot see it:** `GET /api/products` x200 one at a time passes for all four roles, because one idle worker thread is reused. The concurrent-burst test is the one that catches it.
-- **Fix:** none, by instruction. The failing specs stay red. The fix belongs in `backend/src/truelend/api/deps.py` (create the connection on the thread that uses it, or open it with `check_same_thread=False`), with a regression test that fires concurrent requests.
+- **Fix:** `deps.get_conn` opens its per-request connection with `check_same_thread=False`, through a new keyword on `config.db.get_connection` (default `True`, so the lifespan's connection is unchanged). This is safe because the connection belongs to exactly one request and its steps run one after another: the dependency, `get_current_principal`, the handler, then `close`. Nothing shares it across requests. Transaction and commit behaviour is untouched. The alternative, an async-safe dependency chain, would have meant changing every sync route.
+- **Regression test:** `backend/tests/api/test_concurrent_requests.py` fires 64 authenticated requests from 8 worker threads at `/api/products` and `/api/policies` on the real app. Before the fix it failed on every run (62–63 of 64 returned 500). After the fix it passes.
+- **Verification:** backend 149 passed (ruff and mypy clean), frontend 66 passed (eslint and tsc clean), and `cd e2e && npm run e2e` is 55 passed, 0 failed, 0 flaky, with no `ProgrammingError` in the backend log. That includes the concurrent-burst loop specs, the per-role UI specs, and the policy editor happy path at both viewports.
 - **Suite notes:**
   - The brief says `POLICY_MANAGER`; the role is `POLICY_EDITOR`.
   - Navigating with `page.goto` after sign-in drops the in-memory token by design, so the specs navigate client-side.
   - The suite runs on backend 8100 and Vite 5173 (override with `E2E_FRONTEND_PORT` when a dev server holds 5173) and uses its own temp DB and policy directory, so it never writes into `backend/policies/`.
-  - `frontend/playwright.config.ts` also points at `../e2e`; with `e2e/` now having its own `@playwright/test`, running that config may load two copies of Playwright. Use `cd e2e && npm run e2e`.
+  - `frontend/playwright.config.ts` also pointed at `../e2e` and risked loading two copies of Playwright. It is deleted, along with the frontend's `test:e2e` script and `@playwright/test` devDependency, so only `e2e/` owns Playwright. Use `cd e2e && npm run e2e`.
 - **Evidence:** `e2e/api.spec.ts`, `loop.spec.ts`, `ui.spec.ts`, `screenshots.spec.ts`; run with `cd e2e && npm run e2e`.
 
 ## Open items
-
-- Incidents 10 and 11: fix the cross-thread SQLite connection in `deps.get_conn` / `get_current_principal`, with a concurrent-request regression test, then re-run `cd e2e && npm run e2e` until green.
 
 - The waivers in incidents 4, 8 and 9 expire on 2026-11-30. Revisit them before then.
 - Incidents 3, 4, 6 and 7 are harness-side problems. Only the `.claude/hooks/lib/tdd.js` change for incident 6 is committed.

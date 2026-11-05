@@ -53,9 +53,11 @@ def verify_password(password: str, stored: str) -> bool:
     return derived.hex() == hash_hex
 
 
-def get_connection(settings: Settings) -> sqlite3.Connection:
+def get_connection(settings: Settings, *, check_same_thread: bool = True) -> sqlite3.Connection:
+    """`check_same_thread=False` is for a connection owned by exactly one
+    request, which uses it strictly sequentially (see `api.deps.get_conn`)."""
     settings.db_path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(settings.db_path)
+    conn = sqlite3.connect(settings.db_path, check_same_thread=check_same_thread)
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
