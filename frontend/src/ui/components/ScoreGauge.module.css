@@ -1,0 +1,41 @@
+.gauge {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+}
+
+.gauge svg {
+  width: min(100%, 280px);
+}
+
+.track,
+.value {
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+}
+
+.track {
+  stroke: var(--surface-muted);
+}
+
+.value {
+  stroke: var(--primary);
+}
+
+.tick {
+  stroke: var(--text);
+  stroke-width: 2;
+}
+
+.figure {
+  fill: var(--text);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.caption {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}

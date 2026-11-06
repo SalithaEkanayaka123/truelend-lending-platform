@@ -9,6 +9,9 @@ import type { Role } from '../types/auth';
 import { App } from './App';
 
 vi.mock('../repository/authRepo');
+vi.mock('./pages/ReviewPage', () => ({
+  ReviewPage: () => <h1>Review page</h1>,
+}));
 vi.mock('./pages/PolicyEditorPage', () => ({
   PolicyEditorPage: () => <h1>Policy editor</h1>,
 }));
@@ -62,6 +65,15 @@ describe('post-login routing by role', () => {
     await screen.findByRole('navigation');
     const link = screen.queryByRole('link', { name: 'Policies' });
     expect(Boolean(link)).toBe(visible);
+  });
+
+  it.each<[Role, string]>([
+    ['UNDERWRITER', 'Review page'],
+    ['ADMIN', 'Review page'],
+    ['CUSTOMER', 'No access'],
+  ])('%s opening /applications/6 sees: %s', async (role, heading) => {
+    await signIn(role, '/applications/6');
+    expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeInTheDocument();
   });
 
   it.each<Role>(['CUSTOMER', 'UNDERWRITER'])(

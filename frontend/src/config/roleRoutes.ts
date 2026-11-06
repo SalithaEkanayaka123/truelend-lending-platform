@@ -13,7 +13,13 @@ export interface NavItem {
 const HOME_PATH = '/home';
 const POLICIES_PATH = '/policies';
 
+/** Route pattern for the application review screen (S-U-4). The applicant's
+ * own view (S-A-5) is not built yet, so CUSTOMER has no access to it here. */
+export const APPLICATION_ROUTE = '/applications/:id';
+const APPLICATION_PATH = /^\/applications\/[^/]+$/;
+
 const POLICY_ROLES: readonly Role[] = ['POLICY_EDITOR', 'ADMIN'];
+const REVIEW_ROLES: readonly Role[] = ['UNDERWRITER', 'ADMIN'];
 
 /** Name of each role's landing screen (ui_spec section 2). */
 export const LANDING_NAME: Record<Role, string> = {
@@ -34,6 +40,7 @@ export const ROLE_LABEL: Record<Role, string> = {
 const ROUTE_ROLES: Record<string, readonly Role[] | 'ALL'> = {
   [HOME_PATH]: 'ALL',
   [POLICIES_PATH]: POLICY_ROLES,
+  [APPLICATION_ROUTE]: REVIEW_ROLES,
 };
 
 /** Where a role lands after sign-in. The policy editor's landing screen is
@@ -44,7 +51,7 @@ export function landingPath(role: Role): string {
 }
 
 export function canOpen(role: Role, path: string): boolean {
-  const allowed = ROUTE_ROLES[path];
+  const allowed = ROUTE_ROLES[APPLICATION_PATH.test(path) ? APPLICATION_ROUTE : path];
   if (allowed === undefined) return false;
   return allowed === 'ALL' || allowed.includes(role);
 }

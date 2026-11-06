@@ -5,7 +5,7 @@
 import { useCallback, type JSX } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
-import { LANDING_NAME, canOpen, landingPath } from '../config/roleRoutes';
+import { APPLICATION_ROUTE, LANDING_NAME, canOpen, landingPath } from '../config/roleRoutes';
 import { displayNameFromEmail } from '../service/displayName';
 import { useAuth, type UseAuthResult } from '../service/useAuth';
 import type { Role } from '../types/auth';
@@ -15,6 +15,7 @@ import { FullPageState, type FullPageStateProps } from './components/FullPageSta
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { PolicyEditorPage } from './pages/PolicyEditorPage';
+import { ReviewPage } from './pages/ReviewPage';
 
 const SIGN_IN_PATH = '/sign-in';
 
@@ -38,6 +39,11 @@ function PolicyRoute({ role, home }: { role: Role; home: Home }): JSX.Element {
   return <FullPageState title="No access" message="Your role cannot open this page." home={home} />;
 }
 
+function ReviewRoute({ role, home }: { role: Role; home: Home }): JSX.Element {
+  if (canOpen(role, '/applications/0')) return <ReviewPage role={role} />;
+  return <FullPageState title="No access" message="Your role cannot open this page." home={home} />;
+}
+
 function NotFoundRoute({ home }: { home: Home }): JSX.Element {
   return <FullPageState title="Not found" message="We could not find that page." home={home} />;
 }
@@ -46,12 +52,14 @@ function RoleRoutes({ role, home }: { role: Role; home: Home }): JSX.Element {
   const toLanding = <Navigate to={home.to} replace />;
   const homePage = <HomePage role={role} />;
   const policies = <PolicyRoute role={role} home={home} />;
+  const review = <ReviewRoute role={role} home={home} />;
   const notFound = <NotFoundRoute home={home} />;
   return (
     <Routes>
       <Route path="/" element={toLanding} />
       <Route path="/home" element={homePage} />
       <Route path="/policies" element={policies} />
+      <Route path={APPLICATION_ROUTE} element={review} />
       <Route path="*" element={notFound} />
     </Routes>
   );

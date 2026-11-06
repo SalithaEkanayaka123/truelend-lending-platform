@@ -18,6 +18,11 @@ describe('roleRoutes', () => {
     expect(allowed).toEqual(['POLICY_EDITOR', 'ADMIN']);
   });
 
+  it('lets only UNDERWRITER and ADMIN open an application review', () => {
+    const allowed = ROLES.filter((role) => canOpen(role, '/applications/6'));
+    expect(allowed).toEqual(['UNDERWRITER', 'ADMIN']);
+  });
+
   it('lets every role open /home', () => {
     expect(ROLES.every((role) => canOpen(role, '/home'))).toBe(true);
   });
