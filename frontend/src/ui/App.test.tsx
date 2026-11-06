@@ -54,6 +54,25 @@ async function signIn(role: Role, entry = '/', displayName: string | null = null
   await user.click(screen.getByRole('button', { name: /sign in/i }));
 }
 
+describe('home page and document title', () => {
+  afterEach(() => {
+    cleanup();
+    vi.resetAllMocks();
+  });
+
+  it('welcomes the signed-in customer by display name and titles the tab', async () => {
+    await signIn('CUSTOMER', '/', 'Priya Nair');
+    expect(await screen.findByRole('heading', { level: 1, name: 'Welcome, Priya Nair' })).toBeInTheDocument();
+    expect(document.title).toBe('Home · TrueLend');
+  });
+
+  it('titles the tab for the page being viewed', async () => {
+    await signIn('CUSTOMER', '/apply');
+    expect(await screen.findByRole('heading', { level: 1, name: 'Apply page' })).toBeInTheDocument();
+    expect(document.title).toBe('Apply · TrueLend');
+  });
+});
+
 describe('shell user name', () => {
   afterEach(() => {
     cleanup();
