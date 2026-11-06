@@ -61,6 +61,9 @@ export interface PolicyVersion {
   created_at: string;
   approved_by: number | null;
   approved_at: string | null;
+  /** Display names resolved by the server; absent or null means unknown. */
+  created_by_name?: string | null;
+  approved_by_name?: string | null;
 }
 
 export interface PolicyVersionPage {

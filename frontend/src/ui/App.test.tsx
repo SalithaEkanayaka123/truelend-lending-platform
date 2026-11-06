@@ -35,12 +35,13 @@ const HOME_HEADING: Record<Role, string> = {
   POLICY_EDITOR: 'Policy editor',
 };
 
-async function signIn(role: Role, entry = '/'): Promise<void> {
+async function signIn(role: Role, entry = '/', displayName: string | null = null): Promise<void> {
   vi.mocked(authRepo.login).mockResolvedValue({
     access_token: `token-${role}`,
     token_type: 'bearer',
     expires_in: 1800,
     role,
+    display_name: displayName,
   });
   const user = userEvent.setup();
   render(
@@ -52,6 +53,23 @@ async function signIn(role: Role, entry = '/'): Promise<void> {
   await user.type(screen.getByLabelText(/password/i), 'pw');
   await user.click(screen.getByRole('button', { name: /sign in/i }));
 }
+
+describe('shell user name', () => {
+  afterEach(() => {
+    cleanup();
+    vi.resetAllMocks();
+  });
+
+  it('shows the display name from the login response', async () => {
+    await signIn('CUSTOMER', '/', 'Priya Nair');
+    expect(await screen.findByText('Priya Nair')).toBeInTheDocument();
+  });
+
+  it('falls back to the email name when there is no display name', async () => {
+    await signIn('CUSTOMER');
+    expect(await screen.findByText('Someone')).toBeInTheDocument();
+  });
+});
 
 describe('post-login routing by role', () => {
   afterEach(() => {

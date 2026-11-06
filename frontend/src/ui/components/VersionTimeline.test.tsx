@@ -47,6 +47,16 @@ describe('VersionTimeline', () => {
     expect(within(approved as HTMLElement).getByText(/2026/)).toBeInTheDocument();
   });
 
+  it('shows display names for the creator and approver when the server sends them', () => {
+    const named: PolicyVersion = { ...V1, created_by_name: 'Arjun Mehta', approved_by_name: 'Arjun Mehta' };
+    const draft: PolicyVersion = { ...V2, created_by_name: 'Meera Iyer' };
+    render(<VersionTimeline versions={[draft, named]} />);
+    const [draftItem, approvedItem] = items();
+    expect(within(draftItem as HTMLElement).getByText(/created by meera iyer/i)).toBeInTheDocument();
+    expect(within(approvedItem as HTMLElement).getByText(/approved by arjun mehta/i)).toBeInTheDocument();
+    expect(screen.queryByText(/user #/i)).not.toBeInTheDocument();
+  });
+
   it('highlights the current version: the highest approved one, not a newer draft', () => {
     render(<VersionTimeline versions={[V3, V2, V1]} />);
     const current = items().filter((li) => li.getAttribute('aria-current') === 'true');

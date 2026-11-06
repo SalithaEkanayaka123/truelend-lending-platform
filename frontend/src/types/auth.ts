@@ -5,4 +5,6 @@ export interface LoginResponse {
   token_type: string;
   expires_in: number;
   role: Role;
+  /** Name shown in the app shell; null when the user has none. */
+  display_name?: string | null;
 }

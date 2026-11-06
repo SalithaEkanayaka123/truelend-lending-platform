@@ -1,6 +1,18 @@
 import { describe, expect, it } from 'vitest';
 
-import { displayNameFromEmail } from './displayName';
+import { displayNameFromEmail, resolveDisplayName } from './displayName';
+
+describe('resolveDisplayName', () => {
+  it('prefers the name from the server', () => {
+    expect(resolveDisplayName('Priya Nair', 'customer1@example.test')).toBe('Priya Nair');
+  });
+
+  it('falls back to the email name when the server has none', () => {
+    expect(resolveDisplayName(null, 'customer1@example.test')).toBe('Customer 1');
+    expect(resolveDisplayName(undefined, 'admin@example.test')).toBe('Admin');
+    expect(resolveDisplayName('   ', 'admin@example.test')).toBe('Admin');
+  });
+});
 
 describe('displayNameFromEmail', () => {
   it('title-cases the local part', () => {
