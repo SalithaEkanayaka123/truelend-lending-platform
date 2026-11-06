@@ -8,6 +8,7 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-
 import { APPLICATION_ROUTE, LANDING_NAME, canOpen, landingPath } from '../config/roleRoutes';
 import { resolveDisplayName } from '../service/displayName';
 import { useAuth, type UseAuthResult } from '../service/useAuth';
+import { useDocumentTitle } from '../service/useDocumentTitle';
 import type { Role } from '../types/auth';
 import { AppErrorBoundary } from './components/AppErrorBoundary';
 import { AppShell } from './components/AppShell';
@@ -66,9 +67,9 @@ function NotFoundRoute({ home }: { home: Home }): JSX.Element {
   return <FullPageState title="Not found" message="We could not find that page." home={home} />;
 }
 
-function RoleRoutes({ role, home }: { role: Role; home: Home }): JSX.Element {
+function RoleRoutes({ role, home, userName }: { role: Role; home: Home; userName: string }): JSX.Element {
   const toLanding = <Navigate to={home.to} replace />;
-  const homePage = <HomePage role={role} />;
+  const homePage = <HomePage role={role} userName={userName} />;
   const policies = <PolicyRoute role={role} home={home} />;
   const review = <ReviewRoute role={role} home={home} />;
   const notFound = <NotFoundRoute home={home} />;
@@ -105,13 +106,14 @@ function SignedIn({ role, userName, onSignOut }: SignedInProps): JSX.Element {
   }
   return (
     <AppShell role={role} userName={userName} onSignOut={onSignOut}>
-      <RoleRoutes role={role} home={{ to: landing, label: LANDING_NAME[role] }} />
+      <RoleRoutes role={role} home={{ to: landing, label: LANDING_NAME[role] }} userName={userName} />
     </AppShell>
   );
 }
 
 export function App(): JSX.Element {
   const auth = useAuth();
+  useDocumentTitle();
   const navigate = useNavigate();
   const { logout } = auth;
   const signOut = useCallback((): void => {

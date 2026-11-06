@@ -1,12 +1,12 @@
 /** Role-aware home cards (ui_spec §2, §3). A card links only to a screen that
- * is built and that the role may open; a card for a screen that ships with a
- * later story has `to: null` and is shown as "Coming soon", never as a dead
- * link. */
+ * is built and that the role may open; a card for a screen that has not been
+ * built (Work queue, Audit) has `to: null` and is shown as "Coming soon",
+ * never as a dead link. A card for a built screen is always a real link. */
 
 import type { Role } from '../types/auth';
 import { canOpen } from './roleRoutes';
 
-export type HomeCardId = 'applications' | 'queue' | 'policies' | 'audit';
+export type HomeCardId = 'apply' | 'applications' | 'verification' | 'queue' | 'policies' | 'audit';
 
 export interface HomeCard {
   id: HomeCardId;
@@ -17,15 +17,27 @@ export interface HomeCard {
 }
 
 const BUILT_ROUTE: Partial<Record<HomeCardId, string>> = {
-  policies: '/policies',
+  apply: '/apply',
   applications: '/applications',
+  verification: '/verification',
+  policies: '/policies',
 };
 
 const CARDS: Record<HomeCardId, Omit<HomeCard, 'to'>> = {
+  apply: {
+    id: 'apply',
+    title: 'Apply for a loan',
+    description: 'Start a new application and upload your documents.',
+  },
   applications: {
     id: 'applications',
-    title: 'Applications',
-    description: 'Track loan applications, their status and decisions.',
+    title: 'My applications',
+    description: 'Track your applications, their status and decisions.',
+  },
+  verification: {
+    id: 'verification',
+    title: 'Verification queue',
+    description: 'Verify the documents applicants have uploaded.',
   },
   queue: {
     id: 'queue',
@@ -45,10 +57,18 @@ const CARDS: Record<HomeCardId, Omit<HomeCard, 'to'>> = {
 };
 
 const CARDS_BY_ROLE: Record<Role, readonly HomeCardId[]> = {
-  CUSTOMER: ['applications'],
-  UNDERWRITER: ['queue', 'applications'],
+  CUSTOMER: ['apply', 'applications'],
+  UNDERWRITER: ['verification', 'queue'],
   POLICY_EDITOR: ['policies'],
-  ADMIN: ['applications', 'policies', 'audit'],
+  ADMIN: ['policies', 'audit'],
+};
+
+/** One line under the welcome title: what this role does here. */
+export const HOME_LEAD: Record<Role, string> = {
+  CUSTOMER: 'Apply for a loan, upload your documents and follow each application through to a decision.',
+  UNDERWRITER: 'Verify applicants’ documents and review the applications that need a manual decision.',
+  ADMIN: 'Oversee underwriting policy versions and approve the changes your policy editors propose.',
+  POLICY_EDITOR: 'Edit underwriting thresholds by product and propose new policy versions for approval.',
 };
 
 export function cardsFor(role: Role): HomeCard[] {

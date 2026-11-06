@@ -35,6 +35,14 @@ const HOME_HEADING: Record<Role, string> = {
   POLICY_EDITOR: 'Policy editor',
 };
 
+/** With no display_name from the server the home title uses the email name ("someone@..."). */
+const LANDING_HEADING: Record<Role, string> = {
+  CUSTOMER: 'Welcome, Someone',
+  UNDERWRITER: 'Welcome, Someone',
+  ADMIN: 'Welcome, Someone',
+  POLICY_EDITOR: 'Policy editor',
+};
+
 async function signIn(role: Role, entry = '/', displayName: string | null = null): Promise<void> {
   vi.mocked(authRepo.login).mockResolvedValue({
     access_token: `token-${role}`,
@@ -96,7 +104,7 @@ describe('post-login routing by role', () => {
     vi.resetAllMocks();
   });
 
-  it.each(Object.entries(HOME_HEADING) as [Role, string][])(
+  it.each(Object.entries(LANDING_HEADING) as [Role, string][])(
     'routes %s to its landing screen',
     async (role, heading) => {
       await signIn(role);

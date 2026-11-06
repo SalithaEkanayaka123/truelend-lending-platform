@@ -1,19 +1,20 @@
-/** Role-aware home. The heading is the role's landing name (ui_spec §2); the
- * cards offer what the role can reach. A card links only to a built screen;
+/** Role-aware home. The heading welcomes the user by name and a one-line lead
+ * says what the role does here; the cards offer what the role can reach. A card links only to a built screen;
  * the rest say "Coming soon" instead of linking to a screen that does not
  * exist yet. */
 
 import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 
-import { cardsFor, type HomeCard, type HomeCardId } from '../../config/homeCards';
-import { LANDING_NAME } from '../../config/roleRoutes';
+import { cardsFor, HOME_LEAD, type HomeCard, type HomeCardId } from '../../config/homeCards';
 import type { Role } from '../../types/auth';
 import { ApplicationsIcon, AuditIcon, PolicyIcon, QueueIcon } from '../components/icons';
 import styles from './HomePage.module.css';
 
 const ICONS: Record<HomeCardId, (props: { size?: number }) => JSX.Element> = {
+  apply: ApplicationsIcon,
   applications: ApplicationsIcon,
+  verification: QueueIcon,
   queue: QueueIcon,
   policies: PolicyIcon,
   audit: AuditIcon,
@@ -52,11 +53,11 @@ function HomeCardView({ card }: { card: HomeCard }): JSX.Element {
   );
 }
 
-export function HomePage({ role }: { role: Role }): JSX.Element {
+export function HomePage({ role, userName }: { role: Role; userName: string }): JSX.Element {
   return (
     <main className={styles.main}>
-      <h1 className={styles.title}>{LANDING_NAME[role]}</h1>
-      <p className={styles.lead}>Pick up where you left off.</p>
+      <h1 className={styles.title}>{`Welcome, ${userName}`}</h1>
+      <p className={styles.lead}>{HOME_LEAD[role]}</p>
       <ul className={styles.grid}>
         {cardsFor(role).map((card) => (
           <HomeCardView key={card.id} card={card} />
