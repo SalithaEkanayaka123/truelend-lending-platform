@@ -11,4 +11,4 @@ features_passing: 0 / 0
 coverage: 0%
 learned_rules: 0
 blocked_stories: none
-next_action: Run /brd to start
+next_action: Run /auto

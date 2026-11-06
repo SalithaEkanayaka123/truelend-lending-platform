@@ -87,7 +87,7 @@ function create(root, opts) {
   if (current.state === 'invalid') throw new Error(`current task envelope is invalid: ${current.errors.join('; ')}`);
   if (current.state === 'valid') {
     const lifecycle = lifecycleStatus(root, current.envelope);
-    if (!['completed', 'aborted'].includes(lifecycle.state)) {
+    if (!['completed', 'aborted', 'expired'].includes(lifecycle.state)) {
       throw new Error(`current task ${current.envelope.task_id} is ${lifecycle.state}; complete or abort it before rotation`);
     }
     const archive = path.join(root, '.claude', 'state', 'task-envelope-history', `${current.envelope.integrity.hash}.json`);

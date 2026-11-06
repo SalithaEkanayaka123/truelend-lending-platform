@@ -104,17 +104,29 @@
       "questions_asked": 0,
       "answered": 0,
       "recordedAt": "2026-11-05T10:14:23.441Z"
+    },
+    {
+      "round": 10,
+      "verdict": "approved",
+      "feedback": [],
+      "changes": [
+        "Group E: replaced placeholder implementation_paths (e3-s1-component, e3-s3-component) with the built files; no checks changed or removed"
+      ],
+      "declined": [],
+      "questions_asked": 0,
+      "answered": 0,
+      "recordedAt": "2026-11-06T09:21:45.799Z"
     }
   ],
   "artifacts": [
     {
       "path": "specs/test_artefacts/verification-matrix.json",
-      "sha256": "a1726728286ae977a93866de4dec7f7ed1654402b86856f00c99efa365feb0c1"
+      "sha256": "034133f184b6b941b22875d3b788fb530004e7f9fd9296020696af71301130e7"
     }
   ],
   "low_engagement": true,
   "waived_by": null,
-  "approvedAt": "2026-11-05T10:14:23.441Z",
+  "approvedAt": "2026-11-06T09:21:45.799Z",
   "session_id": "92e6f94f-b990-47be-a8c1-aae0e291843c",
   "in_session": false
 }
