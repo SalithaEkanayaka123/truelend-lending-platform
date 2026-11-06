@@ -6,7 +6,7 @@ export type FieldErrors = Partial<Record<keyof ProductRule, string>>;
 /** Exact fixed-point comparison for 2-decimal money strings: parses into
  * integer minor units (paise) via string manipulation only — never
  * `Number`/`parseFloat` — so comparison can never be a float-rounding bug. */
-function moneyToMinorUnits(value: string): bigint {
+export function moneyToMinorUnits(value: string): bigint {
   const trimmed = value.trim();
   const negative = trimmed.startsWith('-');
   const unsigned = negative ? trimmed.slice(1) : trimmed;
