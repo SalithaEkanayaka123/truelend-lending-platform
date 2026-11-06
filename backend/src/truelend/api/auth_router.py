@@ -9,6 +9,7 @@ from pydantic import BaseModel
 
 from truelend.api.deps import get_app_settings, get_clock, get_conn, get_current_principal
 from truelend.config.settings import Settings
+from truelend.repository.users_repo import display_names
 from truelend.service.auth_service import InvalidCredentialsError, login
 from truelend.types.contracts import AuthPrincipal, Clock
 from truelend.types.enums import Role
@@ -26,12 +27,14 @@ class LoginResponse(BaseModel):
     token_type: str
     expires_in: int
     role: Role
+    display_name: str | None
 
 
 class MeResponse(BaseModel):
     user_id: int
     email: str
     role: Role
+    display_name: str | None
 
 
 @router.post("/login", response_model=LoginResponse)
@@ -50,9 +53,16 @@ def login_route(
         token_type=issued.token_type,
         expires_in=issued.expires_in,
         role=issued.role,
+        display_name=issued.display_name,
     )
 
 
 @router.get("/me", response_model=MeResponse)
-def me_route(principal: AuthPrincipal = Depends(get_current_principal)) -> MeResponse:
-    return MeResponse(user_id=principal.user_id, email=principal.email, role=principal.role)
+def me_route(
+    principal: AuthPrincipal = Depends(get_current_principal),
+    conn: sqlite3.Connection = Depends(get_conn),
+) -> MeResponse:
+    name = display_names(conn, {principal.user_id}).get(principal.user_id)
+    return MeResponse(
+        user_id=principal.user_id, email=principal.email, role=principal.role, display_name=name
+    )

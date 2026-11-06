@@ -18,6 +18,7 @@ from pydantic import BaseModel
 from truelend.api.deps import get_app_settings, get_clock, get_conn, require_roles
 from truelend.config.settings import Settings
 from truelend.repository.policy_repo import PolicyVersionRecord, list_versions
+from truelend.repository.users_repo import display_names
 from truelend.service.policy_service import approve_policy, create_policy, get_policy
 from truelend.types.contracts import AuthPrincipal, Clock
 from truelend.types.enums import DocumentType, PolicyStatus, ProductType
@@ -54,6 +55,8 @@ class PolicyVersionResponse(BaseModel):
     created_at: str
     approved_by: int | None
     approved_at: str | None
+    created_by_name: str | None = None
+    approved_by_name: str | None = None
 
 
 class PolicyVersionPageResponse(BaseModel):
@@ -67,8 +70,19 @@ def _correlation_id(request: Request) -> str:
     return getattr(request.state, "correlation_id", None) or str(uuid4())
 
 
-def _to_response(record: PolicyVersionRecord) -> PolicyVersionResponse:
+def _names(conn: sqlite3.Connection, records: list[PolicyVersionRecord]) -> dict[int, str | None]:
+    ids = {r.created_by for r in records}
+    ids |= {r.approved_by for r in records if r.approved_by is not None}
+    return display_names(conn, ids)
+
+
+def _to_response(
+    record: PolicyVersionRecord, names: dict[int, str | None]
+) -> PolicyVersionResponse:
+    approver = record.approved_by
     return PolicyVersionResponse(
+        created_by_name=names.get(record.created_by),
+        approved_by_name=names.get(approver) if approver is not None else None,
         version=record.version,
         status=record.status,
         base_version=record.base_version,
@@ -104,7 +118,7 @@ def create_policy_route(
         actor=principal,
         correlation_id=_correlation_id(request),
     )
-    return _to_response(record)
+    return _to_response(record, _names(conn, [record]))
 
 
 @router.post("/{version}/approve", response_model=PolicyVersionResponse)
@@ -118,7 +132,7 @@ def approve_policy_route(
     record = approve_policy(
         conn, clock, version=version, actor=principal, correlation_id=_correlation_id(request)
     )
-    return _to_response(record)
+    return _to_response(record, _names(conn, [record]))
 
 
 @router.get("", response_model=PolicyVersionPageResponse)
@@ -131,8 +145,9 @@ def list_policies_route(
     del principal  # guard only
     records = list_versions(conn)
     page = records[offset : offset + limit]
+    names = _names(conn, page)
     return PolicyVersionPageResponse(
-        items=[_to_response(r) for r in page],
+        items=[_to_response(r, names) for r in page],
         total=len(records),
         limit=limit,
         offset=offset,
@@ -146,4 +161,5 @@ def get_policy_route(
     principal: AuthPrincipal = Depends(require_roles("POLICY_EDITOR", "ADMIN")),
 ) -> PolicyVersionResponse:
     del principal  # guard only
-    return _to_response(get_policy(conn, version))
+    record = get_policy(conn, version)
+    return _to_response(record, _names(conn, [record]))

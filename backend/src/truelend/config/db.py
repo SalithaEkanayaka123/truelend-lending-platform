@@ -20,12 +20,12 @@ from truelend.types.errors import MigrationChecksumMismatchError
 # Synthetic demo password shared by all seeded users. Not a real secret.
 DEMO_PASSWORD = "Synthetic-Dev-Pass-1!"
 
-_SEED_USERS: tuple[tuple[str, Role], ...] = (
-    ("admin@example.test", "ADMIN"),
-    ("policy@example.test", "POLICY_EDITOR"),
-    ("underwriter@example.test", "UNDERWRITER"),
-    ("customer1@example.test", "CUSTOMER"),
-    ("customer2@example.test", "CUSTOMER"),
+_SEED_USERS: tuple[tuple[str, Role, str], ...] = (
+    ("admin@example.test", "ADMIN", "Arjun Mehta"),
+    ("policy@example.test", "POLICY_EDITOR", "Meera Iyer"),
+    ("underwriter@example.test", "UNDERWRITER", "Rahul Varma"),
+    ("customer1@example.test", "CUSTOMER", "Priya Nair"),
+    ("customer2@example.test", "CUSTOMER", "Karan Shah"),
 )
 
 _SCRYPT_N = 2**14
@@ -104,9 +104,10 @@ def run_migrations(conn: sqlite3.Connection, migrations_dir: Path) -> None:
 def seed_users(conn: sqlite3.Connection) -> None:
     """Idempotent: safe to call on every startup."""
     password_hash = hash_password(DEMO_PASSWORD)
-    for email, role in _SEED_USERS:
+    for email, role, display_name in _SEED_USERS:
         conn.execute(
-            "INSERT OR IGNORE INTO users (email, role, password_hash) VALUES (?, ?, ?)",
-            (email, role, password_hash),
+            "INSERT OR IGNORE INTO users (email, role, password_hash, display_name)"
+            " VALUES (?, ?, ?, ?)",
+            (email, role, password_hash, display_name),
         )
     conn.commit()

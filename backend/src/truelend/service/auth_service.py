@@ -42,6 +42,7 @@ class IssuedToken:
     token_type: str
     expires_in: int
     role: Role
+    display_name: str | None
 
 
 @dataclass(frozen=True)
@@ -67,6 +68,7 @@ def login(
         token_type="bearer",
         expires_in=settings.jwt_expires_seconds,
         role=user.role,
+        display_name=user.display_name,
     )
 
 
