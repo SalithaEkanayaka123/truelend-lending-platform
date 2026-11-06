@@ -132,6 +132,30 @@ def test_e3_s3_ac4_age_out_of_range_only_code(
     assert body["score"] == 700
 
 
+# tags: E3-S4-AC3
+def test_e3_s4_ac3_income_below_min_persists_auto_reject(
+    make_settings: Callable[[str | None], Settings], clock: Any
+) -> None:
+    settings = make_settings("test")
+    with TestClient(create_app(settings, clock=clock)) as client:
+        customer = _login(client, "customer1@example.test")
+        app_id = _submit(client, customer, age_years=30, monthly_income="24999.99")
+        r = client.post(f"/api/applications/{app_id}/underwrite", headers=customer)
+        assert r.status_code == 200, r.text
+        body = r.json()
+        assert body["decision"] == "AUTO_REJECT"
+        assert body["reason_codes"] == ["INCOME_BELOW_MIN"]
+        assert body["status"] == "REJECTED"
+        stored = client.get(f"/api/applications/{app_id}", headers=customer).json()
+        assert stored["status"] == "REJECTED"
+    conn = sqlite3.connect(settings.db_path)
+    rows = conn.execute(
+        "SELECT decision, reason_codes FROM decisions WHERE application_id = ?", (app_id,)
+    ).fetchall()
+    conn.close()
+    assert rows == [("AUTO_REJECT", json.dumps(["INCOME_BELOW_MIN"]))]
+
+
 def test_underwrite_hides_other_customers_application_as_404(
     client: TestClient, login: Callable[[str], dict[str, str]]
 ) -> None:

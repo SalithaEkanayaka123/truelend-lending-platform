@@ -64,7 +64,8 @@ def test_e3_s3_ac4_age_out_of_range_rejects_with_only_that_code() -> None:
     assert result.reason_codes == ["AGE_OUT_OF_RANGE"]
 
 
-def test_income_below_minimum_raises_policy_violation() -> None:
+# tags: E3-S4-AC1
+def test_e3_s4_ac1_income_below_minimum_raises_policy_violation() -> None:
     with pytest.raises(PolicyViolationException) as exc:
         RuleEngine().evaluate(
             age_years=30, monthly_income=Decimal("24999.99"), score=640, policy=_PERSONAL
@@ -72,7 +73,8 @@ def test_income_below_minimum_raises_policy_violation() -> None:
     assert exc.value.code == "INCOME_BELOW_MIN"
 
 
-def test_income_at_minimum_does_not_raise_and_still_decides() -> None:
+# tags: E3-S4-AC2
+def test_e3_s4_ac2_income_at_minimum_does_not_raise_and_still_decides() -> None:
     result = RuleEngine().evaluate(
         age_years=30, monthly_income=Decimal("25000.00"), score=640, policy=_PERSONAL
     )
