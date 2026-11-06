@@ -67,3 +67,11 @@ export async function assertNoHorizontalScroll(page: Page): Promise<void> {
   }));
   expect(widths.scrollWidth, 'horizontal scroll').toBeLessThanOrEqual(widths.clientWidth);
 }
+
+/** Client-side navigation: the token lives in memory, so page.goto would sign the user out. */
+export async function gotoClient(page: Page, path: string): Promise<void> {
+  await page.evaluate((target) => {
+    window.history.pushState({}, '', target);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  }, path);
+}
