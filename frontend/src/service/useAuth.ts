@@ -6,13 +6,15 @@ import { useCallback, useState } from 'react';
 
 import { ApiError, setAuthToken } from '../repository/apiClient';
 import * as authRepo from '../repository/authRepo';
-import type { Role } from '../types/auth';
+import type { LoginResponse, Role } from '../types/auth';
 
 export interface UseAuthResult {
   token: string | null;
   role: Role | null;
   /** In memory only; used for the shell's display name, never logged. */
   email: string | null;
+  /** Name from the login response (migration 0006); null when unset. */
+  displayName: string | null;
   error: string | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -23,9 +25,19 @@ interface Session {
   token: string | null;
   role: Role | null;
   email: string | null;
+  displayName: string | null;
 }
 
-const SIGNED_OUT: Session = { token: null, role: null, email: null };
+const SIGNED_OUT: Session = { token: null, role: null, email: null, displayName: null };
+
+function sessionFrom(response: LoginResponse, email: string): Session {
+  return {
+    token: response.access_token,
+    role: response.role,
+    email,
+    displayName: response.display_name ?? null,
+  };
+}
 
 export function useAuth(): UseAuthResult {
   const [session, setSession] = useState<Session>(SIGNED_OUT);
@@ -38,7 +50,7 @@ export function useAuth(): UseAuthResult {
     try {
       const response = await authRepo.login(email, password);
       setAuthToken(response.access_token);
-      setSession({ token: response.access_token, role: response.role, email });
+      setSession(sessionFrom(response, email));
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Sign in failed.');
     } finally {

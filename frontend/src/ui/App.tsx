@@ -6,7 +6,7 @@ import { useCallback, type JSX } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { APPLICATION_ROUTE, LANDING_NAME, canOpen, landingPath } from '../config/roleRoutes';
-import { displayNameFromEmail } from '../service/displayName';
+import { resolveDisplayName } from '../service/displayName';
 import { useAuth, type UseAuthResult } from '../service/useAuth';
 import type { Role } from '../types/auth';
 import { AppErrorBoundary } from './components/AppErrorBoundary';
@@ -122,7 +122,7 @@ export function App(): JSX.Element {
   return (
     <AppErrorBoundary onSignOut={signOut}>
       {auth.token && auth.role ? (
-        <SignedIn role={auth.role} userName={displayNameFromEmail(auth.email)} onSignOut={signOut} />
+        <SignedIn role={auth.role} userName={resolveDisplayName(auth.displayName, auth.email)} onSignOut={signOut} />
       ) : (
         <SignedOut auth={auth} />
       )}

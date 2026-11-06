@@ -19,11 +19,18 @@ function currentVersionOf(versions: PolicyVersion[]): number | null {
   return approved.length === 0 ? null : Math.max(...approved);
 }
 
+/** The server-resolved name, else the numeric id (the timeline has no email to fall back to). */
+function who(name: string | null | undefined, id: number): string {
+  const trimmed = (name ?? '').trim();
+  return trimmed === '' ? `user #${id}` : trimmed;
+}
+
 function metaOf(v: PolicyVersion): string {
   if (v.status === 'APPROVED') {
-    return `Approved by user #${v.approved_by ?? v.created_by} · ${formatWhen(v.approved_at ?? v.created_at)}`;
+    const by = who(v.approved_by === null ? v.created_by_name : v.approved_by_name, v.approved_by ?? v.created_by);
+    return `Approved by ${by} · ${formatWhen(v.approved_at ?? v.created_at)}`;
   }
-  return `Created by user #${v.created_by} · ${formatWhen(v.created_at)}`;
+  return `Created by ${who(v.created_by_name, v.created_by)} · ${formatWhen(v.created_at)}`;
 }
 
 function TimelineItem({ version, current }: { version: PolicyVersion; current: boolean }): JSX.Element {

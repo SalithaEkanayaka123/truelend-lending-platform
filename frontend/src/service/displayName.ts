@@ -8,6 +8,15 @@ function titleCase(word: string): string {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
+/** The server's display name when it sent one, else the name derived from the email. */
+export function resolveDisplayName(
+  serverName: string | null | undefined,
+  email: string | null,
+): string {
+  const trimmed = (serverName ?? '').trim();
+  return trimmed === '' ? displayNameFromEmail(email) : trimmed;
+}
+
 export function displayNameFromEmail(email: string | null): string {
   const local = (email ?? '').split('@')[0] ?? '';
   const words = local
