@@ -93,3 +93,76 @@ def test_mark_uploaded_on_rejected_document_resets_to_uploaded_and_clears_reason
     assert item.status == "UPLOADED"
     assert item.filename == "id_front_v2.png"
     assert item.reason is None
+
+
+# -- E3-S1: verification queue and verify/reject -----------------------------
+
+
+def test_list_uploaded_queue_returns_items_oldest_first(tmp_path: Path) -> None:
+    conn = _conn(tmp_path)
+    app_id = _application_id(conn)
+    documents_repo.insert_checklist(conn, app_id, ["ID_PROOF", "ADDRESS_PROOF", "SALARY_SLIP"])
+    conn.commit()
+    documents_repo.mark_uploaded(conn, app_id, "ID_PROOF", "id.png", "2026-01-01T00:00:00+00:00")
+    documents_repo.mark_uploaded(
+        conn, app_id, "ADDRESS_PROOF", "addr.png", "2026-01-01T00:00:01+00:00"
+    )
+    conn.commit()
+    page = documents_repo.list_uploaded_queue(conn, 20, 0)
+    assert [item.type for item in page.items] == ["ID_PROOF", "ADDRESS_PROOF"]
+    assert page.total == 2
+    assert page.items[0].application_id == app_id
+
+
+def test_list_uploaded_queue_excludes_non_uploaded_documents(tmp_path: Path) -> None:
+    conn = _conn(tmp_path)
+    app_id = _application_id(conn)
+    documents_repo.insert_checklist(conn, app_id, ["ID_PROOF", "SALARY_SLIP"])
+    conn.commit()
+    documents_repo.mark_uploaded(conn, app_id, "ID_PROOF", "id.png", _CREATED_AT)
+    conn.commit()
+    page = documents_repo.list_uploaded_queue(conn, 20, 0)
+    assert [item.type for item in page.items] == ["ID_PROOF"]
+
+
+def test_get_by_id_returns_none_for_unknown_document(tmp_path: Path) -> None:
+    conn = _conn(tmp_path)
+    assert documents_repo.get_by_id(conn, 999) is None
+
+
+def test_mark_verified_sets_status_cleared_reason_and_verifier(tmp_path: Path) -> None:
+    conn = _conn(tmp_path)
+    app_id = _application_id(conn)
+    documents_repo.insert_checklist(conn, app_id, ["ID_PROOF"])
+    conn.commit()
+    documents_repo.mark_uploaded(conn, app_id, "ID_PROOF", "id.png", _CREATED_AT)
+    conn.commit()
+    document_id = documents_repo.get_checklist(conn, app_id)[0].document_id
+    documents_repo.mark_verified(conn, document_id, 3, "2026-01-02T00:00:00+00:00")
+    conn.commit()
+    record = documents_repo.get_by_id(conn, document_id)
+    assert record is not None
+    assert record.status == "VERIFIED"
+    assert record.reason is None
+    assert record.verified_by == 3
+    assert record.verified_at == "2026-01-02T00:00:00+00:00"
+
+
+def test_mark_rejected_sets_status_reason_and_verifier(tmp_path: Path) -> None:
+    conn = _conn(tmp_path)
+    app_id = _application_id(conn)
+    documents_repo.insert_checklist(conn, app_id, ["ID_PROOF"])
+    conn.commit()
+    documents_repo.mark_uploaded(conn, app_id, "ID_PROOF", "id.png", _CREATED_AT)
+    conn.commit()
+    document_id = documents_repo.get_checklist(conn, app_id)[0].document_id
+    documents_repo.mark_rejected(
+        conn, document_id, "Image unreadable", 3, "2026-01-02T00:00:00+00:00"
+    )
+    conn.commit()
+    record = documents_repo.get_by_id(conn, document_id)
+    assert record is not None
+    assert record.status == "REJECTED"
+    assert record.reason == "Image unreadable"
+    assert record.verified_by == 3
+    assert record.application_id == app_id

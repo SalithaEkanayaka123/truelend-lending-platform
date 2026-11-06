@@ -120,6 +120,13 @@ class MissingDocumentsError(ConflictError):
         self.missing = list(missing)
 
 
+class AlreadyVerifiedError(ConflictError):
+    """The document is already VERIFIED (final) -> 409 (E3-S1-AC5)."""
+
+    def __init__(self) -> None:
+        super().__init__("ALREADY_VERIFIED", "This document has already been verified.")
+
+
 class PolicyPathTraversalError(DomainError):
     """A `policy_versions` row's `file_path` does not resolve inside the
     configured policies directory (`..` escape or a symlink pointing

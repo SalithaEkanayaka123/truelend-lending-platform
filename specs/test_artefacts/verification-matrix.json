@@ -1089,7 +1089,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s1-component"
+        "backend/src/truelend/service/verification_service.py",
+        "backend/src/truelend/api/documents_router.py",
+        "backend/src/truelend/repository/documents_repo.py"
       ],
       "checks": [
         {
@@ -1121,7 +1123,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s1-component"
+        "backend/src/truelend/service/verification_service.py",
+        "backend/src/truelend/api/documents_router.py",
+        "backend/src/truelend/repository/documents_repo.py"
       ],
       "checks": [
         {
@@ -1154,7 +1158,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s1-component"
+        "backend/src/truelend/service/verification_service.py",
+        "backend/src/truelend/api/documents_router.py",
+        "backend/src/truelend/repository/documents_repo.py"
       ],
       "checks": [
         {
@@ -1174,7 +1180,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s1-component"
+        "backend/src/truelend/service/verification_service.py",
+        "backend/src/truelend/api/documents_router.py",
+        "backend/src/truelend/repository/documents_repo.py"
       ],
       "checks": [
         {
@@ -1194,7 +1202,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s1-component"
+        "backend/src/truelend/service/verification_service.py",
+        "backend/src/truelend/api/documents_router.py",
+        "backend/src/truelend/repository/documents_repo.py"
       ],
       "checks": [
         {

@@ -24,6 +24,7 @@ from truelend.api import (
     applications_router,
     audit_router,
     auth_router,
+    documents_router,
     health_router,
     policies_router,
     products_router,
@@ -194,6 +195,7 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
     app.include_router(products_router.router)
     app.include_router(policies_router.router)
     app.include_router(applications_router.router)
+    app.include_router(documents_router.router)
     app.add_middleware(CorrelationIdLoggingMiddleware)
 
     _register_test_boom_route(app, resolved_settings)
