@@ -189,3 +189,16 @@ def test_list_policies_requires_policy_editor_or_admin_role(tmp_path: Path) -> N
         headers = _login(client, "customer1@example.test")
         r = client.get("/api/policies", headers=headers)
     assert r.status_code == 403
+
+
+def test_policy_versions_carry_creator_and_approver_display_names(tmp_path: Path) -> None:
+    settings = _settings(tmp_path)
+    with TestClient(create_app(settings, clock=_FixedClock())) as client:
+        headers = _login(client, "policy@example.test")
+        _create_draft(client, headers)
+        body = client.get("/api/policies", headers=headers).json()
+    v1, v2 = body["items"]
+    assert v1["created_by_name"] == "Arjun Mehta"
+    assert v1["approved_by_name"] == "Arjun Mehta"
+    assert v2["created_by_name"] == "Meera Iyer"
+    assert v2["approved_by_name"] is None

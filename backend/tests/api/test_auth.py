@@ -33,6 +33,7 @@ def test_e1_s1_ac1_login_returns_token_role_and_lifetime(client: TestClient) -> 
     assert body["role"] == "CUSTOMER"
     assert body["token_type"] == "bearer"
     assert body["access_token"]
+    assert body["display_name"] == "Priya Nair"
 
 
 def test_e1_s1_ac2_wrong_password_uniform_401(client: TestClient) -> None:
@@ -58,7 +59,12 @@ def test_e1_s1_ac3_me_requires_valid_unexpired_token(
     h = login("customer1@example.test")
     ok = client.get("/api/auth/me", headers=h)
     assert ok.status_code == 200
-    assert ok.json() == {"user_id": 4, "email": "customer1@example.test", "role": "CUSTOMER"}
+    assert ok.json() == {
+        "user_id": 4,
+        "email": "customer1@example.test",
+        "role": "CUSTOMER",
+        "display_name": "Priya Nair",
+    }
     clock.advance(1800)
     assert client.get("/api/auth/me", headers=h).status_code == 200
     clock.advance(1)

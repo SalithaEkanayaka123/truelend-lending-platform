@@ -108,3 +108,45 @@ def test_e1_s4_users_audit_schema_seed_and_append_only(
     with pytest.raises(sqlite3.DatabaseError):
         conn.execute("DELETE FROM audit_log")
     assert conn.execute("SELECT action FROM audit_log").fetchone() == ("X",)
+
+
+_DISPLAY_NAMES = {
+    "admin@example.test": "Arjun Mehta",
+    "policy@example.test": "Meera Iyer",
+    "underwriter@example.test": "Rahul Varma",
+    "customer1@example.test": "Priya Nair",
+    "customer2@example.test": "Karan Shah",
+}
+
+
+def test_migration_0006_adds_display_name_and_seeds_demo_names(
+    make_settings: Callable[[str | None], Settings],
+) -> None:
+    settings = make_settings("test")
+    conn = sqlite3.connect(settings.db_path)
+    run_migrations(conn, settings.migrations_dir)
+    seed_users(conn)
+    seed_users(conn)
+    rows = dict(conn.execute("SELECT email, display_name FROM users").fetchall())
+    assert rows == _DISPLAY_NAMES
+
+
+def test_migration_0006_backfills_users_that_existed_before_it(
+    make_settings: Callable[[str | None], Settings], tmp_path: Path
+) -> None:
+    settings = make_settings("test")
+    early = tmp_path / "early"
+    early.mkdir()
+    for f in sorted(settings.migrations_dir.glob("*.sql")):
+        if f.name < "0006":
+            (early / f.name).write_text(f.read_text(encoding="utf-8"), encoding="utf-8")
+    conn = sqlite3.connect(settings.db_path)
+    run_migrations(conn, early)
+    conn.execute(
+        "INSERT INTO users (email, role, password_hash) VALUES ('customer1@example.test',"
+        " 'CUSTOMER', 'x')"
+    )
+    conn.commit()
+    run_migrations(conn, settings.migrations_dir)
+    name = conn.execute("SELECT display_name FROM users").fetchone()[0]
+    assert name == "Priya Nair"
