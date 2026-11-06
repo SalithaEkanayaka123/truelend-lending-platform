@@ -12,15 +12,25 @@ import type { Role } from '../types/auth';
 import { AppErrorBoundary } from './components/AppErrorBoundary';
 import { AppShell } from './components/AppShell';
 import { FullPageState, type FullPageStateProps } from './components/FullPageState';
+import { ApplyPage } from './pages/ApplyPage';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
+import { MyApplicationsPage } from './pages/MyApplicationsPage';
 import { PolicyEditorPage } from './pages/PolicyEditorPage';
 import { ReviewPage } from './pages/ReviewPage';
 import { TrackPage } from './pages/TrackPage';
+import { VerificationPage } from './pages/VerificationPage';
 
 const SIGN_IN_PATH = '/sign-in';
 
 type Home = NonNullable<FullPageStateProps['home']>;
+
+interface GuardedProps {
+  role: Role;
+  path: string;
+  home: Home;
+  children: JSX.Element;
+}
 
 function intendedPath(state: unknown): string | null {
   const from = (state as { from?: unknown } | null)?.from;
@@ -37,6 +47,11 @@ function SignedOut({ auth }: { auth: UseAuthResult }): JSX.Element {
 
 function PolicyRoute({ role, home }: { role: Role; home: Home }): JSX.Element {
   if (canOpen(role, '/policies')) return <PolicyEditorPage />;
+  return <FullPageState title="No access" message="Your role cannot open this page." home={home} />;
+}
+
+function GuardedRoute({ role, path, home, children }: GuardedProps): JSX.Element {
+  if (canOpen(role, path)) return children;
   return <FullPageState title="No access" message="Your role cannot open this page." home={home} />;
 }
 
@@ -57,11 +72,19 @@ function RoleRoutes({ role, home }: { role: Role; home: Home }): JSX.Element {
   const policies = <PolicyRoute role={role} home={home} />;
   const review = <ReviewRoute role={role} home={home} />;
   const notFound = <NotFoundRoute home={home} />;
+  const guard = (path: string, page: JSX.Element): JSX.Element => (
+    <GuardedRoute role={role} path={path} home={home}>
+      {page}
+    </GuardedRoute>
+  );
   return (
     <Routes>
       <Route path="/" element={toLanding} />
       <Route path="/home" element={homePage} />
       <Route path="/policies" element={policies} />
+      <Route path="/apply" element={guard('/apply', <ApplyPage />)} />
+      <Route path="/applications" element={guard('/applications', <MyApplicationsPage />)} />
+      <Route path="/verification" element={guard('/verification', <VerificationPage />)} />
       <Route path={APPLICATION_ROUTE} element={review} />
       <Route path="*" element={notFound} />
     </Routes>

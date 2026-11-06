@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -11,6 +11,15 @@ import { App } from './App';
 vi.mock('../repository/authRepo');
 vi.mock('./pages/ReviewPage', () => ({
   ReviewPage: () => <h1>Review page</h1>,
+}));
+vi.mock('./pages/ApplyPage', () => ({
+  ApplyPage: () => <h1>Apply page</h1>,
+}));
+vi.mock('./pages/MyApplicationsPage', () => ({
+  MyApplicationsPage: () => <h1>Applications list</h1>,
+}));
+vi.mock('./pages/VerificationPage', () => ({
+  VerificationPage: () => <h1>Verification page</h1>,
 }));
 vi.mock('./pages/TrackPage', () => ({
   TrackPage: () => <h1>Tracker page</h1>,
@@ -89,6 +98,35 @@ describe('post-login routing by role', () => {
       expect(screen.queryByText(/403|forbidden/i)).not.toBeInTheDocument();
     },
   );
+
+  it.each<[Role, string, string]>([
+    ['CUSTOMER', '/apply', 'Apply page'],
+    ['CUSTOMER', '/applications', 'Applications list'],
+    ['UNDERWRITER', '/verification', 'Verification page'],
+  ])('%s opening %s sees: %s', async (role, path, heading) => {
+    await signIn(role, path);
+    expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeInTheDocument();
+  });
+
+  it.each<[Role, string]>([
+    ['UNDERWRITER', '/apply'],
+    ['ADMIN', '/applications'],
+    ['CUSTOMER', '/verification'],
+    ['POLICY_EDITOR', '/applications/6'],
+  ])('%s opening %s gets the No access page', async (role, path) => {
+    await signIn(role, path);
+    expect(await screen.findByRole('heading', { name: /no access/i })).toBeInTheDocument();
+  });
+
+  it.each<[Role, string[]]>([
+    ['CUSTOMER', ['Home', 'My applications', 'Apply']],
+    ['UNDERWRITER', ['Home', 'Verification']],
+  ])('%s sees nav links %j', async (role, labels) => {
+    await signIn(role);
+    const nav = await screen.findByRole('navigation');
+    const names = within(nav).getAllByRole('link').map((a) => a.textContent);
+    expect(names).toEqual(labels);
+  });
 
   it('returns the user to the route they asked for after signing in', async () => {
     await signIn('ADMIN', '/policies');

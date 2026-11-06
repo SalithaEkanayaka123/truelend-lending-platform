@@ -16,7 +16,10 @@ export interface HomeCard {
   to: string | null;
 }
 
-const BUILT_ROUTE: Partial<Record<HomeCardId, string>> = { policies: '/policies' };
+const BUILT_ROUTE: Partial<Record<HomeCardId, string>> = {
+  policies: '/policies',
+  applications: '/applications',
+};
 
 const CARDS: Record<HomeCardId, Omit<HomeCard, 'to'>> = {
   applications: {

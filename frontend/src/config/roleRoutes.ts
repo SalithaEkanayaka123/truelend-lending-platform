@@ -12,14 +12,19 @@ export interface NavItem {
 
 const HOME_PATH = '/home';
 const POLICIES_PATH = '/policies';
+const APPLY_PATH = '/apply';
+const APPLICATIONS_PATH = '/applications';
+const VERIFICATION_PATH = '/verification';
 
-/** Route pattern for the application review screen (S-U-4). The applicant's
- * own view (S-A-5) is not built yet, so CUSTOMER has no access to it here. */
+/** Route pattern for an application: the review screen (S-U-4) for
+ * UNDERWRITER and ADMIN, the applicant's tracker (S-A-5) for CUSTOMER. */
 export const APPLICATION_ROUTE = '/applications/:id';
 const APPLICATION_PATH = /^\/applications\/[^/]+$/;
 
 const POLICY_ROLES: readonly Role[] = ['POLICY_EDITOR', 'ADMIN'];
-const REVIEW_ROLES: readonly Role[] = ['UNDERWRITER', 'ADMIN'];
+const CUSTOMER_ONLY: readonly Role[] = ['CUSTOMER'];
+const APPLICATION_ROLES: readonly Role[] = ['CUSTOMER', 'UNDERWRITER', 'ADMIN'];
+const VERIFIER_ROLES: readonly Role[] = ['UNDERWRITER'];
 
 /** Name of each role's landing screen (ui_spec section 2). */
 export const LANDING_NAME: Record<Role, string> = {
@@ -40,7 +45,10 @@ export const ROLE_LABEL: Record<Role, string> = {
 const ROUTE_ROLES: Record<string, readonly Role[] | 'ALL'> = {
   [HOME_PATH]: 'ALL',
   [POLICIES_PATH]: POLICY_ROLES,
-  [APPLICATION_ROUTE]: REVIEW_ROLES,
+  [APPLY_PATH]: CUSTOMER_ONLY,
+  [APPLICATIONS_PATH]: CUSTOMER_ONLY,
+  [APPLICATION_ROUTE]: APPLICATION_ROLES,
+  [VERIFICATION_PATH]: VERIFIER_ROLES,
 };
 
 /** Where a role lands after sign-in. The policy editor's landing screen is
@@ -58,6 +66,11 @@ export function canOpen(role: Role, path: string): boolean {
 
 export function navFor(role: Role): NavItem[] {
   const items: NavItem[] = [{ label: 'Home', to: HOME_PATH }];
-  if (canOpen(role, POLICIES_PATH)) items.push({ label: 'Policies', to: POLICIES_PATH });
-  return items;
+  const candidates: NavItem[] = [
+    { label: 'My applications', to: APPLICATIONS_PATH },
+    { label: 'Apply', to: APPLY_PATH },
+    { label: 'Verification', to: VERIFICATION_PATH },
+    { label: 'Policies', to: POLICIES_PATH },
+  ];
+  return [...items, ...candidates.filter((item) => canOpen(role, item.to))];
 }

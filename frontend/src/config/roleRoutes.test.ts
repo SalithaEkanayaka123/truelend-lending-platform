@@ -18,9 +18,18 @@ describe('roleRoutes', () => {
     expect(allowed).toEqual(['POLICY_EDITOR', 'ADMIN']);
   });
 
-  it('lets only UNDERWRITER and ADMIN open an application review', () => {
+  it('lets CUSTOMER, UNDERWRITER and ADMIN open an application', () => {
     const allowed = ROLES.filter((role) => canOpen(role, '/applications/6'));
-    expect(allowed).toEqual(['UNDERWRITER', 'ADMIN']);
+    expect(allowed).toEqual(['CUSTOMER', 'UNDERWRITER', 'ADMIN']);
+  });
+
+  it('lets only CUSTOMER open /apply and /applications', () => {
+    expect(ROLES.filter((role) => canOpen(role, '/apply'))).toEqual(['CUSTOMER']);
+    expect(ROLES.filter((role) => canOpen(role, '/applications'))).toEqual(['CUSTOMER']);
+  });
+
+  it('lets only UNDERWRITER open /verification', () => {
+    expect(ROLES.filter((role) => canOpen(role, '/verification'))).toEqual(['UNDERWRITER']);
   });
 
   it('lets every role open /home', () => {
@@ -33,8 +42,11 @@ describe('roleRoutes', () => {
     }
   });
 
-  it('shows Policies in the nav only for roles that can open it', () => {
-    expect(navFor('CUSTOMER').map((i) => i.label)).toEqual(['Home']);
-    expect(navFor('ADMIN').map((i) => i.label)).toEqual(['Home', 'Policies']);
+  it('shows each role only the nav links it can open', () => {
+    const labels = (role: Role): string[] => navFor(role).map((i) => i.label);
+    expect(labels('CUSTOMER')).toEqual(['Home', 'My applications', 'Apply']);
+    expect(labels('UNDERWRITER')).toEqual(['Home', 'Verification']);
+    expect(labels('ADMIN')).toEqual(['Home', 'Policies']);
+    expect(labels('POLICY_EDITOR')).toEqual(['Home', 'Policies']);
   });
 });

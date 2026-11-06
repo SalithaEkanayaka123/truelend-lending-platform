@@ -15,10 +15,11 @@ describe('cardsFor', () => {
   it('links only to screens that are built and that the role can open', () => {
     expect(cardsFor('ADMIN').find((c) => c.id === 'policies')?.to).toBe('/policies');
     expect(cardsFor('POLICY_EDITOR').find((c) => c.id === 'policies')?.to).toBe('/policies');
+    expect(cardsFor('CUSTOMER').find((c) => c.id === 'applications')?.to).toBe('/applications');
   });
 
   it('marks cards for screens that do not exist yet as not linked', () => {
-    for (const role of ['CUSTOMER', 'UNDERWRITER', 'ADMIN'] as const) {
+    for (const role of ['UNDERWRITER', 'ADMIN'] as const) {
       const unbuilt = cardsFor(role).filter((c) => c.id !== 'policies');
       expect(unbuilt.every((c) => c.to === null)).toBe(true);
     }
