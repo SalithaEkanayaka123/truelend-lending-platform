@@ -120,6 +120,13 @@ def test_e2_s2_ac5_other_customer_gets_404(
     other_headers = login("customer2@example.test")
     r = client.get("/api/applications/1", headers=other_headers)
     assert r.status_code == 404
+    missing = client.get("/api/applications/9999", headers=other_headers)
+    # indistinguishable from a missing application (apart from the per-request correlation id)
+    hidden, absent = r.json()["error"], missing.json()["error"]
+    assert {**hidden, "correlation_id": ""} == {**absent, "correlation_id": ""}
+    assert r.json()["error"]["code"] == "NOT_FOUND"
+    for leaked in ("ABCDE1234F", "******234F", "requested_amount", "monthly_income"):
+        assert leaked not in r.text
 
 
 def test_e2_s2_owner_can_read_their_own_application(
