@@ -1,0 +1,20 @@
+{
+  "captured_at": "2026-11-06T17:21:55.622Z",
+  "base": "http://localhost:8000",
+  "endpoints": {
+    "/health": {
+      "p50": 1.77,
+      "p95": 2.96,
+      "p99": 3.32,
+      "samples": 20,
+      "method": "GET"
+    },
+    "/openapi.json": {
+      "p50": 1.67,
+      "p95": 3.22,
+      "p99": 3.53,
+      "samples": 20,
+      "method": "GET"
+    }
+  }
+}
