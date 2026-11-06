@@ -131,6 +131,14 @@ def get_catalog_for_version(
     ]
 
 
+def get_decision_vocabulary(
+    conn: sqlite3.Connection, policies_dir: Path, version: int
+) -> tuple[dict[str, str], list[str]]:
+    """(reason-code messages, override codes) of a checksum-verified version (E3-S5)."""
+    content = _read_verified_json(policies_dir, get_policy(conn, version))
+    return content.get("reason_codes", {}), content.get("override_reason_codes", [])
+
+
 def get_policy(conn: sqlite3.Connection, version: int) -> policy_repo.PolicyVersionRecord:
     """A policy version's metadata; `NotFoundError` if unknown (E4-S1)."""
     record = policy_repo.get_by_version(conn, version)

@@ -105,6 +105,21 @@ def mark_decided(conn: sqlite3.Connection, application_id: int, status: Applicat
     conn.execute("UPDATE applications SET status = ? WHERE id = ?", (status, application_id))
 
 
+def transition_status(
+    conn: sqlite3.Connection,
+    application_id: int,
+    from_status: ApplicationStatus,
+    to_status: ApplicationStatus,
+) -> bool:
+    """Conditional status change; `False` when the row is not in `from_status`
+    (a concurrent resolution got there first). Caller commits (E3-S5)."""
+    cursor = conn.execute(
+        "UPDATE applications SET status = ? WHERE id = ? AND status = ?",
+        (to_status, application_id, from_status),
+    )
+    return cursor.rowcount == 1
+
+
 def get_by_id(conn: sqlite3.Connection, application_id: int) -> ApplicationRecord | None:
     """The row for `application_id`, or `None` if it does not exist."""
     row = conn.execute(

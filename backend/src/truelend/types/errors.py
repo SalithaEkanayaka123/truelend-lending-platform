@@ -153,3 +153,24 @@ class PolicyPathTraversalError(DomainError):
             f"Policy file path '{file_path}' does not resolve inside the policies directory.",
         )
         self.file_path = file_path
+
+
+class NotInReviewError(ConflictError):
+    """`review` called on an application that is not in MANUAL_REVIEW -> 409 (E3-S5)."""
+
+    def __init__(self) -> None:
+        super().__init__("NOT_IN_REVIEW", "This application is not awaiting manual review.")
+
+
+class NotOverridableError(ConflictError):
+    """`override` called on anything but an unresolved AUTO_REJECT -> 409 (E3-S5)."""
+
+    def __init__(self) -> None:
+        super().__init__("NOT_OVERRIDABLE", "Only an auto-rejected application can be overridden.")
+
+
+class NotDecidedError(NotFoundError):
+    """No decision exists yet for the application -> 404 (E3-S5)."""
+
+    def __init__(self) -> None:
+        super().__init__("NOT_DECIDED", "This application has not been underwritten yet.")

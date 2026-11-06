@@ -24,6 +24,10 @@ class AuditEntryResponse(BaseModel):
     entity_type: str
     entity_id: int
     correlation_id: str
+    reason_code: str | None = None
+    comment: str | None = None
+    before_status: str | None = None
+    after_status: str | None = None
 
 
 class AuditEntryPageResponse(BaseModel):
@@ -45,6 +49,10 @@ def _to_response(page: AuditEntryPage) -> AuditEntryPageResponse:
                 entity_type=item.entity_type,
                 entity_id=item.entity_id,
                 correlation_id=item.correlation_id,
+                reason_code=item.reason_code,
+                comment=item.comment,
+                before_status=item.before_status,
+                after_status=item.after_status,
             )
             for item in page.items
         ],

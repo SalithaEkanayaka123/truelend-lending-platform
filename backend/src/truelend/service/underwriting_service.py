@@ -175,10 +175,10 @@ def _persist(
     applications_repo.mark_decided(conn, application_id, new_status)
     conn.commit()
     if new_status == "APPROVED":
-        _publish_application_approved(application_id)
+        publish_application_approved(application_id)
 
 
-def _publish_application_approved(application_id: int) -> None:
+def publish_application_approved(application_id: int) -> None:
     """In-process domain event, FA-F3.10: M1 has no subscriber, so the one
     observable effect is this structured log line (captured by tests via
     the existing `log_buffer`/`configure_logging` seam, same as access

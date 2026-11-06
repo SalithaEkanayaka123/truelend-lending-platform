@@ -16,7 +16,8 @@ from truelend.types.contracts import AuthPrincipal, Clock
 from truelend.types.enums import Role
 
 _COLUMNS = (
-    "id, occurred_at, actor_user_id, actor_role, action, entity_type, entity_id, correlation_id"
+    "id, occurred_at, actor_user_id, actor_role, action, entity_type, entity_id,"
+    " correlation_id, reason_code, comment, before_status, after_status"
 )
 
 
@@ -32,6 +33,10 @@ class AuditEntryRecord:
     entity_type: str
     entity_id: int
     correlation_id: str
+    reason_code: str | None = None
+    comment: str | None = None
+    before_status: str | None = None
+    after_status: str | None = None
 
 
 @dataclass(frozen=True)
@@ -53,13 +58,21 @@ def insert(
     entity_type: str,
     entity_id: int,
     correlation_id: str,
+    reason_code: str | None = None,
+    comment: str | None = None,
+    before_status: str | None = None,
+    after_status: str | None = None,
 ) -> None:
     """Append one row on `conn`'s current transaction. Does not commit."""
     occurred_at = clock.now().astimezone(UTC).isoformat()
     conn.execute(
         "INSERT INTO audit_log (occurred_at, actor_user_id, actor_role, action,"
-        " entity_type, entity_id, correlation_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        (occurred_at, actor.user_id, actor.role, action, entity_type, entity_id, correlation_id),
+        " entity_type, entity_id, correlation_id, reason_code, comment, before_status,"
+        " after_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        (
+            occurred_at, actor.user_id, actor.role, action, entity_type, entity_id,
+            correlation_id, reason_code, comment, before_status, after_status,
+        ),
     )
 
 
@@ -102,17 +115,18 @@ def _filters(
     return where, params
 
 
-def _to_record(row: tuple[int, str, int, str, str, str, int, str]) -> AuditEntryRecord:
-    rid, occurred_at, actor_user_id, actor_role, action, entity_type, entity_id, correlation_id = (
-        row
-    )
+def _to_record(row: tuple[object, ...]) -> AuditEntryRecord:
     return AuditEntryRecord(
-        id=rid,
-        occurred_at=occurred_at,
-        actor_user_id=actor_user_id,
-        actor_role=cast(Role, actor_role),
-        action=action,
-        entity_type=entity_type,
-        entity_id=entity_id,
-        correlation_id=correlation_id,
+        id=cast(int, row[0]),
+        occurred_at=cast(str, row[1]),
+        actor_user_id=cast(int, row[2]),
+        actor_role=cast(Role, row[3]),
+        action=cast(str, row[4]),
+        entity_type=cast(str, row[5]),
+        entity_id=cast(int, row[6]),
+        correlation_id=cast(str, row[7]),
+        reason_code=cast("str | None", row[8]),
+        comment=cast("str | None", row[9]),
+        before_status=cast("str | None", row[10]),
+        after_status=cast("str | None", row[11]),
     )
