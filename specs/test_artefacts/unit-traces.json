@@ -44,6 +44,14 @@
     "path": "backend/tests/unit/test_application_service.py"
   },
   {
+    "matrix_id": "VM-048",
+    "path": "backend/tests/unit/test_rule_engine.py"
+  },
+  {
+    "matrix_id": "VM-051",
+    "path": "backend/tests/unit/test_rule_engine.py"
+  },
+  {
     "matrix_id": "VM-071",
     "path": "e2e/policy-editor.spec.ts"
   },

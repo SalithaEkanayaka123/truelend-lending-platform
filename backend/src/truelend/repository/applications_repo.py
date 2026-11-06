@@ -99,6 +99,12 @@ def mark_submitted(
     )
 
 
+def mark_decided(conn: sqlite3.Connection, application_id: int, status: ApplicationStatus) -> None:
+    """Map the underwriting decision onto `applications.status`
+    (APPROVED/REJECTED/MANUAL_REVIEW). Caller commits (E3-S3)."""
+    conn.execute("UPDATE applications SET status = ? WHERE id = ?", (status, application_id))
+
+
 def get_by_id(conn: sqlite3.Connection, application_id: int) -> ApplicationRecord | None:
     """The row for `application_id`, or `None` if it does not exist."""
     row = conn.execute(

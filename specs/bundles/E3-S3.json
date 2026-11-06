@@ -45,9 +45,22 @@
     "layer": "Service"
   },
   "operations": {
-    "pending": true,
-    "files": [],
-    "text": "- pending"
+    "pending": false,
+    "files": [
+      "backend/tests/unit/test_rule_engine.py",
+      "backend/tests/repo/test_decisions_repo.py",
+      "backend/tests/api/test_underwrite.py",
+      "specs/test_artefacts/acceptance/test_e3_s3_underwriting.py",
+      "backend/migrations/0004_decisions_and_resolutions.sql",
+      "backend/src/truelend/repository/decisions_repo.py",
+      "backend/src/truelend/service/underwriting_service.py",
+      "NOT_SUBMITTED/ALREADY_DECIDED",
+      "NotSubmittedError/AlreadyDecidedError",
+      "backend/src/truelend/types/errors.py",
+      "backend/src/truelend/api/applications_router.py",
+      "CUSTOMER/UNDERWRITER/ADMIN"
+    ],
+    "text": "- Step 1: write failing tests first -- backend/tests/unit/test_rule_engine.py (RuleEngine branch coverage), backend/tests/repo/test_decisions_repo.py (insert-only decisions repo), backend/tests/api/test_underwrite.py (AC1-AC6 via the full API), and specs/test_artefacts/acceptance/test_e3_s3_underwriting.py (self-contained AC1-AC6)\n- Step 2: add backend/migrations/0004_decisions_and_resolutions.sql (append-only decisions + resolutions tables with RAISE(ABORT) triggers) and backend/src/truelend/repository/decisions_repo.py (insert/get_by_application); add applications_repo.mark_decided and policy_service.get_catalog_for_version (get_active_catalog now delegates to it)\n- Step 3: add backend/src/truelend/service/underwriting_service.py (RuleEngine.evaluate: income floor -> age range -> score thresholds; underwrite(): authorization, NOT_SUBMITTED/ALREADY_DECIDED guards, decision persistence, status mapping, ApplicationApproved structured log event on APPROVED) and NotSubmittedError/AlreadyDecidedError in backend/src/truelend/types/errors.py\n- Step 4: add POST /api/applications/{id}/underwrite to backend/src/truelend/api/applications_router.py (UnderwriteResponse, role-gated CUSTOMER/UNDERWRITER/ADMIN)"
   },
   "safeguards": {
     "ids": [

@@ -109,6 +109,20 @@ class AlreadySubmittedError(ConflictError):
         super().__init__("ALREADY_SUBMITTED", "This application has already been submitted.")
 
 
+class NotSubmittedError(ConflictError):
+    """`underwrite` called before the application is SUBMITTED -> 409 (E3-S3-AC6)."""
+
+    def __init__(self) -> None:
+        super().__init__("NOT_SUBMITTED", "This application has not been submitted yet.")
+
+
+class AlreadyDecidedError(ConflictError):
+    """`underwrite` called a second time; the stored decision is unchanged -> 409 (E3-S3-AC6)."""
+
+    def __init__(self) -> None:
+        super().__init__("ALREADY_DECIDED", "This application has already been underwritten.")
+
+
 class MissingDocumentsError(ConflictError):
     """Not every required document is UPLOADED or later -> 409, naming the
     missing types; status stays DRAFT (E2-S3-AC3)."""

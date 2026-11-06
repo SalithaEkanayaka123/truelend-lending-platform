@@ -20,8 +20,15 @@ from truelend.service.application_service import (
     get_for_owner,
 )
 from truelend.service.document_service import submit_application, upload_document
+from truelend.service.underwriting_service import UnderwriteResult, underwrite
 from truelend.types.contracts import AuthPrincipal, Clock, CreditFlags
-from truelend.types.enums import ApplicationStatus, DocumentStatus, DocumentType, ProductType
+from truelend.types.enums import (
+    ApplicationStatus,
+    DecisionType,
+    DocumentStatus,
+    DocumentType,
+    ProductType,
+)
 
 router = APIRouter(prefix="/api/applications", tags=["applications"])
 
@@ -182,3 +189,35 @@ def submit_application_route(
         conn, clock, application_id, principal=principal, policies_dir=settings.policies_dir
     )
     return _to_response(view)
+
+
+class UnderwriteResponse(BaseModel):
+    decision: DecisionType
+    score: int
+    reason_codes: list[str]
+    policy_version: int
+    status: ApplicationStatus
+
+
+def _to_underwrite_response(result: UnderwriteResult) -> UnderwriteResponse:
+    return UnderwriteResponse(
+        decision=result.decision,
+        score=result.score,
+        reason_codes=result.reason_codes,
+        policy_version=result.policy_version,
+        status=result.status,
+    )
+
+
+@router.post("/{application_id}/underwrite", response_model=UnderwriteResponse)
+def underwrite_route(
+    application_id: int,
+    conn: sqlite3.Connection = Depends(get_conn),
+    clock: Clock = Depends(get_clock),
+    settings: Settings = Depends(get_app_settings),
+    principal: AuthPrincipal = Depends(require_roles("CUSTOMER", "UNDERWRITER", "ADMIN")),
+) -> UnderwriteResponse:
+    result = underwrite(
+        conn, clock, application_id, principal=principal, policies_dir=settings.policies_dir
+    )
+    return _to_underwrite_response(result)

@@ -114,9 +114,19 @@ def get_active_catalog(conn: sqlite3.Connection, policies_dir: Path) -> list[Pro
     active = policy_repo.get_active_version(conn)
     if active is None:
         return []
-    content = _read_verified_json(policies_dir, active)
+    return get_catalog_for_version(conn, policies_dir, active.version)
+
+
+def get_catalog_for_version(
+    conn: sqlite3.Connection, policies_dir: Path, version: int
+) -> list[ProductRule]:
+    """`ProductRule`s for a specific (possibly historical) policy version,
+    re-verified against its recorded checksum -- used by underwriting on the
+    application's pinned version, not necessarily the active one (E3-S3)."""
+    record = get_policy(conn, version)
+    content = _read_verified_json(policies_dir, record)
     return [
-        _to_product_rule(product_type, body, active.version)
+        _to_product_rule(product_type, body, record.version)
         for product_type, body in content["products"].items()
     ]
 

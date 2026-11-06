@@ -1342,7 +1342,9 @@
         "unit"
       ],
       "implementation_paths": [
-        "e3-s3-component"
+        "backend/src/truelend/service/underwriting_service.py",
+        "backend/src/truelend/api/applications_router.py",
+        "backend/src/truelend/repository/decisions_repo.py"
       ],
       "checks": [
         {
@@ -1382,7 +1384,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s3-component"
+        "backend/src/truelend/service/underwriting_service.py",
+        "backend/src/truelend/api/applications_router.py",
+        "backend/src/truelend/repository/decisions_repo.py"
       ],
       "checks": [
         {
@@ -1402,7 +1406,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s3-component"
+        "backend/src/truelend/service/underwriting_service.py",
+        "backend/src/truelend/api/applications_router.py",
+        "backend/src/truelend/repository/decisions_repo.py"
       ],
       "checks": [
         {
@@ -1427,7 +1433,9 @@
         "unit"
       ],
       "implementation_paths": [
-        "e3-s3-component"
+        "backend/src/truelend/service/underwriting_service.py",
+        "backend/src/truelend/api/applications_router.py",
+        "backend/src/truelend/repository/decisions_repo.py"
       ],
       "checks": [
         {
@@ -1452,7 +1460,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s3-component"
+        "backend/src/truelend/service/underwriting_service.py",
+        "backend/src/truelend/api/applications_router.py",
+        "backend/src/truelend/repository/decisions_repo.py"
       ],
       "checks": [
         {
@@ -1476,7 +1486,9 @@
         "api"
       ],
       "implementation_paths": [
-        "e3-s3-component"
+        "backend/src/truelend/service/underwriting_service.py",
+        "backend/src/truelend/api/applications_router.py",
+        "backend/src/truelend/repository/decisions_repo.py"
       ],
       "checks": [
         {
