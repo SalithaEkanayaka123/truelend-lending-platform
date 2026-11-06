@@ -8,8 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useDismissable } from '../../service/useDismissable';
 import { useReview, type UseReviewResult } from '../../service/useReview';
 import type { Role } from '../../types/auth';
-import { ErrorState } from '../components/ErrorState';
-import { FullPageState } from '../components/FullPageState';
+import { ApplicationLoadError } from '../components/ApplicationLoadError';
 import { ManualReviewForm, OverrideDialog, OverrideSection } from '../components/ReviewActions';
 import { ApplicantPanel, DecisionPanel, DocumentsPanel } from '../components/ReviewPanels';
 import { StatusBadge } from '../components/StatusBadge';
@@ -95,23 +94,12 @@ function Loaded({ role, review, id }: { role: Role; review: UseReviewResult; id:
   );
 }
 
-function Failed({ review }: { review: UseReviewResult }): JSX.Element {
-  const error = review.loadError;
-  if (error?.code === 'NOT_FOUND') {
-    return <FullPageState title="Not found" message="We could not find that application." />;
-  }
-  if (error?.code === 'FORBIDDEN') {
-    return <FullPageState title="No access" message="Your role cannot open this application." />;
-  }
-  return <ErrorState message={error?.message ?? ''} correlationId={error?.correlationId} onRetry={review.reload} />;
-}
-
 export function ReviewPage({ role }: { role: Role }): JSX.Element {
   const id = Number(useParams().id);
   const review = useReview(id);
   return (
     <main className={styles.main}>
-      {review.loadError ? <Failed review={review} /> : <Loaded role={role} review={review} id={id} />}
+      {review.loadError ? <ApplicationLoadError error={review.loadError} onRetry={review.reload} /> : <Loaded role={role} review={review} id={id} />}
     </main>
   );
 }
