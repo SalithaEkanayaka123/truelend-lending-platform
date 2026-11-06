@@ -1,0 +1,11 @@
+{
+  "gate": "evidence-integrity",
+  "pass": true,
+  "applicable": true,
+  "group": "D",
+  "checked": 3,
+  "untested": [],
+  "findings": [],
+  "summary": "3 browser check(s) backed by user-path interaction",
+  "timestamp": "2026-11-06T17:29:36.594Z"
+}

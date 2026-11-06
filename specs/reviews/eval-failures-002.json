@@ -1,0 +1,23 @@
+{
+  "failure": {
+    "layer": "api",
+    "gate": "evaluator",
+    "check": "QA-VM-013 (VM-013, E1-S3-AC4 / F013): POST /api/applications/{id}/documents {type, filename salary_slip_jan.pdf}; capture logs; expect the document id present and the filename absent",
+    "actual": {
+      "status": 201,
+      "body": "Upload succeeded (201) and returned the application with required_documents[SALARY_SLIP] = {document_id: 6, status: UPLOADED, filename: salary_slip_jan.pdf}. Captured stdout/stderr for the whole run contains no occurrence of 'salary_slip_jan' (privacy half PASS) and no occurrence of the document id in any form: searched '\"document_id\": 6', '\"document_id\":6', 'document_id=6', '\"entity_id\": 6', 'document/6'. The only JSON log line for the request is {ts, level, event: request_handled, correlation_id, method, path: /api/applications/5/documents, status: 201, duration_ms} — the path carries the application id, never the document id."
+    },
+    "stack_trace": "No exception. The gap is an absent log field, observed by scanning the captured server output of the request that created document 6.",
+    "error_type": "assertion_error",
+    "files_likely_involved": [
+      "backend/src/truelend/api/middleware.py:36",
+      "backend/src/truelend/config/logging.py",
+      "backend/src/truelend/api/documents_router.py"
+    ],
+    "note": "E1-S3-AC4 is a two-part criterion. The redaction half holds: the filename is never logged, and the PAN/Aadhaar scan for E1-S3-AC3 (QA-VM-012) found none of ABCDE1234F / 123456789012 / '1234 5678 9012' in the logs. The unmet half is positive observability: nothing in the captured logs identifies the created document, so an operator cannot trace an upload by document id. Fix is a log field (e.g. document_id on an upload event line), not a redaction change.",
+    "artifacts": [
+      "specs/reviews/evaluator-report.md"
+    ],
+    "prior_attempts": []
+  }
+}

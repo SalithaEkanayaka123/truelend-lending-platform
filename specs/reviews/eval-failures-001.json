@@ -1,0 +1,25 @@
+{
+  "failure": {
+    "layer": "api",
+    "gate": "evaluator",
+    "check": "QA-VM-005 (VM-005, E1-S1-AC5 / F005): GET /openapi.json -> 200; enumerate the app route table (including /api/_test/boom, which requires ADMIN); every route but POST /api/auth/login and GET /health has the auth dependency",
+    "actual": {
+      "status": 200,
+      "body": "openapi.json route table: the only schema routes without an HTTPBearer security requirement are GET /health and POST /api/auth/login (correct). Hidden test routes, registered only under TRUELEND_ENV=test and excluded from the schema, probed behaviourally: GET /api/_test/boom anonymous=401, CUSTOMER=500, POLICY_EDITOR=500, ADMIN=500; POST /api/_test/audited-action anonymous=401, CUSTOMER=200. The contract requires /api/_test/boom to require ADMIN; any authenticated principal can trigger the unhandled 500, and any authenticated principal can write an arbitrary audit row through /api/_test/audited-action."
+    },
+    "stack_trace": "RuntimeError: boom raised in backend/src/truelend/api/main.py:131 (_boom) for a CUSTOMER principal; the 500 envelope and redacted JSON trace are correct, the authorization gate is the missing part.",
+    "error_type": "assertion_error",
+    "error_detail": "test-only routes declare dependencies=[Depends(get_current_principal)] (authentication) but no role dependency, so the contract clause 'which requires ADMIN' is unmet.",
+    "files_likely_involved": [
+      "backend/src/truelend/api/main.py:118",
+      "backend/src/truelend/api/main.py:125",
+      "backend/src/truelend/api/main.py:165",
+      "backend/src/truelend/api/deps.py"
+    ],
+    "note": "The acceptance criterion's own clause (E1-S1-AC5: every route except POST /api/auth/login and GET /health declares the auth dependency) is SATISFIED. The failure is the sprint contract's additional 'requires ADMIN' clause on /api/_test/boom. Resolution is a human decision: add an ADMIN role dependency to the two TRUELEND_ENV=test fixture routes, or correct the frozen contract text. The evaluator does not edit sprint contracts.",
+    "artifacts": [
+      "specs/reviews/evaluator-report.md"
+    ],
+    "prior_attempts": []
+  }
+}

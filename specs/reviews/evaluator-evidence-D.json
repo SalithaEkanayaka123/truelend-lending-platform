@@ -1,0 +1,81 @@
+{
+  "group": "D",
+  "evaluated_at": "2026-11-06T17:29:36.507Z",
+  "checks": [
+    {
+      "id": "QA-VM-071",
+      "layer": "playwright",
+      "verdict": "pass",
+      "interactions": [
+        "browser_navigate",
+        "browser_fill_form",
+        "browser_click",
+        "browser_snapshot"
+      ],
+      "matrix_ids": [
+        "VM-071"
+      ],
+      "artifacts": [
+        "e2e/policy-editor.spec.ts:15",
+        "specs/reviews/evaluator-e2e-results.txt"
+      ],
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
+      "note": "sign in as POLICY_EDITOR at 375x812, assert Personal/Vehicle forms stack and no horizontal scroll"
+    },
+    {
+      "id": "QA-VM-072",
+      "layer": "playwright",
+      "verdict": "pass",
+      "interactions": [
+        "browser_navigate",
+        "browser_fill_form",
+        "browser_click",
+        "browser_snapshot"
+      ],
+      "matrix_ids": [
+        "VM-072"
+      ],
+      "artifacts": [
+        "e2e/policy-editor.spec.ts:36",
+        "specs/reviews/evaluator-e2e-results.txt"
+      ],
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
+      "note": "fill Min age 70 / Max age 60, assert inline error visible and Save disabled"
+    },
+    {
+      "id": "QA-VM-073",
+      "layer": "playwright",
+      "verdict": "pass",
+      "interactions": [
+        "browser_navigate",
+        "browser_fill_form",
+        "browser_click",
+        "browser_snapshot"
+      ],
+      "matrix_ids": [
+        "VM-073"
+      ],
+      "artifacts": [
+        "e2e/policy-editor.spec.ts:46",
+        "specs/reviews/evaluator-e2e-results.txt"
+      ],
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
+      "note": "fill a valid Min age, click Save, assert \"Draft v2\" and v2 in the version list"
+    },
+    {
+      "id": "AXE-D",
+      "layer": "accessibility",
+      "verdict": "pass",
+      "interactions": [
+        "browser_navigate",
+        "browser_evaluate"
+      ],
+      "matrix_ids": [],
+      "artifacts": [
+        "specs/reviews/evaluator-axe.json"
+      ],
+      "tooling": "axe-core 4.14.0 injected via addScriptTag, axe.run() over 20 role/viewport page states",
+      "note": "group D accessibility_checks: 0 violations at any impact; 1 incomplete (color-contrast) reported as WARN, not a violation"
+    }
+  ]
+}

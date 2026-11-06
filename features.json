@@ -14,8 +14,8 @@
       "Assert role CUSTOMER"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -34,8 +34,8 @@
       "Assert the same body whether or not the email exists"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -53,8 +53,8 @@
       "Assert it is 401"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -72,8 +72,8 @@
       "Assert it is 403 FORBIDDEN"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -93,9 +93,9 @@
     ],
     "verification": "default",
     "passes": false,
-    "last_evaluated": null,
-    "failure_reason": null,
-    "failure_layer": null
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "failure_reason": "QA-VM-005 (VM-005): GET /openapi.json is 200 and every schema route except POST /api/auth/login and GET /health declares the auth dependency, but the contract check also requires /api/_test/boom to require ADMIN and it does not -- a CUSTOMER or POLICY_EDITOR token triggers the unhandled 500 (observed 500 for both). The route is authenticated (401 anonymous), not role-gated.",
+    "failure_layer": "api"
   },
   {
     "id": "F006",
@@ -112,8 +112,8 @@
       "Assert correlation_id equal to the response header"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -132,8 +132,8 @@
       "Assert the row is unchanged"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -151,8 +151,8 @@
       "Assert exactly 3 rows return in ascending id order"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -170,8 +170,8 @@
       "Assert no audit row exists for it, because the audit write shares the action's transaction"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -189,8 +189,8 @@
       "Assert exactly one JSON log line has the keys ts, level, event, correlation_id, method, path, status, duration_ms"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -210,8 +210,8 @@
       "Assert `a b!` is replaced by a UUID4"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -229,8 +229,8 @@
       "Assert neither ABCDE1234F, 123456789012, nor 1234 5678 9012 appears"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -250,9 +250,9 @@
     ],
     "verification": "default",
     "passes": false,
-    "last_evaluated": null,
-    "failure_reason": null,
-    "failure_layer": null
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "failure_reason": "QA-VM-013 (VM-013): POST /api/applications/{id}/documents with filename salary_slip_jan.pdf is 201 and the filename never reaches the logs (correct), but no captured log line carries the document id (request_handled logs only ts/level/event/correlation_id/method/path/status/duration_ms), so the \"document ID appears\" half of E1-S3-AC4 is unmet.",
+    "failure_layer": "api"
   },
   {
     "id": "F014",
@@ -270,8 +270,8 @@
       "Assert the trace is logged as JSON through the redaction filter"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -289,8 +289,8 @@
       "Assert it is 200 {\"status\":\"ok\"} in at most 1000 ms"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -309,8 +309,8 @@
       "Assert schema_migrations still has 3 rows with SHA-256 values"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -329,8 +329,8 @@
       "Assert /health never returns 200"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -348,8 +348,8 @@
       "Assert no module imports from a higher layer in the order types, config, repository, service, api, ui"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -368,8 +368,8 @@
       "Assert no REAL money column"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -387,8 +387,8 @@
       "Assert exactly 3 products return (PERSONAL, VEHICLE, EDUCATION), each with policy_version 1"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -406,8 +406,8 @@
       "Assert each differs in at least one threshold (min_income is 25000.00, 30000.00, 20000.00)"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -427,8 +427,8 @@
       "Assert EDUCATION"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -446,8 +446,8 @@
       "Assert it is 401"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -465,8 +465,8 @@
       "Assert startup aborts with POLICY_CHECKSUM_MISMATCH"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -484,8 +484,8 @@
       "Assert it is 201 with id 1, status DRAFT, applicant_user_id 4"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -504,8 +504,8 @@
       "Assert FEE_STRUCTURE"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -523,8 +523,8 @@
       "Assert it is 422 TENURE_OUT_OF_RANGE or 422 AMOUNT_OUT_OF_RANGE respectively"
     ],
     "verification": "characterization",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -544,8 +544,8 @@
       "Assert no raw values"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -563,8 +563,8 @@
       "Assert it is 404"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -583,8 +583,8 @@
       "Assert that document is UPLOADED with no file content stored"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -602,8 +602,8 @@
       "Assert it is 422 DOCUMENT_TYPE_NOT_REQUIRED"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -622,8 +622,8 @@
       "Assert status stays DRAFT"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -642,8 +642,8 @@
       "Assert submitted_at set"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -661,8 +661,8 @@
       "Assert it is 409 ALREADY_SUBMITTED"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -682,8 +682,8 @@
       "Assert no horizontal scroll"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -701,8 +701,8 @@
       "Assert an inline error shows \"12-60 months\" before they continue"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -720,8 +720,8 @@
       "Assert a table lists documents; at 375x812 the same data shows as stacked cards; verifying one removes it without a page reload"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -740,8 +740,8 @@
       "Assert type"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -760,8 +760,8 @@
       "Assert the item leaves the queue"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -780,8 +780,8 @@
       "Assert the application still reads SUBMITTED"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -800,8 +800,8 @@
       "Assert no audit row is written"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -820,8 +820,8 @@
       "Assert 409 ALREADY_VERIFIED for the already-verified document"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -839,8 +839,8 @@
       "Assert the score is 740"
     ],
     "verification": "characterization",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -859,8 +859,8 @@
       "Assert the second scores 500"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -878,8 +878,8 @@
       "Assert all 100 scores are identical"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -898,8 +898,8 @@
       "Assert prior_default gives 530"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -918,8 +918,8 @@
       "Assert both of the second case scores are 790"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -938,8 +938,8 @@
       "Assert one ApplicationApproved event is published"
     ],
     "verification": "characterization",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -958,8 +958,8 @@
       "Assert status MANUAL_REVIEW"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -978,8 +978,8 @@
       "Assert status REJECTED"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -997,8 +997,8 @@
       "Assert decision AUTO_REJECT with [\"AGE_OUT_OF_RANGE\"] only"
     ],
     "verification": "characterization",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1018,8 +1018,8 @@
       "Assert is AUTO_REJECT with [\"INCOME_BELOW_MIN\"]"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1038,8 +1038,8 @@
       "Assert the already-decided case is 409 ALREADY_DECIDED with the stored decision unchanged"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1057,8 +1057,8 @@
       "Assert it raises PolicyViolationException with code INCOME_BELOW_MIN"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1077,8 +1077,8 @@
       "Assert the decision is MANUAL_REVIEW"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1097,8 +1097,8 @@
       "Assert a persisted decisions row"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1117,8 +1117,8 @@
       "Assert an ApplicationApproved event"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1137,8 +1137,8 @@
       "Assert no event"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1157,8 +1157,8 @@
       "Assert an event"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1176,8 +1176,8 @@
       "Assert the same outcome as AC3 with actor 3 in the audit row"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1196,8 +1196,8 @@
       "Assert 403 respectively"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1216,8 +1216,8 @@
       "Assert policy version 1; at 375x812 the panels stack with no horizontal scroll"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1236,8 +1236,8 @@
       "Assert success shows a confirmation"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1256,8 +1256,8 @@
       "Assert Reject are disabled"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1276,8 +1276,8 @@
       "Assert the SHA-256 of policy_v0001.json unchanged"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1296,8 +1296,8 @@
       "Assert policy_version is 1"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1316,8 +1316,8 @@
       "Assert GET /api/products shows PERSONAL min_income \"30000.00\" with policy_version 2"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1336,8 +1336,8 @@
       "Assert the SQL UPDATE aborts at the database"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1355,8 +1355,8 @@
       "Assert it is 403"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1375,8 +1375,8 @@
       "Assert no file is written"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1394,8 +1394,8 @@
       "Assert the product forms stack in one column with no horizontal scroll"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1414,8 +1414,8 @@
       "Assert the Save button is disabled"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1434,8 +1434,8 @@
       "Assert the new version appears in the list"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": null,
+    "passes": true,
+    "last_evaluated": "2026-11-06T17:31:37.117Z",
     "failure_reason": null,
     "failure_layer": null
   }

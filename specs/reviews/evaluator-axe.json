@@ -1,0 +1,105 @@
+{
+  "results": [
+    {
+      "page": "sign-in (ui_base_url) / @1280x800",
+      "url": "http://localhost:3000/sign-in",
+      "violations": []
+    },
+    {
+      "page": "POLICY_EDITOR / @1280x800",
+      "url": "http://localhost:3000/policies",
+      "violations": []
+    },
+    {
+      "page": "POLICY_EDITOR /policies @1280x800",
+      "url": "http://localhost:3000/policies",
+      "violations": []
+    },
+    {
+      "page": "CUSTOMER / @1280x800",
+      "url": "http://localhost:3000/home",
+      "violations": []
+    },
+    {
+      "page": "CUSTOMER /apply @1280x800",
+      "url": "http://localhost:3000/apply",
+      "violations": []
+    },
+    {
+      "page": "CUSTOMER /applications @1280x800",
+      "url": "http://localhost:3000/applications",
+      "violations": []
+    },
+    {
+      "page": "UNDERWRITER / @1280x800",
+      "url": "http://localhost:3000/home",
+      "violations": []
+    },
+    {
+      "page": "UNDERWRITER /verification @1280x800",
+      "url": "http://localhost:3000/verification",
+      "violations": []
+    },
+    {
+      "page": "ADMIN / @1280x800",
+      "url": "http://localhost:3000/home",
+      "violations": []
+    },
+    {
+      "page": "ADMIN /policies @1280x800",
+      "url": "http://localhost:3000/policies",
+      "violations": []
+    },
+    {
+      "page": "sign-in (ui_base_url) / @375x812",
+      "url": "http://localhost:3000/sign-in",
+      "violations": []
+    },
+    {
+      "page": "POLICY_EDITOR / @375x812",
+      "url": "http://localhost:3000/policies",
+      "violations": []
+    },
+    {
+      "page": "POLICY_EDITOR /policies @375x812",
+      "url": "http://localhost:3000/policies",
+      "violations": []
+    },
+    {
+      "page": "CUSTOMER / @375x812",
+      "url": "http://localhost:3000/home",
+      "violations": []
+    },
+    {
+      "page": "CUSTOMER /apply @375x812",
+      "url": "http://localhost:3000/apply",
+      "violations": []
+    },
+    {
+      "page": "CUSTOMER /applications @375x812",
+      "url": "http://localhost:3000/applications",
+      "violations": []
+    },
+    {
+      "page": "UNDERWRITER / @375x812",
+      "url": "http://localhost:3000/home",
+      "violations": []
+    },
+    {
+      "page": "UNDERWRITER /verification @375x812",
+      "url": "http://localhost:3000/verification",
+      "violations": []
+    },
+    {
+      "page": "ADMIN / @375x812",
+      "url": "http://localhost:3000/home",
+      "violations": []
+    },
+    {
+      "page": "ADMIN /policies @375x812",
+      "url": "http://localhost:3000/policies",
+      "violations": []
+    }
+  ],
+  "blocking": []
+}
