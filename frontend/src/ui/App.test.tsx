@@ -12,6 +12,9 @@ vi.mock('../repository/authRepo');
 vi.mock('./pages/ReviewPage', () => ({
   ReviewPage: () => <h1>Review page</h1>,
 }));
+vi.mock('./pages/TrackPage', () => ({
+  TrackPage: () => <h1>Tracker page</h1>,
+}));
 vi.mock('./pages/PolicyEditorPage', () => ({
   PolicyEditorPage: () => <h1>Policy editor</h1>,
 }));
@@ -70,7 +73,7 @@ describe('post-login routing by role', () => {
   it.each<[Role, string]>([
     ['UNDERWRITER', 'Review page'],
     ['ADMIN', 'Review page'],
-    ['CUSTOMER', 'No access'],
+    ['CUSTOMER', 'Tracker page'],
   ])('%s opening /applications/6 sees: %s', async (role, heading) => {
     await signIn(role, '/applications/6');
     expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeInTheDocument();

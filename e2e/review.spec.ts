@@ -3,7 +3,8 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import { apiLogin, assertNoHorizontalScroll, uiSignIn, watchProblems } from './support/roles';
 
 const CUSTOMER = 'customer1@example.test';
-const UNDERWRITER = 'underwriter@example.test';
+const OTHER_CUSTOMER = 'customer2@example.test';
+const UNDERWRITER ='underwriter@example.test';
 const DOCS = [
   { type: 'ID_PROOF', filename: 'id.png' },
   { type: 'ADDRESS_PROOF', filename: 'addr.png' },
@@ -95,7 +96,28 @@ test.describe('Application review (E3-S5)', () => {
     expect(problems).toEqual([]);
   });
 
-  test('CUSTOMER gets 403 on review and a No access page in the UI (E3-S5-AC5)', async ({ page, request }) => {
+  test('customer2 opening customer1\'s application gets 404 and a Not found page, no data leaked', async ({ page, request }) => {
+    const id = await underwrittenApplication(request, '60000.00', CLEAN);
+    const headers = { Authorization: `Bearer ${await apiLogin(request, OTHER_CUSTOMER)}` };
+    const api = await request.get(`/api/applications/${id}`, { headers });
+    expect(api.status()).toBe(404);
+    const text = await api.text();
+    for (const leaked of ['ABCDE1234F', '234F', '200000', '60000']) expect(text).not.toContain(leaked);
+
+    const problems = watchProblems(page);
+    await uiSignIn(page, OTHER_CUSTOMER);
+    await expect(page.getByRole('heading', { level: 1, name: 'My applications' })).toBeVisible();
+    await openApplication(page, id);
+    await expect(page.getByRole('heading', { name: 'Not found' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'No access' })).toHaveCount(0);
+    for (const leaked of ['234F', '200,000', '60,000', `Application #${id}`]) {
+      await expect(page.getByText(leaked)).toHaveCount(0);
+    }
+    await page.waitForLoadState('networkidle');
+    expect(problems.filter((p) => !p.includes('404'))).toEqual([]);
+  });
+
+  test('CUSTOMER gets 403 on review and sees their own tracker in the UI (E3-S5-AC5)', async ({ page, request }) => {
     const id = await underwrittenApplication(request, '60000.00', CLEAN);
     const headers = { Authorization: `Bearer ${await apiLogin(request, CUSTOMER)}` };
     const review = await request.post(`/api/applications/${id}/review`, {
@@ -108,7 +130,7 @@ test.describe('Application review (E3-S5)', () => {
     await uiSignIn(page, CUSTOMER);
     await expect(page.getByRole('heading', { level: 1, name: 'My applications' })).toBeVisible();
     await openApplication(page, id);
-    await expect(page.getByRole('heading', { name: 'No access' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: `Application #${id}` })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Approve' })).toHaveCount(0);
     await page.waitForLoadState('networkidle');
     expect(problems).toEqual([]);

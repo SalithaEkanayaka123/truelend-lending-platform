@@ -16,6 +16,7 @@ import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { PolicyEditorPage } from './pages/PolicyEditorPage';
 import { ReviewPage } from './pages/ReviewPage';
+import { TrackPage } from './pages/TrackPage';
 
 const SIGN_IN_PATH = '/sign-in';
 
@@ -40,6 +41,8 @@ function PolicyRoute({ role, home }: { role: Role; home: Home }): JSX.Element {
 }
 
 function ReviewRoute({ role, home }: { role: Role; home: Home }): JSX.Element {
+  // An applicant sees the tracker; the API answers 404 for anyone else's application.
+  if (role === 'CUSTOMER') return <TrackPage />;
   if (canOpen(role, '/applications/0')) return <ReviewPage role={role} />;
   return <FullPageState title="No access" message="Your role cannot open this page." home={home} />;
 }
