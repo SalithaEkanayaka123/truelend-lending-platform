@@ -1,0 +1,73 @@
+.group {
+  display: grid;
+  gap: var(--space-3);
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.legend {
+  padding: 0;
+  margin-bottom: var(--space-3);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: border-color var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--primary);
+}
+
+.card:focus-within {
+  box-shadow: var(--focus-ring);
+}
+
+.selected {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.radio {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.name {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.rate {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.row {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 1024px) {
+  .group {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .legend {
+    grid-column: 1 / -1;
+  }
+}
