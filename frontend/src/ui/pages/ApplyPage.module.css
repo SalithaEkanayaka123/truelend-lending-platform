@@ -1,0 +1,25 @@
+.main {
+  display: grid;
+  gap: var(--space-5);
+  min-width: 0;
+  padding: var(--space-5) 0 var(--space-7);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.step {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
