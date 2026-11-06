@@ -6,7 +6,7 @@ const CUSTOMER = 'customer1@example.test';
 
 async function openApply(page: Page): Promise<void> {
   await uiSignIn(page, CUSTOMER);
-  await expect(page.getByRole('heading', { level: 1, name: 'My applications' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
   await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Apply' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Apply for a loan' })).toBeVisible();
 }
@@ -88,7 +88,7 @@ test.describe('Apply wizard (E2-S4)', () => {
 
   test('role access per page: only the right roles open each applicant and verifier page', async ({ page }) => {
     await uiSignIn(page, 'underwriter@example.test');
-    await expect(page.getByRole('heading', { level: 1, name: 'Work queue' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
     const nav = page.getByRole('navigation', { name: 'Main' });
     await expect(nav.getByRole('link', { name: 'Verification' })).toBeVisible();
     await expect(nav.getByRole('link', { name: 'Apply' })).toHaveCount(0);
@@ -102,7 +102,7 @@ test.describe('Apply wizard (E2-S4)', () => {
 
   test('a customer cannot open the verification queue', async ({ page }) => {
     await uiSignIn(page, CUSTOMER);
-    await expect(page.getByRole('heading', { level: 1, name: 'My applications' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
     await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Verification' })).toHaveCount(0);
     await gotoClient(page, '/verification');
     await expect(page.getByRole('heading', { name: 'No access' })).toBeVisible();
@@ -112,7 +112,7 @@ test.describe('Apply wizard (E2-S4)', () => {
 
   test('admin cannot open the applicant or verifier pages', async ({ page }) => {
     await uiSignIn(page, 'admin@example.test');
-    await expect(page.getByRole('heading', { level: 1, name: 'Portfolio dashboard' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
     for (const path of ['/apply', '/applications', '/verification']) {
       await gotoClient(page, path);
       await expect(page.getByRole('heading', { name: 'No access' })).toBeVisible();

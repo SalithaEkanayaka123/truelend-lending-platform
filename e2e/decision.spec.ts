@@ -52,7 +52,7 @@ async function storedDecision(request: APIRequestContext, id: number): Promise<S
 
 async function openAsUnderwriter(page: Page, id: number): Promise<void> {
   await uiSignIn(page, UNDERWRITER);
-  await expect(page.getByRole('heading', { level: 1, name: 'Work queue' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
   await gotoClient(page, `/applications/${id}`);
   await expect(page.getByRole('heading', { level: 1, name: `Application #${id}` })).toBeVisible();
 }
@@ -131,7 +131,7 @@ test.describe('Decision review and override UI (E3-S6)', () => {
   test('QA-VM-062b: an unknown application shows an error state, not a blank page', async ({ page }) => {
     const problems = watchProblems(page);
     await uiSignIn(page, UNDERWRITER);
-    await expect(page.getByRole('heading', { level: 1, name: 'Work queue' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
     await gotoClient(page, '/applications/999999');
     await expect(page.getByRole('heading', { name: 'Not found' })).toBeVisible();
     expect(problems.filter((p) => !p.includes('404'))).toEqual([]);

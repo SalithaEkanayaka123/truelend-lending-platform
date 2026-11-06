@@ -55,7 +55,7 @@ test.describe('Application review (E3-S5)', () => {
     const id = await underwrittenApplication(request, '60000.00', CLEAN);
     const problems = watchProblems(page);
     await uiSignIn(page, UNDERWRITER);
-    await expect(page.getByRole('heading', { level: 1, name: 'Work queue' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
     await openApplication(page, id);
 
     await expect(page.getByRole('heading', { level: 1, name: `Application #${id}` })).toBeVisible();
@@ -79,7 +79,7 @@ test.describe('Application review (E3-S5)', () => {
     const id = await underwrittenApplication(request, '30000.00', { ...CLEAN, prior_default: true });
     const problems = watchProblems(page);
     await uiSignIn(page, UNDERWRITER);
-    await expect(page.getByRole('heading', { level: 1, name: 'Work queue' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
     await openApplication(page, id);
 
     await page.getByRole('button', { name: 'Override' }).click();
@@ -106,7 +106,7 @@ test.describe('Application review (E3-S5)', () => {
 
     const problems = watchProblems(page);
     await uiSignIn(page, OTHER_CUSTOMER);
-    await expect(page.getByRole('heading', { level: 1, name: 'My applications' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
     await openApplication(page, id);
     await expect(page.getByRole('heading', { name: 'Not found' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'No access' })).toHaveCount(0);
@@ -128,7 +128,7 @@ test.describe('Application review (E3-S5)', () => {
 
     const problems = watchProblems(page);
     await uiSignIn(page, CUSTOMER);
-    await expect(page.getByRole('heading', { level: 1, name: 'My applications' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
     await openApplication(page, id);
     await expect(page.getByRole('heading', { level: 1, name: `Application #${id}` })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Approve' })).toHaveCount(0);
@@ -140,7 +140,7 @@ test.describe('Application review (E3-S5)', () => {
     const id = await underwrittenApplication(request, '60000.00', CLEAN);
     await page.setViewportSize({ width: 375, height: 812 });
     await uiSignIn(page, UNDERWRITER);
-    await expect(page.getByRole('heading', { level: 1, name: 'Work queue' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
     await openApplication(page, id);
     await expect(page.getByRole('heading', { level: 1, name: `Application #${id}` })).toBeVisible();
     await assertNoHorizontalScroll(page);

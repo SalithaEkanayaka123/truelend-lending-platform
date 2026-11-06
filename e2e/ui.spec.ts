@@ -44,6 +44,34 @@ for (const viewport of VIEWPORTS) {
       });
     }
 
+    test('role homes: real cards, no stale copy, and a title for the tab', async ({ page }) => {
+      const cards: Record<string, { links: Record<string, string>; soon: number }> = {
+        'customer1@example.test': { links: { 'Apply for a loan': '/apply', 'My applications': '/applications' }, soon: 0 },
+        'underwriter@example.test': { links: { 'Verification queue': '/verification' }, soon: 1 },
+        'admin@example.test': { links: { Policies: '/policies' }, soon: 1 },
+      };
+      for (const [email, expected] of Object.entries(cards)) {
+        await uiSignIn(page, email);
+        await expect(page.getByRole('heading', { level: 1, name: /^Welcome, / })).toBeVisible();
+        await expect(page).toHaveTitle('Home · TrueLend');
+        await expect(page.getByText(/pick up where you left off/i)).toHaveCount(0);
+        const main = page.locator('main');
+        for (const [name, href] of Object.entries(expected.links)) {
+          await expect(main.getByRole('link', { name: new RegExp(name, 'i') })).toHaveAttribute('href', href);
+        }
+        await expect(main.getByText(/coming soon/i)).toHaveCount(expected.soon);
+        await page.getByRole('button', { name: /sign out/i }).click();
+      }
+    });
+
+    test('the tab title follows the route', async ({ page }) => {
+      await uiSignIn(page, 'policy@example.test');
+      await expect(page).toHaveTitle('Policy editor · TrueLend');
+      await uiSignIn(page, 'customer1@example.test');
+      await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Apply' }).click();
+      await expect(page).toHaveTitle('Apply · TrueLend');
+    });
+
     test(`POLICY_EDITOR happy path: change a threshold, save, see the new draft`, async ({ page }) => {
       const problems = watchProblems(page);
       await uiSignIn(page, 'policy@example.test');
