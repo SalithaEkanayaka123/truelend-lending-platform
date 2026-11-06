@@ -2,8 +2,10 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { assertNoHorizontalScroll, ROLES, uiSignIn, VIEWPORTS, watchProblems } from './support/roles';
 
-async function expectLanding(page: Page, landing: string): Promise<void> {
+async function expectLanding(page: Page, landing: string, displayName: string): Promise<void> {
   await expect(page.getByRole('heading', { level: 1, name: landing })).toBeVisible();
+  // The shell shows the seeded display name, not a name derived from the email.
+  await expect(page.locator('header').getByText(displayName, { exact: true })).toBeVisible();
 }
 
 for (const viewport of VIEWPORTS) {
@@ -14,7 +16,7 @@ for (const viewport of VIEWPORTS) {
       test(`${r.role} signs in and lands on "${r.landing}"`, async ({ page }) => {
         const problems = watchProblems(page);
         await uiSignIn(page, r.email);
-        await expectLanding(page, r.landing);
+        await expectLanding(page, r.landing, r.displayName);
         await assertNoHorizontalScroll(page);
         await page.waitForLoadState('networkidle');
         expect(problems, `${r.role} problems`).toEqual([]);
@@ -25,7 +27,7 @@ for (const viewport of VIEWPORTS) {
       }) => {
         const problems = watchProblems(page);
         await uiSignIn(page, r.email);
-        await expectLanding(page, r.landing);
+        await expectLanding(page, r.landing, r.displayName);
         // Client-side navigation: a full page.goto would drop the in-memory token.
         await page.evaluate(() => {
           window.history.pushState({}, '', '/policies');
@@ -53,6 +55,10 @@ for (const viewport of VIEWPORTS) {
       await page.getByRole('button', { name: /save/i }).click();
 
       await expect(page.getByRole('status')).toContainText(/draft v\d+/i);
+      // The timeline names people, never raw user ids.
+      await expect(page.getByText(/Approved by Arjun Mehta/).first()).toBeVisible();
+      await expect(page.getByText(/Created by Meera Iyer/).first()).toBeVisible();
+      await expect(page.getByText(/by user #/i)).toHaveCount(0);
       await assertNoHorizontalScroll(page);
       expect(problems, 'policy editor happy path problems').toEqual([]);
     });

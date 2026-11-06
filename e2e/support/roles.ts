@@ -9,6 +9,8 @@ export interface RoleCase {
   role: RoleName;
   email: string;
   landing: string;
+  /** Seeded display name (migration 0006), shown in the app shell. */
+  displayName: string;
   /** Expected status per endpoint. */
   products: number;
   policies: number;
@@ -18,10 +20,10 @@ export interface RoleCase {
 export const PASSWORD = 'Synthetic-Dev-Pass-1!';
 
 export const ROLES: RoleCase[] = [
-  { role: 'ADMIN', email: 'admin@example.test', landing: 'Portfolio dashboard', products: 200, policies: 200, audit: 200 },
-  { role: 'POLICY_EDITOR', email: 'policy@example.test', landing: 'Policy editor', products: 200, policies: 200, audit: 403 },
-  { role: 'UNDERWRITER', email: 'underwriter@example.test', landing: 'Work queue', products: 200, policies: 403, audit: 403 },
-  { role: 'CUSTOMER', email: 'customer1@example.test', landing: 'My applications', products: 200, policies: 403, audit: 403 },
+  { role: 'ADMIN', email: 'admin@example.test', displayName: 'Arjun Mehta', landing: 'Portfolio dashboard', products: 200, policies: 200, audit: 200 },
+  { role: 'POLICY_EDITOR', email: 'policy@example.test', displayName: 'Meera Iyer', landing: 'Policy editor', products: 200, policies: 200, audit: 403 },
+  { role: 'UNDERWRITER', email: 'underwriter@example.test', displayName: 'Rahul Varma', landing: 'Work queue', products: 200, policies: 403, audit: 403 },
+  { role: 'CUSTOMER', email: 'customer1@example.test', displayName: 'Priya Nair', landing: 'My applications', products: 200, policies: 403, audit: 403 },
 ];
 
 export const VIEWPORTS = [
