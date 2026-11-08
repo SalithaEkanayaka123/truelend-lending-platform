@@ -87,3 +87,31 @@ def test_e1_s3_boom_route_absent_outside_test_env(
             r = c.get("/api/_test/boom")
             assert r.status_code == 404
             assert r.json()["error"]["code"] == "NOT_FOUND"
+
+
+def test_e1_s3_ac4_upload_logs_document_id_never_filename(
+    client: TestClient, log_buffer: io.StringIO, login: Callable[[str], dict[str, str]]
+) -> None:
+    h = login("customer1@example.test")
+    app_body = {
+        "product_type": "PERSONAL",
+        "requested_amount": "200000.00",
+        "tenure_months": 24,
+        "age_years": 30,
+        "monthly_income": "60000.00",
+        "credit_flags": {"prior_default": False, "missed_payment_12m": False, "thin_file": False},
+        "pan": "ABCDE1234F",
+        "aadhaar": "123456789012",
+    }
+    app_id = client.post("/api/applications", json=app_body, headers=h).json()["id"]
+    r = client.post(
+        f"/api/applications/{app_id}/documents",
+        json={"type": "SALARY_SLIP", "filename": "salary_slip_jan.pdf"},
+        headers=h,
+    )
+    assert r.status_code == 201
+    doc = next(d for d in r.json()["required_documents"] if d["type"] == "SALARY_SLIP")
+    assert "salary_slip_jan" not in log_buffer.getvalue()
+    events = [x for x in lines(log_buffer) if x.get("document_id") == doc["document_id"]]
+    assert len(events) == 1
+    assert events[0]["application_id"] == app_id
