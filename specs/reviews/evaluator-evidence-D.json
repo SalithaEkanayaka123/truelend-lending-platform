@@ -1,6 +1,6 @@
 {
   "group": "D",
-  "evaluated_at": "2026-11-06T17:29:36.507Z",
+  "evaluated_at": "2026-11-08T05:20:15Z",
   "checks": [
     {
       "id": "QA-VM-071",
@@ -19,8 +19,8 @@
         "e2e/policy-editor.spec.ts:15",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "sign in as POLICY_EDITOR at 375x812, assert Personal/Vehicle forms stack and no horizontal scroll"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "POLICY_EDITOR at 375x812: product forms stack one column, scrollWidth <= clientWidth"
     },
     {
       "id": "QA-VM-072",
@@ -39,8 +39,8 @@
         "e2e/policy-editor.spec.ts:36",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "fill Min age 70 / Max age 60, assert inline error visible and Save disabled"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "Min age 70 / Max age 60: inline error visible, Save disabled"
     },
     {
       "id": "QA-VM-073",
@@ -59,8 +59,8 @@
         "e2e/policy-editor.spec.ts:46",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "fill a valid Min age, click Save, assert \"Draft v2\" and v2 in the version list"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "valid change saved: Draft v2 shown and v2 in the version list"
     },
     {
       "id": "AXE-D",
@@ -72,10 +72,11 @@
       ],
       "matrix_ids": [],
       "artifacts": [
-        "specs/reviews/evaluator-axe.json"
+        "specs/reviews/evaluator-axe.json",
+        "e2e/axe-audit.spec.ts"
       ],
-      "tooling": "axe-core 4.14.0 injected via addScriptTag, axe.run() over 20 role/viewport page states",
-      "note": "group D accessibility_checks: 0 violations at any impact; 1 incomplete (color-contrast) reported as WARN, not a violation"
+      "tooling": "axe-core 4.10.2 via addScriptTag + axe.run()",
+      "note": "axe-core 4.10.2 injected via addScriptTag and run with axe.run() over 3 page states (landing 1280x800 and 375x812, signed-in POLICY_EDITOR landing): 0 violations at any impact, so 0 in block_impacts [serious, critical]. Runner: e2e/axe-audit.spec.ts."
     }
   ]
 }

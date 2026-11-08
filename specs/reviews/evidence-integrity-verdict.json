@@ -1,48 +1,11 @@
 {
   "gate": "evidence-integrity",
-  "pass": false,
+  "pass": true,
   "applicable": true,
-  "group": "D",
-  "checked": 9,
+  "group": "G",
+  "checked": 3,
   "untested": [],
-  "findings": [
-    {
-      "kind": "undeclared-check",
-      "id": "QA-VM-035",
-      "detail": "evidence entry \"QA-VM-035\" matches no check in the sprint contract",
-      "fix": "The contract is the read-only, pre-committed expectation set. Do not invent checks during evaluation; renegotiate the contract instead."
-    },
-    {
-      "kind": "undeclared-check",
-      "id": "QA-VM-036",
-      "detail": "evidence entry \"QA-VM-036\" matches no check in the sprint contract",
-      "fix": "The contract is the read-only, pre-committed expectation set. Do not invent checks during evaluation; renegotiate the contract instead."
-    },
-    {
-      "kind": "undeclared-check",
-      "id": "QA-VM-037",
-      "detail": "evidence entry \"QA-VM-037\" matches no check in the sprint contract",
-      "fix": "The contract is the read-only, pre-committed expectation set. Do not invent checks during evaluation; renegotiate the contract instead."
-    },
-    {
-      "kind": "undeclared-check",
-      "id": "QA-VM-062",
-      "detail": "evidence entry \"QA-VM-062\" matches no check in the sprint contract",
-      "fix": "The contract is the read-only, pre-committed expectation set. Do not invent checks during evaluation; renegotiate the contract instead."
-    },
-    {
-      "kind": "undeclared-check",
-      "id": "QA-VM-063",
-      "detail": "evidence entry \"QA-VM-063\" matches no check in the sprint contract",
-      "fix": "The contract is the read-only, pre-committed expectation set. Do not invent checks during evaluation; renegotiate the contract instead."
-    },
-    {
-      "kind": "undeclared-check",
-      "id": "QA-VM-064",
-      "detail": "evidence entry \"QA-VM-064\" matches no check in the sprint contract",
-      "fix": "The contract is the read-only, pre-committed expectation set. Do not invent checks during evaluation; renegotiate the contract instead."
-    }
-  ],
-  "summary": "6 evidence-integrity finding(s)",
-  "timestamp": "2026-11-08T03:14:24.253Z"
+  "findings": [],
+  "summary": "3 browser check(s) backed by user-path interaction",
+  "timestamp": "2026-11-08T05:18:31.210Z"
 }

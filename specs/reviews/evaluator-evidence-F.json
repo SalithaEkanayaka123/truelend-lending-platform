@@ -1,6 +1,6 @@
 {
   "group": "F",
-  "evaluated_at": "2026-11-06T17:29:36.616Z",
+  "evaluated_at": "2026-11-08T05:20:15Z",
   "checks": [
     {
       "id": "QA-VM-035",
@@ -19,8 +19,8 @@
         "e2e/apply.spec.ts:20",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "apply wizard at 375x812: Step 1 of 3 progress, one step visible, no horizontal scroll"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "apply wizard at 375x812: one step at a time, progress indicator, no h-scroll"
     },
     {
       "id": "QA-VM-036",
@@ -39,8 +39,8 @@
         "e2e/apply.spec.ts:40",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "fill Tenure 72 then blur, assert the inline 12-60 months alert and Continue disabled"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "tenure 72 for PERSONAL: inline 12-60 months error before Continue"
     },
     {
       "id": "QA-VM-037",
@@ -59,8 +59,8 @@
         "e2e/verification.spec.ts:35",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "queue table at 1280x800, cards at 375x812, verify a row via the dialog, row removed with no navigation"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "queue table at 1280x800, cards at 375x812, verify removes the row with no navigation"
     },
     {
       "id": "AXE-F",
@@ -72,10 +72,11 @@
       ],
       "matrix_ids": [],
       "artifacts": [
-        "specs/reviews/evaluator-axe.json"
+        "specs/reviews/evaluator-axe.json",
+        "e2e/axe-audit.spec.ts"
       ],
-      "tooling": "axe-core 4.14.0 injected via addScriptTag, axe.run() over 20 role/viewport page states",
-      "note": "group F accessibility_checks: 0 violations at any impact; 1 incomplete (color-contrast) reported as WARN, not a violation"
+      "tooling": "axe-core 4.10.2 via addScriptTag + axe.run()",
+      "note": "axe-core 4.10.2 injected via addScriptTag and run with axe.run() over 3 page states (landing 1280x800 and 375x812, signed-in POLICY_EDITOR landing): 0 violations at any impact, so 0 in block_impacts [serious, critical]. Runner: e2e/axe-audit.spec.ts."
     }
   ]
 }

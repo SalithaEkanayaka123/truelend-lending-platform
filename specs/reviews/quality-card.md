@@ -1,16 +1,20 @@
 # Quality card
 
-Generated: 2026-11-06T19:53:54.378Z
-Range: `main..HEAD`
+Generated: 2026-11-08T05:22:33.817Z
 
-**Overall: FAIL** — 2 pass · 1 fail · 1 missing · 10 skipped
+**Overall: FAIL** — 5 pass · 3 fail · 1 missing · 5 skipped
 
 | Check | Status | Detail |
 |---|---|---|
-| evaluator | ❌ fail | — |
+| evaluator | ✅ pass | — |
 | code_review | ⬜ missing | — |
+| security | ✅ pass | [object Object] |
+| ownership | ❌ fail | — |
+| regression | ❌ fail | blocked |
 | verification_matrix | ✅ pass | — |
 | evidence_integrity | ✅ pass | 3 browser check(s) backed by user-path interaction |
+| observability | ✅ pass | [object Object] |
+| perf_smell | ❌ fail | [object Object] |
 | slo | ❓ unknown | unreachable |
 
 ## Human navigation

@@ -1,14 +1,14 @@
 {
   "gate": "quality-card",
   "pass": false,
-  "generated_at": "2026-11-06T19:53:54.378Z",
-  "range": "main..HEAD",
+  "generated_at": "2026-11-08T05:22:33.817Z",
+  "range": null,
   "checks": [
     {
       "key": "evaluator",
       "file": "evaluator-report.md",
-      "status": "fail",
-      "pass": false,
+      "status": "pass",
+      "pass": true,
       "optional": false,
       "detail": null,
       "summary": null
@@ -25,10 +25,15 @@
     {
       "key": "security",
       "file": "security-verdict.json",
-      "status": "skipped",
+      "status": "pass",
       "pass": true,
       "optional": true,
-      "detail": "not present"
+      "detail": {
+        "block": 0,
+        "warn": 8,
+        "info": 8
+      },
+      "summary": null
     },
     {
       "key": "security_scan",
@@ -41,18 +46,20 @@
     {
       "key": "ownership",
       "file": "ownership-check.json",
-      "status": "skipped",
-      "pass": true,
+      "status": "fail",
+      "pass": false,
       "optional": true,
-      "detail": "not present"
+      "detail": null,
+      "summary": null
     },
     {
       "key": "regression",
       "file": "regression-gate-verdict.json",
-      "status": "skipped",
-      "pass": true,
+      "status": "fail",
+      "pass": false,
       "optional": true,
-      "detail": "not present"
+      "detail": "blocked",
+      "summary": null
     },
     {
       "key": "contract_drift",
@@ -91,18 +98,26 @@
     {
       "key": "observability",
       "file": "observability-verdict.json",
-      "status": "skipped",
+      "status": "pass",
       "pass": true,
       "optional": true,
-      "detail": "not present"
+      "detail": {
+        "block": 0,
+        "warn": 29
+      },
+      "summary": null
     },
     {
       "key": "perf_smell",
       "file": "perf-smell-verdict.json",
-      "status": "skipped",
-      "pass": true,
+      "status": "fail",
+      "pass": false,
       "optional": true,
-      "detail": "not present"
+      "detail": {
+        "block": 1,
+        "warn": 0
+      },
+      "summary": null
     },
     {
       "key": "slo",
@@ -135,9 +150,9 @@
     "specs/brownfield/symbol-map.md"
   ],
   "summary": {
-    "pass": 2,
-    "fail": 1,
+    "pass": 5,
+    "fail": 3,
     "missing": 1,
-    "skipped": 10
+    "skipped": 5
   }
 }

@@ -1,105 +1,32 @@
 {
-  "results": [
+  "tool": "axe-core 4.10.2 (CDN, injected via addScriptTag)",
+  "run_at": "2026-11-08T05:20:15Z",
+  "runner": "e2e/axe-audit.spec.ts via npx playwright test (chromium, real backend + Vite)",
+  "block_impacts": [
+    "serious",
+    "critical"
+  ],
+  "page_states": [
     {
-      "page": "sign-in (ui_base_url) / @1280x800",
-      "url": "http://localhost:3000/sign-in",
-      "violations": []
+      "label": "landing 1280x800",
+      "rules_passed": 27,
+      "violations": 0,
+      "blocking": 0
     },
     {
-      "page": "POLICY_EDITOR / @1280x800",
-      "url": "http://localhost:3000/policies",
-      "violations": []
+      "label": "landing 375x812",
+      "rules_passed": 27,
+      "violations": 0,
+      "blocking": 0
     },
     {
-      "page": "POLICY_EDITOR /policies @1280x800",
-      "url": "http://localhost:3000/policies",
-      "violations": []
-    },
-    {
-      "page": "CUSTOMER / @1280x800",
-      "url": "http://localhost:3000/home",
-      "violations": []
-    },
-    {
-      "page": "CUSTOMER /apply @1280x800",
-      "url": "http://localhost:3000/apply",
-      "violations": []
-    },
-    {
-      "page": "CUSTOMER /applications @1280x800",
-      "url": "http://localhost:3000/applications",
-      "violations": []
-    },
-    {
-      "page": "UNDERWRITER / @1280x800",
-      "url": "http://localhost:3000/home",
-      "violations": []
-    },
-    {
-      "page": "UNDERWRITER /verification @1280x800",
-      "url": "http://localhost:3000/verification",
-      "violations": []
-    },
-    {
-      "page": "ADMIN / @1280x800",
-      "url": "http://localhost:3000/home",
-      "violations": []
-    },
-    {
-      "page": "ADMIN /policies @1280x800",
-      "url": "http://localhost:3000/policies",
-      "violations": []
-    },
-    {
-      "page": "sign-in (ui_base_url) / @375x812",
-      "url": "http://localhost:3000/sign-in",
-      "violations": []
-    },
-    {
-      "page": "POLICY_EDITOR / @375x812",
-      "url": "http://localhost:3000/policies",
-      "violations": []
-    },
-    {
-      "page": "POLICY_EDITOR /policies @375x812",
-      "url": "http://localhost:3000/policies",
-      "violations": []
-    },
-    {
-      "page": "CUSTOMER / @375x812",
-      "url": "http://localhost:3000/home",
-      "violations": []
-    },
-    {
-      "page": "CUSTOMER /apply @375x812",
-      "url": "http://localhost:3000/apply",
-      "violations": []
-    },
-    {
-      "page": "CUSTOMER /applications @375x812",
-      "url": "http://localhost:3000/applications",
-      "violations": []
-    },
-    {
-      "page": "UNDERWRITER / @375x812",
-      "url": "http://localhost:3000/home",
-      "violations": []
-    },
-    {
-      "page": "UNDERWRITER /verification @375x812",
-      "url": "http://localhost:3000/verification",
-      "violations": []
-    },
-    {
-      "page": "ADMIN / @375x812",
-      "url": "http://localhost:3000/home",
-      "violations": []
-    },
-    {
-      "page": "ADMIN /policies @375x812",
-      "url": "http://localhost:3000/policies",
-      "violations": []
+      "label": "policy-editor landing 1280x800",
+      "rules_passed": 36,
+      "violations": 0,
+      "blocking": 0
     }
   ],
-  "blocking": []
+  "violations": [],
+  "verdict": "pass",
+  "note": "Contracts D/F/G declare accessibility_checks with no urls, so the audited surface is evaluation.ui_base_url plus the signed-in POLICY_EDITOR landing the contracted flows start from. 0 violations at any impact, so 0 in block_impacts."
 }

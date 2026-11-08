@@ -15,7 +15,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -35,7 +35,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -54,7 +54,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -73,7 +73,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -92,10 +92,10 @@
       "Assert GET /health declares the auth dependency"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
-    "failure_reason": "QA-VM-005 (VM-005): GET /openapi.json is 200 and every schema route except POST /api/auth/login and GET /health declares the auth dependency, but the contract check also requires /api/_test/boom to require ADMIN and it does not -- a CUSTOMER or POLICY_EDITOR token triggers the unhandled 500 (observed 500 for both). The route is authenticated (401 anonymous), not role-gated.",
-    "failure_layer": "api"
+    "passes": true,
+    "last_evaluated": "2026-11-08T05:20:15Z",
+    "failure_reason": null,
+    "failure_layer": null
   },
   {
     "id": "F006",
@@ -113,7 +113,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -133,7 +133,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -152,7 +152,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -171,7 +171,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -190,7 +190,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -211,7 +211,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -230,7 +230,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -249,10 +249,10 @@
       "Assert the filename does not"
     ],
     "verification": "default",
-    "passes": false,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
-    "failure_reason": "QA-VM-013 (VM-013): POST /api/applications/{id}/documents with filename salary_slip_jan.pdf is 201 and the filename never reaches the logs (correct), but no captured log line carries the document id (request_handled logs only ts/level/event/correlation_id/method/path/status/duration_ms), so the \"document ID appears\" half of E1-S3-AC4 is unmet.",
-    "failure_layer": "api"
+    "passes": true,
+    "last_evaluated": "2026-11-08T05:20:15Z",
+    "failure_reason": null,
+    "failure_layer": null
   },
   {
     "id": "F014",
@@ -271,7 +271,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -290,7 +290,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -310,7 +310,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -330,7 +330,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -349,7 +349,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -369,7 +369,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -388,7 +388,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -407,7 +407,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -428,7 +428,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -447,7 +447,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -466,7 +466,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -485,7 +485,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -505,7 +505,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -524,7 +524,7 @@
     ],
     "verification": "characterization",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -545,7 +545,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -564,7 +564,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -584,7 +584,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -603,7 +603,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -623,7 +623,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -643,7 +643,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -662,7 +662,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -683,7 +683,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -702,7 +702,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -721,7 +721,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -741,7 +741,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -761,7 +761,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -781,7 +781,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -801,7 +801,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -821,7 +821,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -840,7 +840,7 @@
     ],
     "verification": "characterization",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -860,7 +860,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -879,7 +879,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -899,7 +899,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -919,7 +919,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -939,7 +939,7 @@
     ],
     "verification": "characterization",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -959,7 +959,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -979,7 +979,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -998,7 +998,7 @@
     ],
     "verification": "characterization",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1019,7 +1019,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1039,7 +1039,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1058,7 +1058,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1078,7 +1078,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1098,7 +1098,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1118,7 +1118,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1138,7 +1138,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1158,7 +1158,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1177,7 +1177,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1197,7 +1197,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1217,7 +1217,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1237,7 +1237,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1257,7 +1257,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1277,7 +1277,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1297,7 +1297,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1317,7 +1317,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1337,7 +1337,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1356,7 +1356,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1376,7 +1376,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1395,7 +1395,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1415,7 +1415,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   },
@@ -1435,7 +1435,7 @@
     ],
     "verification": "default",
     "passes": true,
-    "last_evaluated": "2026-11-06T17:31:37.117Z",
+    "last_evaluated": "2026-11-08T05:20:15Z",
     "failure_reason": null,
     "failure_layer": null
   }

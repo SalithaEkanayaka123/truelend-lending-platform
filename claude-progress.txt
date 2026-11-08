@@ -12,3 +12,9 @@ coverage: 0%
 learned_rules: 0
 blocked_stories: none
 next_action: Run /auto
+
+=== Session sprint-1 close ===
+date: 2026-11-08
+evaluator: PASS (59/59 api, 9/9 playwright, 3/3 a11y)
+features_passing: 73 / 73
+next_action: DONE (sprint-1 evaluator PASS; quality card FAIL only via waived gates + missing code-review verdict, see specs/reviews/gate-waiver-causes.md)

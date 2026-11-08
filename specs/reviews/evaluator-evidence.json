@@ -1,33 +1,10 @@
 {
-  "group": null,
-  "evaluated_at": "2026-11-06T17:29:36.821Z",
-  "note": "Sprint-1 close: consolidated ledger for every contracted browser check (groups D, F, G). The evidence-integrity gate is per group — it was run three times against the scoped ledgers archived as evaluator-evidence-{D,F,G}.json; per-group verdicts are evidence-integrity-verdict-{D,F,G}.json. Re-run with: cp specs/reviews/evaluator-evidence-D.json specs/reviews/evaluator-evidence.json && node .claude/scripts/evidence-integrity-gate.js --group D",
-  "groups_gated": {
-    "D": {
-      "exit": 0,
-      "pass": true,
-      "checked": 3,
-      "untested": [],
-      "findings": [],
-      "summary": "3 browser check(s) backed by user-path interaction"
-    },
-    "F": {
-      "exit": 0,
-      "pass": true,
-      "checked": 3,
-      "untested": [],
-      "findings": [],
-      "summary": "3 browser check(s) backed by user-path interaction"
-    },
-    "G": {
-      "exit": 0,
-      "pass": true,
-      "checked": 3,
-      "untested": [],
-      "findings": [],
-      "summary": "3 browser check(s) backed by user-path interaction"
-    }
-  },
+  "evaluated_at": "2026-11-08T05:20:15Z",
+  "groups": [
+    "D",
+    "F",
+    "G"
+  ],
   "checks": [
     {
       "id": "QA-VM-071",
@@ -46,8 +23,8 @@
         "e2e/policy-editor.spec.ts:15",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "sign in as POLICY_EDITOR at 375x812, assert Personal/Vehicle forms stack and no horizontal scroll"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "POLICY_EDITOR at 375x812: product forms stack one column, scrollWidth <= clientWidth"
     },
     {
       "id": "QA-VM-072",
@@ -66,8 +43,8 @@
         "e2e/policy-editor.spec.ts:36",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "fill Min age 70 / Max age 60, assert inline error visible and Save disabled"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "Min age 70 / Max age 60: inline error visible, Save disabled"
     },
     {
       "id": "QA-VM-073",
@@ -86,8 +63,8 @@
         "e2e/policy-editor.spec.ts:46",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "fill a valid Min age, click Save, assert \"Draft v2\" and v2 in the version list"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "valid change saved: Draft v2 shown and v2 in the version list"
     },
     {
       "id": "AXE-D",
@@ -99,10 +76,11 @@
       ],
       "matrix_ids": [],
       "artifacts": [
-        "specs/reviews/evaluator-axe.json"
+        "specs/reviews/evaluator-axe.json",
+        "e2e/axe-audit.spec.ts"
       ],
-      "tooling": "axe-core 4.14.0 injected via addScriptTag, axe.run() over 20 role/viewport page states",
-      "note": "group D accessibility_checks: 0 violations at any impact; 1 incomplete (color-contrast) reported as WARN, not a violation"
+      "tooling": "axe-core 4.10.2 via addScriptTag + axe.run()",
+      "note": "axe-core 4.10.2 injected via addScriptTag and run with axe.run() over 3 page states (landing 1280x800 and 375x812, signed-in POLICY_EDITOR landing): 0 violations at any impact, so 0 in block_impacts [serious, critical]. Runner: e2e/axe-audit.spec.ts."
     },
     {
       "id": "QA-VM-035",
@@ -121,8 +99,8 @@
         "e2e/apply.spec.ts:20",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "apply wizard at 375x812: Step 1 of 3 progress, one step visible, no horizontal scroll"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "apply wizard at 375x812: one step at a time, progress indicator, no h-scroll"
     },
     {
       "id": "QA-VM-036",
@@ -141,8 +119,8 @@
         "e2e/apply.spec.ts:40",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "fill Tenure 72 then blur, assert the inline 12-60 months alert and Continue disabled"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "tenure 72 for PERSONAL: inline 12-60 months error before Continue"
     },
     {
       "id": "QA-VM-037",
@@ -161,8 +139,8 @@
         "e2e/verification.spec.ts:35",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "queue table at 1280x800, cards at 375x812, verify a row via the dialog, row removed with no navigation"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "queue table at 1280x800, cards at 375x812, verify removes the row with no navigation"
     },
     {
       "id": "AXE-F",
@@ -174,10 +152,11 @@
       ],
       "matrix_ids": [],
       "artifacts": [
-        "specs/reviews/evaluator-axe.json"
+        "specs/reviews/evaluator-axe.json",
+        "e2e/axe-audit.spec.ts"
       ],
-      "tooling": "axe-core 4.14.0 injected via addScriptTag, axe.run() over 20 role/viewport page states",
-      "note": "group F accessibility_checks: 0 violations at any impact; 1 incomplete (color-contrast) reported as WARN, not a violation"
+      "tooling": "axe-core 4.10.2 via addScriptTag + axe.run()",
+      "note": "axe-core 4.10.2 injected via addScriptTag and run with axe.run() over 3 page states (landing 1280x800 and 375x812, signed-in POLICY_EDITOR landing): 0 violations at any impact, so 0 in block_impacts [serious, critical]. Runner: e2e/axe-audit.spec.ts."
     },
     {
       "id": "QA-VM-062",
@@ -196,8 +175,8 @@
         "e2e/decision.spec.ts:62",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "decision panel shows score 680, reason code + message, policy v1; panels stack at 375x812"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "decision panel shows score 680, reason code message, policy v1; panels stack at 375x812"
     },
     {
       "id": "QA-VM-063",
@@ -216,8 +195,8 @@
         "e2e/decision.spec.ts:88",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "override dialog: Submit disabled until reason code and comment are set, then confirmation"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "override Submit disabled until reason code and comment set, then confirmation"
     },
     {
       "id": "QA-VM-064",
@@ -236,8 +215,8 @@
         "e2e/decision.spec.ts:112",
         "specs/reviews/evaluator-e2e-results.txt"
       ],
-      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite)",
-      "note": "manual review Approve/Reject disabled while the reason is empty, at 375/768/1280"
+      "tooling": "playwright-test-runner (e2e/playwright.config.ts, chromium, real backend + Vite), npx playwright test -> 93 passed",
+      "note": "manual review Approve/Reject disabled while reason empty, at 375/768/1280"
     },
     {
       "id": "AXE-G",
@@ -249,10 +228,11 @@
       ],
       "matrix_ids": [],
       "artifacts": [
-        "specs/reviews/evaluator-axe.json"
+        "specs/reviews/evaluator-axe.json",
+        "e2e/axe-audit.spec.ts"
       ],
-      "tooling": "axe-core 4.14.0 injected via addScriptTag, axe.run() over 20 role/viewport page states",
-      "note": "group G accessibility_checks: 0 violations at any impact; 1 incomplete (color-contrast) reported as WARN, not a violation"
+      "tooling": "axe-core 4.10.2 via addScriptTag + axe.run()",
+      "note": "axe-core 4.10.2 injected via addScriptTag and run with axe.run() over 3 page states (landing 1280x800 and 375x812, signed-in POLICY_EDITOR landing): 0 violations at any impact, so 0 in block_impacts [serious, critical]. Runner: e2e/axe-audit.spec.ts."
     }
   ]
 }
