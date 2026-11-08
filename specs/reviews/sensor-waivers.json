@@ -69,6 +69,20 @@
       "reason": "Harness receipts not produced: the sequential implementer subagents ran pytest, ruff and mypy directly (47 passed, 1 xfailed) but left no red-phase, at-red or context-pack receipt.",
       "expires": "2026-11-30",
       "approved_by": "Salitha Ekanayaka (user, standing authorization for procedural gates, sprint-1)"
+    },
+    {
+      "sensor_id": "regression-suite-full",
+      "scope": "sprint-1: replay of sprint-contracts/*.json api_checks (bare requests, status 0 = no live server/token)",
+      "reason": "Contract/gate mismatch, not a product defect: replayed api_checks carry no body or token and fixed expected statuses; backend pytest (203 tests) and e2e cover the behaviour. Evidence: specs/reviews/regression-gate-verdict.json, specs/reviews/gate-waiver-causes.md",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, explicit decision in-session 2026-11-08: waiver authority for evidence-integrity, perf-smell, regression-suite-full)"
+    },
+    {
+      "sensor_id": "perf-smell",
+      "scope": "backend/src/truelend/config/db.py:108 PERF-N1-LOOP-QUERY (seed_users)",
+      "reason": "False positive: startup seed loops over a constant 5-row tuple with INSERT OR IGNORE, one commit; not a request path. Evidence: specs/reviews/perf-smell-verdict.json, specs/reviews/gate-waiver-causes.md",
+      "expires": "2026-11-30",
+      "approved_by": "Salitha Ekanayaka (user, explicit decision in-session 2026-11-08: waiver authority for evidence-integrity, perf-smell, regression-suite-full)"
     }
   ]
 }
