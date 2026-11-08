@@ -140,6 +140,43 @@ def _upload_all(conn: sqlite3.Connection, app_id: int) -> None:
         )
 
 
+def _submit_and_verify_id_proof(conn: sqlite3.Connection, policies_dir: Path, app_id: int) -> None:
+    _upload_all(conn, app_id)
+    document_service.submit_application(
+        conn, _FixedClock(), app_id, principal=_Principal(_OWNER_ID), policies_dir=policies_dir
+    )
+    conn.execute(
+        "UPDATE application_documents SET status = 'VERIFIED'"
+        " WHERE application_id = ? AND type = 'ID_PROOF'",
+        (app_id,),
+    )
+    conn.commit()
+
+
+def test_e3_s1_ac5_reupload_after_submission_is_rejected_and_verified_stays_final(
+    tmp_path: Path,
+) -> None:
+    """CR-001: a VERIFIED document can never return to UPLOADED."""
+    conn, policies_dir = _conn(tmp_path)
+    app_id = _create_application(conn, policies_dir)
+    _submit_and_verify_id_proof(conn, policies_dir, app_id)
+    with pytest.raises(AlreadySubmittedError):
+        document_service.upload_document(
+            conn,
+            _FixedClock(),
+            app_id,
+            document_type="ID_PROOF",
+            filename="swapped.png",
+            principal=_Principal(_OWNER_ID),
+        )
+    row = conn.execute(
+        "SELECT status, filename FROM application_documents"
+        " WHERE application_id = ? AND type = 'ID_PROOF'",
+        (app_id,),
+    ).fetchone()
+    assert row == ("VERIFIED", "id.png")
+
+
 def test_submit_with_missing_document_raises_missing_documents(tmp_path: Path) -> None:
     conn, policies_dir = _conn(tmp_path)
     app_id = _create_application(conn, policies_dir)

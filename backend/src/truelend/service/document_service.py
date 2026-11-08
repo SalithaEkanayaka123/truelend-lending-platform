@@ -42,6 +42,8 @@ def upload_document(
     application's checklist -> `DocumentTypeNotRequiredError` (AC2).
     Re-uploading a REJECTED document resets it to UPLOADED (AC1)."""
     view = get_for_owner(conn, application_id, principal)
+    if view.status != "DRAFT":
+        raise AlreadySubmittedError()
     if not any(item.type == document_type for item in view.required_documents):
         raise DocumentTypeNotRequiredError(document_type)
     uploaded_at = clock.now().astimezone(UTC).isoformat()
