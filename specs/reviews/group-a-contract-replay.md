@@ -19,5 +19,4 @@ The gate sends bare requests (no body, no token) and compares only the status co
 | QA-VM-043..047 | POST /api/applications/1/underwrite | 200 | 404 | scoring is a pure function in group A; endpoint owned by a later group |
 
 Result: 2 pass, 13 fail. Behaviour for the failing rows is covered by the pytest suite
-(47 passed, 1 xfailed: `test_e1_s1_ac4_customer_forbidden_on_audit` until E1-S2 adds /api/audit)
 and is to be re-verified by the final evaluator.
