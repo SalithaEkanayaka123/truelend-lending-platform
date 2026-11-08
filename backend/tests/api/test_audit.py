@@ -34,9 +34,8 @@ def _audited(
 def test_e1_s2_ac1_audit_row_matches_actor_entity_and_correlation_id(
     client: TestClient, login: Callable[[str], dict[str, str]]
 ) -> None:
-    underwriter = login("underwriter@example.test")
     admin = login("admin@example.test")
-    r = _audited(client, underwriter, entity_id=7)
+    r = _audited(client, admin, entity_id=7)
     assert r.status_code == 200
     correlation_id = r.headers["X-Correlation-ID"]
 
@@ -44,18 +43,17 @@ def test_e1_s2_ac1_audit_row_matches_actor_entity_and_correlation_id(
         "/api/audit", headers=admin, params={"entity_type": "application", "entity_id": 7}
     ).json()
     entry = body["items"][0]
-    assert entry["actor_user_id"] == 3
-    assert entry["actor_role"] == "UNDERWRITER"
+    assert entry["actor_user_id"] == 1
+    assert entry["actor_role"] == "ADMIN"
     assert entry["correlation_id"] == correlation_id
 
 
 def test_e1_s2_ac3_action_filter_narrows_results(
     client: TestClient, login: Callable[[str], dict[str, str]]
 ) -> None:
-    underwriter = login("underwriter@example.test")
     admin = login("admin@example.test")
-    _audited(client, underwriter, entity_id=10, action="REVIEW_APPROVED")
-    _audited(client, underwriter, entity_id=10, action="REVIEW_REJECTED")
+    _audited(client, admin, entity_id=10, action="REVIEW_APPROVED")
+    _audited(client, admin, entity_id=10, action="REVIEW_REJECTED")
 
     body = client.get(
         "/api/audit",
@@ -69,9 +67,8 @@ def test_e1_s2_ac3_action_filter_narrows_results(
 def test_e1_s2_ac4_failed_action_leaves_no_audit_row(
     client: TestClient, login: Callable[[str], dict[str, str]]
 ) -> None:
-    underwriter = login("underwriter@example.test")
     admin = login("admin@example.test")
-    r = _audited(client, underwriter, entity_id=99, fail=True)
+    r = _audited(client, admin, entity_id=99, fail=True)
     assert r.status_code == 409
     assert r.json()["error"]["code"] == "TEST_CONFLICT"
 

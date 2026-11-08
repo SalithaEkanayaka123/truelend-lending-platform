@@ -19,7 +19,7 @@ def _call(client: TestClient, path: str, headers: dict[str, str] | None = None) 
 
 
 @pytest.mark.parametrize("path", ["/api/_test/boom", "/api/_test/audited-action"])
-@pytest.mark.parametrize("email", ["customer1@example.test", "policy_editor@example.test"])
+@pytest.mark.parametrize("email", ["customer1@example.test", "policy@example.test"])
 def test_e1_s1_ac5_test_routes_forbid_non_admin(
     client: TestClient, login: Callable[[str], dict[str, str]], path: str, email: str
 ) -> None:

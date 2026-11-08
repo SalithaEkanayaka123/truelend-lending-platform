@@ -7,6 +7,7 @@ operations commit in a single transaction.
 
 from __future__ import annotations
 
+import logging
 import sqlite3
 from datetime import UTC
 from pathlib import Path
@@ -21,6 +22,8 @@ from truelend.types.errors import (
     DocumentTypeNotRequiredError,
     MissingDocumentsError,
 )
+
+_logger = logging.getLogger("truelend.events")
 
 _NOT_YET_ACCEPTABLE: frozenset[DocumentStatus] = frozenset({"MISSING", "REJECTED"})
 
@@ -44,7 +47,20 @@ def upload_document(
     uploaded_at = clock.now().astimezone(UTC).isoformat()
     documents_repo.mark_uploaded(conn, application_id, document_type, filename, uploaded_at)
     conn.commit()
-    return get_for_owner(conn, application_id, principal)
+    updated = get_for_owner(conn, application_id, principal)
+    uploaded = next(item for item in updated.required_documents if item.type == document_type)
+    # Ids and type only: the filename is never logged (NFR-03).
+    _logger.info(
+        "DocumentUploaded",
+        extra={
+            "fields": {
+                "application_id": application_id,
+                "document_id": uploaded.document_id,
+                "document_type": document_type,
+            }
+        },
+    )
+    return updated
 
 
 def submit_application(

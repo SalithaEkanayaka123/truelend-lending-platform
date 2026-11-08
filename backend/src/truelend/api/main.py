@@ -30,7 +30,7 @@ from truelend.api import (
     products_router,
     review_router,
 )
-from truelend.api.deps import get_clock, get_conn, get_current_principal
+from truelend.api.deps import get_clock, get_conn, require_roles
 from truelend.api.middleware import CorrelationIdLoggingMiddleware
 from truelend.config.db import get_connection, run_migrations, seed_users
 from truelend.config.errors import CODE_BY_STATUS, error_envelope, status_for_domain_error
@@ -125,7 +125,7 @@ def _register_test_boom_route(app: FastAPI, settings: Settings) -> None:
     @app.get(
         "/api/_test/boom",
         include_in_schema=False,
-        dependencies=[Depends(get_current_principal)],
+        dependencies=[Depends(require_roles("ADMIN"))],
     )
     async def _boom() -> None:
         raise RuntimeError("boom")
@@ -176,7 +176,7 @@ def _register_test_audit_route(app: FastAPI, settings: Settings) -> None:
     def _audited_action(
         body: _TestAuditedActionRequest,
         request: Request,
-        principal: AuthPrincipal = Depends(get_current_principal),
+        principal: AuthPrincipal = Depends(require_roles("ADMIN")),
         conn: sqlite3.Connection = Depends(get_conn),
         clock: Clock = Depends(get_clock),
     ) -> dict[str, str]:
