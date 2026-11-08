@@ -1,0 +1,18 @@
+{
+  "gate": "perf-smell",
+  "pass": false,
+  "checked": 109,
+  "summary": {
+    "block": 1,
+    "warn": 0
+  },
+  "findings": [
+    {
+      "id": "PERF-N1-LOOP-QUERY",
+      "level": "BLOCK",
+      "file": "backend/src/truelend/config/db.py",
+      "line": 108,
+      "message": "Query/await inside loop — likely N+1; batch or eager-load"
+    }
+  ]
+}

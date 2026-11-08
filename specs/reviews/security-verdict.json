@@ -1,0 +1,168 @@
+{
+  "gate": "security",
+  "pass": true,
+  "block_severities": ["critical", "high"],
+  "summary": { "block": 0, "warn": 8, "info": 8 },
+  "findings": [
+    {
+      "id": "VULN-001",
+      "severity": "medium",
+      "level": "WARN",
+      "category": "secrets-configuration",
+      "file": "backend/src/truelend/config/settings.py",
+      "line": 18,
+      "description": "HS256 signing key falls back to a repo-committed literal when TRUELEND_JWT_SECRET is unset, with no guard or warning for non-dev environments; a forged token for subject 1 would grant ADMIN. Refuted from BLOCK because no deployed surface exists in this range (deploy workflow is an inert placeholder, no docker-compose/.env) and deployment.md documents the value as a dev-only fallback.",
+      "fix": "Raise at startup when the resolved secret equals the built-in default and env is not dev/test; enforce a minimum key length."
+    },
+    {
+      "id": "VULN-002",
+      "severity": "medium",
+      "level": "WARN",
+      "category": "secrets-configuration",
+      "file": "backend/src/truelend/config/db.py",
+      "line": 21,
+      "description": "One hardcoded password is shared by all five seeded accounts (including ADMIN) and seed_users runs unconditionally in the app lifespan for every TRUELEND_ENV; the same literal is published in README.md. Refuted from BLOCK because seeded synthetic demo accounts with a README password are a specified acceptance criterion (specs/features/F0-platform.md:44) and no instance is deployed.",
+      "fix": "Skip seeding, or source per-account passwords from TRUELEND_SEED_PASSWORD, whenever env is not dev/test."
+    },
+    {
+      "id": "VULN-003",
+      "severity": "medium",
+      "level": "WARN",
+      "category": "authentication",
+      "file": "backend/src/truelend/api/auth_router.py",
+      "line": 40,
+      "description": "POST /api/auth/login has no per-IP or per-account rate limiting, backoff or lockout; seeded account emails are documented, enabling unlimited online password guessing and scrypt-driven CPU exhaustion against the p95 SLO.",
+      "fix": "Add per-IP and per-email rate limiting with exponential backoff plus a temporary lockout counter."
+    },
+    {
+      "id": "VULN-004",
+      "severity": "medium",
+      "level": "WARN",
+      "category": "information-disclosure",
+      "file": "backend/src/truelend/api/main.py",
+      "line": 189,
+      "description": "FastAPI defaults are kept, so /openapi.json, /docs and /redoc are world-readable and publish the full route table, schemas, role model and error codes to anonymous callers.",
+      "fix": "Set docs_url/redoc_url/openapi_url to None outside dev/test, or gate them behind require_roles(\"ADMIN\")."
+    },
+    {
+      "id": "VULN-005",
+      "severity": "medium",
+      "level": "WARN",
+      "category": "infrastructure",
+      "file": "backend/src/truelend/api/middleware.py",
+      "line": 41,
+      "description": "No Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, Referrer-Policy or HSTS on any response; the same origin also serves the Swagger UI HTML, so there is no defence-in-depth behind React escaping.",
+      "fix": "Add a response-header middleware setting nosniff, X-Frame-Options: DENY, a restrictive CSP, and HSTS under TLS."
+    },
+    {
+      "id": "VULN-006",
+      "severity": "medium",
+      "level": "WARN",
+      "category": "dependencies",
+      "file": "frontend/package.json",
+      "line": 33,
+      "description": "npm audit reports 3 critical and 1 high advisory (18 total) in devDependencies: tinypool prototype-pollution-to-RCE, vitest/@vitest/mocker arbitrary file read and code execution, vite path traversal, server.fs.deny bypass and cross-origin script execution, esbuild dev-server request issue. Dev/CI machines only - no production runtime path - and the fixes are breaking majors, hence WARN not BLOCK.",
+      "fix": "Schedule the vite/vitest/@vitest/coverage-v8 major upgrade, keep npm audit in CI, and do not expose the dev server or Vitest UI beyond localhost."
+    },
+    {
+      "id": "VULN-007",
+      "severity": "medium",
+      "level": "WARN",
+      "category": "input-validation",
+      "file": "backend/src/truelend/api/policies_router.py",
+      "line": 34,
+      "description": "Policy money fields (min_income, min_amount, max_amount, annual_rate_pct) are bare strings passed to Decimal() in policy_service.py:277; non-numeric input yields an unhandled 500 and NaN/Infinity pass every comparison check, letting a non-finite threshold be written into a policy file and later approved, after which underwriting range checks silently stop behaving as intended.",
+      "fix": "Constrain the fields with Field(pattern=\"^[0-9]+\\\\.[0-9]{2}$\"), reject non-finite Decimals, and map parse failures to PolicyFieldValidationError."
+    },
+    {
+      "id": "VULN-008",
+      "severity": "medium",
+      "level": "WARN",
+      "category": "data-protection",
+      "file": "backend/src/truelend/repository/applications_repo.py",
+      "line": 20,
+      "description": "Raw PAN and Aadhaar are stored in cleartext in the SQLite file with no column encryption, key management or retention path. Verified compensating controls: masked on every read, never returned raw, never logged, synthetic data only.",
+      "fix": "Encrypt or keyed-hash the pan/aadhaar columns with a key from the environment before any non-synthetic data, restrict DB file permissions, and document retention."
+    },
+    {
+      "id": "VULN-009",
+      "severity": "low",
+      "level": "INFO",
+      "category": "crypto",
+      "file": "backend/src/truelend/config/db.py",
+      "line": 53,
+      "description": "verify_password compares scrypt output with `==` (early-exit) rather than a constant-time function, inconsistent with the timing-flat login path built around _DUMMY_HASH.",
+      "fix": "Use hmac.compare_digest for the hash comparison."
+    },
+    {
+      "id": "VULN-010",
+      "severity": "low",
+      "level": "INFO",
+      "category": "information-disclosure",
+      "file": "backend/src/truelend/types/errors.py",
+      "line": 150,
+      "description": "PolicyPathTraversalError (and POLICY_CHECKSUM_MISMATCH) map to HTTP 500 but the DomainError handler returns str(exc), embedding the absolute server policy file path in the response envelope.",
+      "fix": "Return the generic 500 message for 5xx-mapped domain errors and keep details in the redacted log line."
+    },
+    {
+      "id": "VULN-011",
+      "severity": "low",
+      "level": "INFO",
+      "category": "authorization",
+      "file": "backend/src/truelend/api/main.py",
+      "line": 166,
+      "description": "The /api/_test/audited-action fixture writes caller-chosen rows into the append-only audit log. F005 fixed the authz gap (ADMIN only) and the route mounts only under TRUELEND_ENV=test, so audit integrity now depends on that env value never being test outside the harness.",
+      "fix": "Require a non-production build marker as well, or move the fixture out of the production app factory."
+    },
+    {
+      "id": "VULN-012",
+      "severity": "low",
+      "level": "INFO",
+      "category": "authentication",
+      "file": "backend/src/truelend/service/auth_service.py",
+      "line": 88,
+      "description": "Stateless 1800 s tokens with no jti or deny-list; logout only clears the in-memory client token, so a stolen token stays valid and role changes or account disables are not honoured until expiry.",
+      "fix": "Add a token version/jti checked in resolve_principal, or shorten the lifetime with refresh."
+    },
+    {
+      "id": "VULN-013",
+      "severity": "low",
+      "level": "INFO",
+      "category": "input-validation",
+      "file": "backend/src/truelend/api/applications_router.py",
+      "line": 59,
+      "description": "UploadDocumentRequest.filename has min_length=1 but no maximum, so an unbounded string is persisted and later rendered in the verification UI. No injection results (never logged, never used in a path, React escapes it).",
+      "fix": "Add max_length=255 and optionally a conservative filename pattern."
+    },
+    {
+      "id": "VULN-014",
+      "severity": "low",
+      "level": "INFO",
+      "category": "network",
+      "file": "backend/src/truelend/api/main.py",
+      "line": 193,
+      "description": "No CORS middleware today, which is the safe state (the SPA uses relative /api paths via the Vite dev proxy). Recorded so the cross-origin deployment step does not reach for a wildcard origin.",
+      "fix": "When serving the SPA cross-origin, configure CORS with an explicit origin allowlist and no wildcard with credentials."
+    },
+    {
+      "id": "VULN-015",
+      "severity": "low",
+      "level": "INFO",
+      "category": "secrets-configuration",
+      "file": "backend/tests/conftest.py",
+      "line": 15,
+      "description": "Test and e2e fixtures embed/import the demo credential. Expected for fixtures; logged only because the same literal is the production seed credential tracked as VULN-002.",
+      "fix": "After VULN-002 is gated, have fixtures source the password from an env var set by the test harness."
+    },
+    {
+      "id": "VULN-016",
+      "severity": "low",
+      "level": "INFO",
+      "category": "robustness",
+      "file": "backend/src/truelend/service/underwriting_service.py",
+      "line": 105,
+      "description": "assert is used for runtime invariants inside request handlers and services (also api/main.py:92,99,105 and policy_service.py:214,243). None guard authorization, so there is no python -O auth bypass, but -O would strip the pinned-policy_version invariant and let None flow into the decision path.",
+      "fix": "Replace request-path asserts with explicit domain-error raises, or document that -O is unsupported."
+    }
+  ]
+}

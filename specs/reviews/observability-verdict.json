@@ -1,0 +1,214 @@
+{
+  "gate": "observability",
+  "pass": true,
+  "checked": 109,
+  "summary": {
+    "block": 0,
+    "warn": 29
+  },
+  "findings": [
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/applications_router.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/audit_router.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/auth_router.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/deps.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/documents_router.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/health_router.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/main.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/policies_router.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/products_router.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "backend/src/truelend/api/review_router.py",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-MIDDLEWARE-NO-REQUEST-ID",
+      "level": "WARN",
+      "file": "backend/src/truelend/service/underwriting_service.py",
+      "line": 1,
+      "message": "HTTP middleware without request_id / X-Request-ID correlation"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/config/homeCards.ts",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/config/roleRoutes.ts",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/config/routeTitles.ts",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/repository/applicationIdsStore.ts",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/repository/applyRepo.ts",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/repository/reviewRepo.ts",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/service/useMyApplications.ts",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/service/usePolicyEditor.ts",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/types/policy.ts",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/ui/App.tsx",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/ui/components/AppShell.tsx",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/ui/components/FullPageState.tsx",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/ui/pages/ApplyPage.tsx",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/ui/pages/HomePage.tsx",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/ui/pages/LoginPage.tsx",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/ui/pages/MyApplicationsPage.tsx",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/ui/pages/ReviewPage.tsx",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    },
+    {
+      "id": "OBS-BOUNDARY-NO-LOGGER",
+      "level": "WARN",
+      "file": "frontend/src/ui/pages/TrackPage.tsx",
+      "line": 1,
+      "message": "Likely service boundary without structured logger usage"
+    }
+  ]
+}

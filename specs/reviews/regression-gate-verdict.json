@@ -1,0 +1,303 @@
+{
+  "verdict": "blocked",
+  "findings": [
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 34,
+      "detail": "api_check \"QA-VM-001\" (POST /api/auth/login): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 44,
+      "detail": "api_check \"QA-VM-002\" (POST /api/auth/login): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 54,
+      "detail": "api_check \"QA-VM-003\" (GET /api/auth/me): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 64,
+      "detail": "api_check \"QA-VM-004\" (GET /api/audit): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 74,
+      "detail": "api_check \"QA-VM-005\" (GET /openapi.json): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 84,
+      "detail": "api_check \"QA-VM-012\" (POST /api/applications): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 94,
+      "detail": "api_check \"QA-VM-013\" (POST /api/applications/{id}/documents): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 104,
+      "detail": "api_check \"QA-VM-014\" (GET /api/_test/boom): expected status 500, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 114,
+      "detail": "api_check \"QA-VM-014-NT\" (GET /api/_test/boom): expected status 404, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 124,
+      "detail": "api_check \"QA-VM-015\" (GET /health): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 134,
+      "detail": "api_check \"QA-VM-043\" (POST /api/applications/1/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 144,
+      "detail": "api_check \"QA-VM-044\" (POST /api/applications/1/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 154,
+      "detail": "api_check \"QA-VM-045\" (POST /api/applications/1/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 164,
+      "detail": "api_check \"QA-VM-046\" (POST /api/applications/1/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\A.json",
+      "line": 174,
+      "detail": "api_check \"QA-VM-047\" (POST /api/applications/1/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\B.json",
+      "line": 21,
+      "detail": "api_check \"QA-VM-006\" (GET /api/audit?entity_type=application&entity_id=7): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\B.json",
+      "line": 31,
+      "detail": "api_check \"QA-VM-007\" (GET /api/audit): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\B.json",
+      "line": 41,
+      "detail": "api_check \"QA-VM-008\" (GET /api/audit?entity_type=application&entity_id=7): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\B.json",
+      "line": 51,
+      "detail": "api_check \"QA-VM-009\" (GET /api/audit?entity_type=application&entity_id=1): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\B.json",
+      "line": 61,
+      "detail": "api_check \"QA-VM-020\" (GET /api/products): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\B.json",
+      "line": 71,
+      "detail": "api_check \"QA-VM-021\" (GET /api/products;): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\B.json",
+      "line": 81,
+      "detail": "api_check \"QA-VM-022\" (GET /api/products;): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\B.json",
+      "line": 91,
+      "detail": "api_check \"QA-VM-023\" (GET /api/products): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\B.json",
+      "line": 101,
+      "detail": "api_check \"QA-VM-024\" (GET /health): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 23,
+      "detail": "api_check \"QA-VM-025\" (POST /api/applications): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 33,
+      "detail": "api_check \"QA-VM-026\" (GET /api/applications/1): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 43,
+      "detail": "api_check \"QA-VM-027\" (POST /api/applications): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 53,
+      "detail": "api_check \"QA-VM-028\" (POST /api/applications): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 63,
+      "detail": "api_check \"QA-VM-029\" (GET /api/applications/1): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 73,
+      "detail": "api_check \"QA-VM-065\" (POST /api/policies): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 83,
+      "detail": "api_check \"QA-VM-066\" (GET /api/products): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 93,
+      "detail": "api_check \"QA-VM-067\" (POST /api/policies/2/approve): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 103,
+      "detail": "api_check \"QA-VM-068\" (PUT /api/policies/1): expected status 405, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 113,
+      "detail": "api_check \"QA-VM-069\" (POST /api/policies/2/approve): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\C.json",
+      "line": 123,
+      "detail": "api_check \"QA-VM-070\" (POST /api/policies): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\D.json",
+      "line": 20,
+      "detail": "api_check \"QA-VM-030\" (POST /api/applications/1/documents): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\D.json",
+      "line": 30,
+      "detail": "api_check \"QA-VM-031\" (POST /api/applications/1/documents): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\D.json",
+      "line": 40,
+      "detail": "api_check \"QA-VM-032\" (POST /api/applications/1/submit): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\D.json",
+      "line": 50,
+      "detail": "api_check \"QA-VM-033\" (POST /api/applications/1/submit): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\D.json",
+      "line": 60,
+      "detail": "api_check \"QA-VM-034\" (POST /api/applications/1/submit): expected status 409, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 23,
+      "detail": "api_check \"QA-VM-038\" (GET /api/verification-queue): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 33,
+      "detail": "api_check \"QA-VM-039\" (POST /api/documents/1/verify): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 43,
+      "detail": "api_check \"QA-VM-040\" (POST /api/documents/2/verify): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 53,
+      "detail": "api_check \"QA-VM-041\" (POST /api/documents/1/verify): expected status 422, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 63,
+      "detail": "api_check \"QA-VM-042\" (GET /api/verification-queue): expected status 403, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 73,
+      "detail": "api_check \"QA-VM-048\" (POST /api/applications/{id}/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 83,
+      "detail": "api_check \"QA-VM-049\" (POST /api/applications/2/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 93,
+      "detail": "api_check \"QA-VM-050\" (POST /api/applications/3/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 103,
+      "detail": "api_check \"QA-VM-051\" (POST /api/applications/4/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 113,
+      "detail": "api_check \"QA-VM-052\" (POST /api/applications/{A}/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\E.json",
+      "line": 123,
+      "detail": "api_check \"QA-VM-053\" (POST /api/applications/{id}/underwrite): expected status 409, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\F.json",
+      "line": 24,
+      "detail": "api_check \"QA-VM-054\" (POST /api/applications/1/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\F.json",
+      "line": 34,
+      "detail": "api_check \"QA-VM-055\" (POST /api/applications/1/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\F.json",
+      "line": 44,
+      "detail": "api_check \"QA-VM-056\" (POST /api/applications/1/underwrite): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\F.json",
+      "line": 54,
+      "detail": "api_check \"QA-VM-057\" (POST /api/applications/2/review): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\F.json",
+      "line": 64,
+      "detail": "api_check \"QA-VM-058\" (POST /api/applications/2/review): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\F.json",
+      "line": 74,
+      "detail": "api_check \"QA-VM-059\" (POST /api/applications/3/override): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\F.json",
+      "line": 84,
+      "detail": "api_check \"QA-VM-060\" (POST /api/applications/4/override): expected status 200, got 0"
+    },
+    {
+      "file": "C:\\Development\\Capston Project - Personal\\truelend-lending-platform\\sprint-contracts\\F.json",
+      "line": 94,
+      "detail": "api_check \"QA-VM-061\" (POST /api/applications/{id}/override): expected status 409, got 0"
+    }
+  ],
+  "notes": [
+    "e2e command \"npx playwright test --reporter=json\" is not runnable (binary not found) — accumulated Playwright regression skipped; install/configure it to enforce"
+  ]
+}
